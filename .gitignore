@@ -1,0 +1,19 @@
+# Java
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Virtual machine crash logs
+hs_err_pid*
+
+# Eclipse
+
+.settings/
+.project
+.classpath
+
+# Maven
+target/
