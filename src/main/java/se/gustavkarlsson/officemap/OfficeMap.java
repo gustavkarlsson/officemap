@@ -3,12 +3,12 @@ package se.gustavkarlsson.officemap;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import se.gustavkarlsson.officemap.health.PersonHealthCheck;
+import se.gustavkarlsson.officemap.health.DummyHealthCheck;
 import se.gustavkarlsson.officemap.resources.PersonResource;
 
-public class OfficeMapApplication extends Application<OfficeMapConfiguration> {
+public class OfficeMap extends Application<OfficeMapConfiguration> {
 	public static void main(final String[] args) throws Exception {
-		new OfficeMapApplication().run(args);
+		new OfficeMap().run(args);
 	}
 	
 	@Override
@@ -22,7 +22,7 @@ public class OfficeMapApplication extends Application<OfficeMapConfiguration> {
 	
 	@Override
 	public void run(final OfficeMapConfiguration configuration, final Environment environment) throws Exception {
-		environment.healthChecks().register("person", new PersonHealthCheck());
+		environment.healthChecks().register("person", new DummyHealthCheck());
 		
 		environment.jersey().register(new PersonResource());
 	}

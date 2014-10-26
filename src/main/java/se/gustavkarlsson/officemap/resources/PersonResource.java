@@ -1,34 +1,51 @@
 package se.gustavkarlsson.officemap.resources;
 
-import java.util.concurrent.atomic.AtomicLong;
-
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import se.gustavkarlsson.officemap.representations.Person;
+import se.gustavkarlsson.officemap.api.Person;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.common.base.Optional;
 
-@Path("/person")
+@Path("/person/{username: .*}")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class PersonResource {
-
-	private final AtomicLong counter;
-
-	public PersonResource() {
-		this.counter = new AtomicLong();
+	
+	@POST
+	@Timed
+	public Response create(@Valid final Person person) {
+		// TODO Create person
+		return null;
 	}
 
 	@GET
 	@Timed
-	public Person getPerson(@QueryParam("username") final Optional<String> username,
-			@QueryParam("firstName") final Optional<String> firstName,
-			@QueryParam("lastName") final Optional<String> lastName, @QueryParam("email") final Optional<String> email) {
-		return new Person(counter.incrementAndGet(), username.or("johndoe"), firstName.or("John"), lastName.or("Doe"),
-				email.or("john.doe@mycompany.com"));
+	public Person read(@PathParam("username") final String username) {
+		// TODO Read person
+		return null;
+	}
+
+	@PUT
+	@Timed
+	public Person update(@PathParam("username") final String username, @Valid final Person person) {
+		// TODO Update person
+		return null;
+	}
+
+	@DELETE
+	@Timed
+	public Person delete(@PathParam("username") final String username) {
+		// TODO Update person
+		return null;
 	}
 }
