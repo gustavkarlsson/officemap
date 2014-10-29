@@ -1,22 +1,30 @@
 package se.gustavkarlsson.officemap;
 
 import io.dropwizard.Configuration;
+import io.dropwizard.db.DataSourceFactory;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OfficeMapConfiguration extends Configuration {
-	@NotEmpty
-	private String databasePath = ".";
 
-	@JsonProperty
-	public String getDatabasePath() {
-		return databasePath;
+	@Valid
+	@NotNull
+	@JsonProperty("database")
+	private final DataSourceFactory database = createDefaultDataSourceFactory();
+	
+	private DataSourceFactory createDefaultDataSourceFactory() {
+		final DataSourceFactory factory = new DataSourceFactory();
+		factory.setDriverClass("org.h2.Driver");
+		factory.setUrl("jdbc:h2:./database");
+		factory.setUser("sa");
+		factory.setPassword("sa");
+		return factory;
 	}
 
-	@JsonProperty
-	public void setDatabasePath(final String databasePath) {
-		this.databasePath = databasePath;
+	public DataSourceFactory getDataSourceFactory() {
+		return database;
 	}
 }
