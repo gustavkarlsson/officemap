@@ -1,0 +1,10 @@
+database:
+  driverClass: org.h2.Driver
+  user: sa
+  password: sa
+  url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+
+logging:
+  loggers:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace

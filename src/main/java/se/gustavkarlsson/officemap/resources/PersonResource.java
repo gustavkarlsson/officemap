@@ -25,6 +25,7 @@ import se.gustavkarlsson.officemap.api.Person;
 import se.gustavkarlsson.officemap.dao.PersonDao;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.base.Optional;
 
 @Path("/persons")
 @Produces(MediaType.APPLICATION_JSON)
@@ -44,31 +45,32 @@ public class PersonResource {
 		if (person == null) {
 			throw new WebApplicationException(Status.NO_CONTENT);
 		}
-		final Long savedId = dao.save(person);
-		if (savedId == null) {
+		final Optional<Long> ref = dao.insert(person);
+		if (!ref.isPresent()) {
 			throw new WebApplicationException(Status.FORBIDDEN);
 		}
-		final URI uri = UriBuilder.fromPath("" + savedId).build();
+		final URI uri = UriBuilder.fromPath(ref.toString()).build();
 		return Response.created(uri).build();
 	}
 	
-	@Path("/{id}")
+	@Path("/{ref}")
 	@GET
 	@UnitOfWork
 	@Timed
-	public Person read(@PathParam("id") final LongParam id) {
-		final Person person = dao.findById(id.get());
-		if (person == null) {
+	public Person read(@PathParam("ref") final LongParam ref) {
+		final Optional<Person> person = dao.findHeadByRef(ref.get());
+		if (!person.isPresent()) {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
-		return person;
+		return person.get();
 	}
 	
 	@GET
 	@UnitOfWork
 	@Timed
 	public Person[] list() {
-		final List<Person> persons = dao.list();
+		// TODO redefine method
+		final List<Person> persons = dao.findAllHeads();
 		return persons.toArray(new Person[persons.size()]);
 	}
 	
@@ -80,7 +82,7 @@ public class PersonResource {
 		if (person.getId() != null && person.getId() != id.get()) {
 			throw new WebApplicationException(Status.CONFLICT);
 		}
-		dao.update(person);
+		// TODO perform update
 		return Response.ok().build();
 	}
 	
@@ -89,11 +91,11 @@ public class PersonResource {
 	@UnitOfWork
 	@Timed
 	public Response delete(@PathParam("id") final LongParam id) {
-		final Person person = dao.findById(id.get());
-		if (person == null) {
+		final Optional<Person> person = dao.findHeadByRef(id.get());
+		if (!person.isPresent()) {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
-		dao.delete(person);
+		// TODO perform deletion
 		return Response.ok().build();
 	}
 }

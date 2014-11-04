@@ -6,7 +6,6 @@ import static se.gustavkarlsson.officemap.test.AssertValidation.assertThat;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,22 +19,17 @@ public class PersonTest {
 	private static final ObjectMapper mapper = Jackson.newObjectMapper();
 	
 	private static String fixture;
-	private Person person;
+	private static Person person = TestPersonBuilder.withTestParameters().build();
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
 		fixture = fixture("fixtures/person.json");
 	}
 	
-	@Before
-	public void before() {
-		person = TestPersonBuilder.withTestParameters().build();
-	}
-	
 	@Test
 	public void serializesToJSON() throws Exception {
 		final String serialized = mapper.writeValueAsString(person);
-		assertEquals(fixture, serialized, false);
+		assertEquals(fixture, serialized, true);
 	}
 	
 	@Test
@@ -50,28 +44,28 @@ public class PersonTest {
 	}
 	
 	@Test
-	public void blankUsernameIsInvalid() throws Exception {
+	public void invalidUsername() throws Exception {
 		assertInvalidUsername(null);
 		assertInvalidUsername("");
 		assertInvalidUsername(" \t\n");
 	}
 	
 	@Test
-	public void blankFirstNameIsInvalid() throws Exception {
+	public void invalidFirstName() throws Exception {
 		assertInvalidFirstName(null);
 		assertInvalidFirstName("");
 		assertInvalidFirstName(" \t\n");
 	}
 	
 	@Test
-	public void blankLastNameIsInvalid() throws Exception {
+	public void invalidLastName() throws Exception {
 		assertInvalidLastName(null);
 		assertInvalidLastName("");
 		assertInvalidLastName(" \t\n");
 	}
 	
 	@Test
-	public void invalidEmailIsInvalid() throws Exception {
+	public void invalidEmail() throws Exception {
 		assertInvalidEmail(null);
 		assertInvalidEmail("");
 		assertInvalidEmail("apa");
@@ -84,7 +78,8 @@ public class PersonTest {
 	
 	@Test
 	public void equalsContract() throws Exception {
-		EqualsVerifier.forClass(Person.class).usingGetClass().allFieldsShouldBeUsedExcept("id").verify();
+		EqualsVerifier.forClass(Person.class).usingGetClass().allFieldsShouldBeUsedExcept("id", "reference", "deleted")
+				.verify();
 	}
 	
 	private void assertInvalidUsername(final String username) {

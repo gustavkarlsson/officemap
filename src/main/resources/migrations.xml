@@ -6,12 +6,53 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
 	<changeSet id="1" author="gustav.karlsson@gmail.com">
+
+		<createTable tableName="Sequence">
+			<column name="name" type="varchar(64)">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="count" type="bigint">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createTable tableName="Event">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="timestamp" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="entity_fk" type="bigint">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createTable tableName="VersionedEntity">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="type" type="varchar(64)">
+				<constraints nullable="false" />
+			</column>
+			<column name="reference" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="deleted" type="boolean">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="event_entity_fk"
+			baseTableName="Event" baseColumnNames="entity_fk"
+			referencedTableName="VersionedEntity" referencedColumnNames="id" />
+
 		<createTable tableName="Person">
-			<column name="id" type="bigint" autoIncrement="true">
+			<column name="id" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="username" type="varchar(64)">
-				<constraints nullable="false" unique="true" />
+				<constraints nullable="false" />
 			</column>
 			<column name="firstName" type="varchar(255)">
 				<constraints nullable="false" />
@@ -20,8 +61,12 @@
 				<constraints nullable="false" />
 			</column>
 			<column name="email" type="varchar(255)">
-				<constraints nullable="false" unique="true" />
+				<constraints nullable="false" />
 			</column>
 		</createTable>
+
+		<addForeignKeyConstraint constraintName="person_inherit_event"
+			baseTableName="Person" baseColumnNames="id" referencedTableName="VersionedEntity"
+			referencedColumnNames="id" />
 	</changeSet>
 </databaseChangeLog>

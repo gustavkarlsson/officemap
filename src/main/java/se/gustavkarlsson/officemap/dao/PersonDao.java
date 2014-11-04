@@ -4,9 +4,15 @@ import org.hibernate.SessionFactory;
 
 import se.gustavkarlsson.officemap.api.Person;
 
-public class PersonDao extends GenericDao<Person> {
+public final class PersonDao extends AbstractEventDao<Person> {
 	
 	public PersonDao(final SessionFactory sessionFactory) {
 		super(sessionFactory);
+	}
+	
+	@Override
+	protected Person assignReference(final long reference, final Person person) {
+		final Person personWithReference = Person.Builder.fromPerson(person).withReference(reference).build();
+		return personWithReference;
 	}
 }

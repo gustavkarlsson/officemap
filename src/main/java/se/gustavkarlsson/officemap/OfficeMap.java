@@ -15,11 +15,11 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 	
 	HibernateBundle<OfficeMapConfiguration> hibernate = createHibernateBundle();
 	MigrationsBundle<OfficeMapConfiguration> migrations = createMigrationsBundle();
-
+	
 	public static void main(final String[] args) throws Exception {
 		new OfficeMap().run(args);
 	}
-
+	
 	@Override
 	public String getName() {
 		return "OfficeMap";
