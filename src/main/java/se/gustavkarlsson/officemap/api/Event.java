@@ -11,6 +11,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
+import com.google.common.base.Objects;
+
 @Entity
 @Table(name = "Event")
 public final class Event<T extends Item> {
@@ -56,6 +60,27 @@ public final class Event<T extends Item> {
 
 	@Override
 	public String toString() {
-		return "Event [id=" + id + ", timestamp=" + timestamp + "]";
+		return Objects.toStringHelper(this).add("id", id).add("timestamp", timestamp).add("item", item).toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(timestamp, item);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		@SuppressWarnings("rawtypes")
+		final Event rhs = (Event) obj;
+		return new EqualsBuilder().append(timestamp, rhs.timestamp).append(item, rhs.item).isEquals();
 	}
 }
