@@ -15,13 +15,14 @@ import javax.persistence.TableGenerator;
 import org.hibernate.validator.constraints.Range;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 @Entity
 @Table(name = "Item")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Item {
-
+	
 	@Range(min = 0)
 	@JsonProperty
 	@Id
@@ -30,31 +31,37 @@ public abstract class Item {
 			pkColumnValue = "ItemId")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private final Long id;
-	
+
 	@Range(min = 0)
 	@JsonProperty
 	@Column(name = "reference", nullable = false)
 	private final Long reference;
-
+	
 	@JsonProperty
 	@Column(name = "deleted", nullable = false)
 	private final boolean deleted;
-	
+
 	protected Item(final Long id, final Long reference, final boolean deleted) {
 		this.id = id;
 		this.reference = reference;
 		this.deleted = deleted;
 	}
-	
+
 	public final Long getId() {
 		return id;
 	}
-
+	
 	public final Long getReference() {
 		return reference;
 	}
-
+	
 	public final boolean isDeleted() {
 		return deleted;
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("id", id).add("reference", reference).add("deleted", deleted)
+				.toString();
 	}
 }
