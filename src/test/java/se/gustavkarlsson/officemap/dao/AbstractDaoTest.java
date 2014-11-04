@@ -52,6 +52,7 @@ public abstract class AbstractDaoTest {
 		liquibase.update(new Contexts());
 		session = getSessionFactory().openSession();
 		ManagedSessionContext.bind(session);
+		session.createSQLQuery("delete from Sequence").executeUpdate();
 	}
 
 	@After
