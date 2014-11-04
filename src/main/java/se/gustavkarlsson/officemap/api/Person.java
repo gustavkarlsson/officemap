@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "Person")
 @DiscriminatorValue(Person.TYPE)
-public final class Person extends VersionedEntity {
+public final class Person extends Item {
 
 	public static final String TYPE = "Person";
 

@@ -17,17 +17,17 @@ import org.hibernate.validator.constraints.Range;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "VersionedEntity")
+@Table(name = "Item")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class VersionedEntity {
+public abstract class Item {
 
 	@Range(min = 0)
 	@JsonProperty
 	@Id
 	@Column(name = "id")
 	@TableGenerator(name = "TABLE_GEN", table = "Sequence", pkColumnName = "name", valueColumnName = "count",
-			pkColumnValue = "VersionedEntityId")
+			pkColumnValue = "ItemId")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private final Long id;
 	
@@ -40,7 +40,7 @@ public abstract class VersionedEntity {
 	@Column(name = "deleted", nullable = false)
 	private final boolean deleted;
 	
-	protected VersionedEntity(final Long id, final Long reference, final boolean deleted) {
+	protected Item(final Long id, final Long reference, final boolean deleted) {
 		this.id = id;
 		this.reference = reference;
 		this.deleted = deleted;

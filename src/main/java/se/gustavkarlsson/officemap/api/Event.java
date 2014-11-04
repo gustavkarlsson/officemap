@@ -13,7 +13,7 @@ import javax.persistence.TableGenerator;
 
 @Entity
 @Table(name = "Event")
-public final class Event<T extends VersionedEntity> {
+public final class Event<T extends Item> {
 
 	@Id
 	@Column(name = "id")
@@ -26,20 +26,20 @@ public final class Event<T extends VersionedEntity> {
 	private final Long timestamp;
 
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@Column(name = "entity_fk")
-	private final T entity;
+	@Column(name = "item_fk")
+	private final T item;
 	
 	public Event() {
 		// Required by Hibernate
 		this.id = null;
 		this.timestamp = null;
-		this.entity = null;
+		this.item = null;
 	}
 
-	public Event(final Long id, final Long timestamp, final T versionedEntity) {
+	public Event(final Long id, final Long timestamp, final T item) {
 		this.id = id;
 		this.timestamp = timestamp;
-		this.entity = versionedEntity;
+		this.item = item;
 	}
 	
 	public final Long getId() {
@@ -50,8 +50,8 @@ public final class Event<T extends VersionedEntity> {
 		return timestamp;
 	}
 	
-	public final T getEntity() {
-		return entity;
+	public final T getItem() {
+		return item;
 	}
 
 	@Override

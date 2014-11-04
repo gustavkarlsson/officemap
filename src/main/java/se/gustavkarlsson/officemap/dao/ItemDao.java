@@ -2,15 +2,15 @@ package se.gustavkarlsson.officemap.dao;
 
 import java.util.List;
 
-import se.gustavkarlsson.officemap.api.VersionedEntity;
+import se.gustavkarlsson.officemap.api.Item;
 
 import com.google.common.base.Optional;
 
-public interface EventDao<E extends VersionedEntity> {
+public interface ItemDao<E extends Item> {
 
-	Optional<Long> insert(E entity);
+	Optional<Long> insert(E item);
 	
-	void update(long ref, E entity);
+	void update(long ref, E item);
 
 	Optional<E> findHeadByRef(long ref);
 

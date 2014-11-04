@@ -23,12 +23,12 @@
 			<column name="timestamp" type="bigint">
 				<constraints nullable="false" />
 			</column>
-			<column name="entity_fk" type="bigint">
+			<column name="item_fk" type="bigint">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
 
-		<createTable tableName="VersionedEntity">
+		<createTable tableName="Item">
 			<column name="id" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -43,9 +43,9 @@
 			</column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="event_entity_fk"
-			baseTableName="Event" baseColumnNames="entity_fk"
-			referencedTableName="VersionedEntity" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="event_item_fk"
+			baseTableName="Event" baseColumnNames="item_fk"
+			referencedTableName="Item" referencedColumnNames="id" />
 
 		<createTable tableName="Person">
 			<column name="id" type="bigint">
@@ -65,8 +65,8 @@
 			</column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="person_inherit_event"
-			baseTableName="Person" baseColumnNames="id" referencedTableName="VersionedEntity"
+		<addForeignKeyConstraint constraintName="Person_inherit_Item"
+			baseTableName="Person" baseColumnNames="id" referencedTableName="Item"
 			referencedColumnNames="id" />
 	</changeSet>
 </databaseChangeLog>

@@ -4,7 +4,7 @@ import org.hibernate.SessionFactory;
 
 import se.gustavkarlsson.officemap.api.Person;
 
-public final class PersonDao extends AbstractEventDao<Person> {
+public final class PersonDao extends AbstractItemDao<Person> {
 	
 	public PersonDao(final SessionFactory sessionFactory) {
 		super(sessionFactory);
