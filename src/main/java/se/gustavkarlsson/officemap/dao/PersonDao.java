@@ -11,8 +11,15 @@ public final class PersonDao extends AbstractItemDao<Person> {
 	}
 	
 	@Override
-	protected Person assignReference(final long reference, final Person person) {
-		final Person personWithReference = Person.Builder.fromPerson(person).withReference(reference).build();
-		return personWithReference;
+	protected Person prepareForInsertion(final Person person, final long reference, final long timestamp) {
+		final Person prepared = Person.Builder.fromPerson(person).withId(null).withReference(reference)
+				.withTimestamp(timestamp).build();
+		return prepared;
+	}
+
+	@Override
+	protected Person prepareForUpdate(final Person person, final long timestamp) {
+		final Person prepared = Person.Builder.fromPerson(person).withId(null).withTimestamp(timestamp).build();
+		return prepared;
 	}
 }

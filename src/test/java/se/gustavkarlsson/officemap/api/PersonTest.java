@@ -44,6 +44,24 @@ public class PersonTest {
 	}
 	
 	@Test
+	public void invalidId() throws Exception {
+		assertInvalidId(-1l);
+		assertInvalidId(Long.MIN_VALUE);
+	}
+	
+	@Test
+	public void invalidTimestamp() throws Exception {
+		assertInvalidTimestamp(-1l);
+		assertInvalidTimestamp(Long.MIN_VALUE);
+	}
+	
+	@Test
+	public void invalidReference() throws Exception {
+		assertInvalidReference(-1l);
+		assertInvalidReference(Long.MIN_VALUE);
+	}
+	
+	@Test
 	public void invalidUsername() throws Exception {
 		assertInvalidUsername(null);
 		assertInvalidUsername("");
@@ -78,8 +96,23 @@ public class PersonTest {
 	
 	@Test
 	public void equalsContract() throws Exception {
-		EqualsVerifier.forClass(Person.class).usingGetClass().allFieldsShouldBeUsedExcept("id", "reference", "deleted")
-				.verify();
+		EqualsVerifier.forClass(Person.class).usingGetClass()
+				.allFieldsShouldBeUsedExcept("id", "timestamp", "reference", "deleted").verify();
+	}
+	
+	private void assertInvalidId(final Long id) {
+		final Person invalidPerson = Builder.fromPerson(person).withId(id).build();
+		assertThatPersonHasInvalid(invalidPerson, "id");
+	}
+	
+	private void assertInvalidTimestamp(final Long timestamp) {
+		final Person invalidPerson = Builder.fromPerson(person).withTimestamp(timestamp).build();
+		assertThatPersonHasInvalid(invalidPerson, "timestamp");
+	}
+	
+	private void assertInvalidReference(final Long reference) {
+		final Person invalidPerson = Builder.fromPerson(person).withReference(reference).build();
+		assertThatPersonHasInvalid(invalidPerson, "reference");
 	}
 	
 	private void assertInvalidUsername(final String username) {

@@ -16,23 +16,14 @@
 			</column>
 		</createTable>
 
-		<createTable tableName="Event">
-			<column name="id" type="bigint">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="timestamp" type="bigint">
-				<constraints nullable="false" />
-			</column>
-			<column name="item_fk" type="bigint">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-
 		<createTable tableName="Item">
 			<column name="id" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="type" type="varchar(64)">
+				<constraints nullable="false" />
+			</column>
+			<column name="timestamp" type="bigint">
 				<constraints nullable="false" />
 			</column>
 			<column name="reference" type="bigint">
@@ -42,10 +33,6 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-
-		<addForeignKeyConstraint constraintName="event_item_fk"
-			baseTableName="Event" baseColumnNames="item_fk"
-			referencedTableName="Item" referencedColumnNames="id" />
 
 		<createTable tableName="Person">
 			<column name="id" type="bigint">

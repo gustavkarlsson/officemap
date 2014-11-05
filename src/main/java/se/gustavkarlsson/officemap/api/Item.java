@@ -33,6 +33,10 @@ public abstract class Item {
 	private final Long id;
 
 	@Range(min = 0)
+	@Column(name = "timestamp", nullable = false)
+	private final Long timestamp;
+
+	@Range(min = 0)
 	@JsonProperty
 	@Column(name = "reference", nullable = false)
 	private final Long reference;
@@ -41,14 +45,19 @@ public abstract class Item {
 	@Column(name = "deleted", nullable = false)
 	private final boolean deleted;
 
-	protected Item(final Long id, final Long reference, final boolean deleted) {
+	protected Item(final Long id, final Long timestamp, final Long reference, final boolean deleted) {
 		this.id = id;
+		this.timestamp = timestamp;
 		this.reference = reference;
 		this.deleted = deleted;
 	}
 
 	public final Long getId() {
 		return id;
+	}
+	
+	public final Long getTimestamp() {
+		return timestamp;
 	}
 	
 	public final Long getReference() {
@@ -61,7 +70,7 @@ public abstract class Item {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("id", id).add("reference", reference).add("deleted", deleted)
-				.toString();
+		return Objects.toStringHelper(this).add("id", id).add("timestamp", timestamp).add("reference", reference)
+				.add("deleted", deleted).toString();
 	}
 }
