@@ -1,5 +1,8 @@
 package se.gustavkarlsson.officemap.resources;
 
+import static javax.ws.rs.core.Response.Status.CONFLICT;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.params.LongParam;
 
@@ -18,84 +21,95 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 
 import se.gustavkarlsson.officemap.api.Person;
+import se.gustavkarlsson.officemap.dao.ItemDao.UpdateResponse;
 import se.gustavkarlsson.officemap.dao.PersonDao;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 
-@Path("/persons")
+@Path("/api/persons")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PersonResource {
-	
+
 	private final PersonDao dao;
-	
+
 	public PersonResource(final PersonDao dao) {
 		this.dao = dao;
 	}
-	
+
 	@POST
 	@UnitOfWork
 	@Timed
-	public Response create(@Valid final Person person) {
-		if (person == null) {
-			throw new WebApplicationException(Status.NO_CONTENT);
+	public Response insert(@Valid final Person person) {
+		final Optional<Long> reference = dao.insert(person);
+		if (!reference.isPresent()) {
+			throw new WebApplicationException(CONFLICT);
 		}
-		final Optional<Long> ref = dao.insert(person);
-		if (!ref.isPresent()) {
-			throw new WebApplicationException(Status.FORBIDDEN);
-		}
-		final URI uri = UriBuilder.fromPath(ref.toString()).build();
+		final URI uri = UriBuilder.fromPath(Long.toString(reference.get())).build();
 		return Response.created(uri).build();
 	}
-	
-	@Path("/{ref}")
+
+	@Path("/{reference}")
 	@GET
 	@UnitOfWork
 	@Timed
-	public Person read(@PathParam("ref") final LongParam ref) {
-		final Optional<Person> person = dao.findHeadByRef(ref.get());
+	public Person find(@PathParam("reference") final LongParam reference) {
+		final Optional<Person> person = dao.findHeadByRef(reference.get());
 		if (!person.isPresent()) {
-			throw new WebApplicationException(Status.NOT_FOUND);
+			throw new WebApplicationException(NOT_FOUND);
 		}
 		return person.get();
 	}
-	
+
 	@GET
 	@UnitOfWork
 	@Timed
 	public Person[] list() {
-		// TODO redefine method
 		final List<Person> persons = dao.findAllHeads();
 		return persons.toArray(new Person[persons.size()]);
 	}
-	
-	@Path("/{id}")
+
+	@Path("/{reference}")
 	@PUT
 	@UnitOfWork
 	@Timed
-	public Response update(@PathParam("id") final LongParam id, @Valid final Person person) {
-		if (person.getId() != null && person.getId() != id.get()) {
-			throw new WebApplicationException(Status.CONFLICT);
+	public Response update(@PathParam("reference") final LongParam reference, @Valid final Person person) {
+		final UpdateResponse response = dao.update(reference.get(), person);
+		switch (response) {
+			case SAME:
+				throw new WebApplicationException(CONFLICT);
+			case NOT_FOUND:
+				throw new WebApplicationException(NOT_FOUND);
+			case UPDATED:
+				return Response.ok().build();
+			default:
+				// TODO log error (should not happen)
+				throw new WebApplicationException(INTERNAL_SERVER_ERROR);
 		}
-		// TODO perform update
-		return Response.ok().build();
 	}
-	
-	@Path("/{id}")
+
+	@Path("/{reference}")
 	@DELETE
 	@UnitOfWork
 	@Timed
-	public Response delete(@PathParam("id") final LongParam id) {
-		final Optional<Person> person = dao.findHeadByRef(id.get());
+	public Response delete(@PathParam("reference") final LongParam reference) {
+		final Optional<Person> person = dao.findHeadByRef(reference.get());
 		if (!person.isPresent()) {
-			throw new WebApplicationException(Status.NOT_FOUND);
+			throw new WebApplicationException(NOT_FOUND);
 		}
-		// TODO perform deletion
+		if (person.get().isDeleted()) {
+			throw new WebApplicationException(CONFLICT);
+		}
+		final Person deletedPerson = Person.Builder.fromPerson(person.get()).withDeleted(true).build();
+		final UpdateResponse respsonse = dao.update(reference.get(), deletedPerson);
+		if (respsonse != UpdateResponse.UPDATED) {
+			// TODO log error (should not happen)
+			throw new WebApplicationException(INTERNAL_SERVER_ERROR);
+		}
 		return Response.ok().build();
 	}
 }
