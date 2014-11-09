@@ -5,41 +5,26 @@ import org.hibernate.SessionFactory;
 import se.gustavkarlsson.officemap.api.Person;
 
 public final class PersonDao extends AbstractItemDao<Person> {
-
+	
 	public PersonDao(final SessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
-
+	
 	@Override
-	protected Person prepareForInsertion(final Person item) {
-		final long reference = getFreeReference();
-		final long timestamp = System.currentTimeMillis();
-		final Person prepared = Person.Builder.fromPerson(item).withId(null).withTimestamp(timestamp)
-				.withReference(reference).withDeleted(false).build();
+	protected Person setId(final Person item, final Long id) {
+		final Person prepared = Person.Builder.fromPerson(item).withId(id).build();
 		return prepared;
 	}
 	
 	@Override
-	protected Person prepareForUpdate(final Person item) {
-		final long timestamp = System.currentTimeMillis();
-		final Person prepared = Person.Builder.fromPerson(item).withId(null).withTimestamp(timestamp)
-				.withDeleted(false).build();
+	protected Person setReference(final Person item, final Long reference) {
+		final Person prepared = Person.Builder.fromPerson(item).withReference(reference).build();
 		return prepared;
 	}
 	
 	@Override
-	protected Person prepareForUndelete(final Person item) {
-		final long timestamp = System.currentTimeMillis();
-		final Person prepared = Person.Builder.fromPerson(item).withId(null).withTimestamp(timestamp)
-				.withDeleted(false).build();
-		return prepared;
-	}
-	
-	@Override
-	protected Person prepareForDelete(final Person item) {
-		final long timestamp = System.currentTimeMillis();
-		final Person prepared = Person.Builder.fromPerson(item).withId(null).withTimestamp(timestamp).withDeleted(true)
-				.build();
+	protected Person setTimestamp(final Person item, final Long timestamp) {
+		final Person prepared = Person.Builder.fromPerson(item).withTimestamp(timestamp).build();
 		return prepared;
 	}
 }

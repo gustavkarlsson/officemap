@@ -34,13 +34,13 @@ import com.google.common.base.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PersonResource {
-
+	
 	private final PersonDao dao;
-
+	
 	public PersonResource(final PersonDao dao) {
 		this.dao = dao;
 	}
-
+	
 	@POST
 	@UnitOfWork
 	@Timed
@@ -52,7 +52,7 @@ public class PersonResource {
 		final URI uri = UriBuilder.fromPath(Long.toString(reference.get())).build();
 		return Response.created(uri).build();
 	}
-
+	
 	@Path("/{reference}")
 	@GET
 	@UnitOfWork
@@ -64,7 +64,7 @@ public class PersonResource {
 		}
 		return person.get();
 	}
-
+	
 	@GET
 	@UnitOfWork
 	@Timed
@@ -72,7 +72,7 @@ public class PersonResource {
 		final List<Person> persons = dao.findAllHeads();
 		return persons.toArray(new Person[persons.size()]);
 	}
-
+	
 	@Path("/{reference}")
 	@PUT
 	@UnitOfWork
@@ -91,22 +91,23 @@ public class PersonResource {
 				throw new WebApplicationException(INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	
 	@Path("/{reference}")
 	@DELETE
 	@UnitOfWork
 	@Timed
 	public Response delete(@PathParam("reference") final LongParam reference) {
-		final Optional<Person> person = dao.findHeadByRef(reference.get());
-		if (!person.isPresent()) {
+		final Optional<Person> possiblyFoundPerson = dao.findHeadByRef(reference.get());
+		if (!possiblyFoundPerson.isPresent()) {
 			throw new WebApplicationException(NOT_FOUND);
 		}
-		if (person.get().isDeleted()) {
+		final Person person = possiblyFoundPerson.get();
+		if (person.isDeleted()) {
 			throw new WebApplicationException(CONFLICT);
 		}
-		final Person deletedPerson = Person.Builder.fromPerson(person.get()).withDeleted(true).build();
-		final UpdateResponse respsonse = dao.update(reference.get(), deletedPerson);
-		if (respsonse != UpdateResponse.UPDATED) {
+		final Person deletedPerson = Person.Builder.fromPerson(person).withDeleted(true).build();
+		final UpdateResponse response = dao.update(reference.get(), deletedPerson);
+		if (response != UpdateResponse.UPDATED) {
 			// TODO log error (should not happen)
 			throw new WebApplicationException(INTERNAL_SERVER_ERROR);
 		}
