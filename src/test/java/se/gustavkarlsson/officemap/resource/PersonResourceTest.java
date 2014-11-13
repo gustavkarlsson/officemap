@@ -14,7 +14,7 @@ import org.junit.ClassRule;
 
 import se.gustavkarlsson.officemap.api.Person;
 import se.gustavkarlsson.officemap.dao.PersonDao;
-import se.gustavkarlsson.officemap.resources.PersonResource;
+import se.gustavkarlsson.officemap.resources.api.PersonResource;
 import se.gustavkarlsson.officemap.test.TestPersonBuilder;
 
 import com.google.common.base.Optional;

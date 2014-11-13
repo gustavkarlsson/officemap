@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.resources;
+package se.gustavkarlsson.officemap.resources.api;
 
 import static javax.ws.rs.core.Response.Status.CONFLICT;
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
@@ -30,7 +30,7 @@ import se.gustavkarlsson.officemap.dao.PersonDao;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 
-@Path("/api/persons")
+@Path("/persons")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PersonResource {
@@ -55,6 +55,7 @@ public class PersonResource {
 	
 	@Path("/{reference}")
 	@GET
+	@Consumes(MediaType.WILDCARD)
 	@UnitOfWork
 	@Timed
 	public Person find(@PathParam("reference") final LongParam reference) {
@@ -66,6 +67,7 @@ public class PersonResource {
 	}
 	
 	@GET
+	@Consumes(MediaType.WILDCARD)
 	@UnitOfWork
 	@Timed
 	public Person[] list() {
