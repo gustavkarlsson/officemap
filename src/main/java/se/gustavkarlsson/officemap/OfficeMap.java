@@ -7,9 +7,15 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import se.gustavkarlsson.officemap.api.Person;
+import se.gustavkarlsson.officemap.api.Reference;
+import se.gustavkarlsson.officemap.api.area.Area;
+import se.gustavkarlsson.officemap.api.area.AreaReference;
+import se.gustavkarlsson.officemap.api.person.Person;
+import se.gustavkarlsson.officemap.api.person.PersonReference;
+import se.gustavkarlsson.officemap.dao.AreaDao;
 import se.gustavkarlsson.officemap.dao.PersonDao;
 import se.gustavkarlsson.officemap.health.DummyHealthCheck;
+import se.gustavkarlsson.officemap.resources.api.AreaResource;
 import se.gustavkarlsson.officemap.resources.api.PersonResource;
 
 public class OfficeMap extends Application<OfficeMapConfiguration> {
@@ -36,13 +42,14 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 	@Override
 	public void run(final OfficeMapConfiguration configuration, final Environment environment) throws Exception {
 		environment.healthChecks().register("person", new DummyHealthCheck());
-		final PersonDao personDao = new PersonDao(hibernate.getSessionFactory());
-		environment.jersey().register(new PersonResource(personDao));
+		environment.jersey().register(new PersonResource(new PersonDao(hibernate.getSessionFactory())));
+		environment.jersey().register(new AreaResource(new AreaDao(hibernate.getSessionFactory())));
 		environment.jersey().setUrlPattern("/api/*");
 	}
 
 	private HibernateBundle<OfficeMapConfiguration> createHibernateBundle() {
-		final HibernateBundle<OfficeMapConfiguration> bundle = new HibernateBundle<OfficeMapConfiguration>(Person.class) {
+		final HibernateBundle<OfficeMapConfiguration> bundle = new HibernateBundle<OfficeMapConfiguration>(
+				Person.class, Area.class, Reference.class, PersonReference.class, AreaReference.class) {
 			@Override
 			public DataSourceFactory getDataSourceFactory(final OfficeMapConfiguration configuration) {
 				return configuration.getDataSourceFactory();

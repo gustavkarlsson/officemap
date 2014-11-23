@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
@@ -18,11 +20,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
 @Entity
-@Table(name = "Item")
+@Table(name = Item.TYPE)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Item {
-	
+public abstract class Item<T extends Item<T>> {
+
+	public static final String TYPE = "Item";
+
 	@Range(min = 0)
 	@JsonProperty
 	@Id
@@ -31,43 +35,43 @@ public abstract class Item {
 			pkColumnValue = "ItemId")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private final Long id;
-
+	
 	@Range(min = 0)
 	@Column(name = "timestamp", nullable = false)
 	private final Long timestamp;
 
-	@Range(min = 0)
 	@JsonProperty
-	@Column(name = "reference", nullable = false)
-	private final Long reference;
-	
+	@ManyToOne(optional = false, targetEntity = Reference.class)
+	@JoinColumn(name = "referenceFK", nullable = false)
+	private final Reference<T> reference;
+
 	@JsonProperty
 	@Column(name = "deleted", nullable = false)
 	private final boolean deleted;
-
-	protected Item(final Long id, final Long timestamp, final Long reference, final boolean deleted) {
+	
+	protected Item(final Long id, final Long timestamp, final Reference<T> reference, final boolean deleted) {
 		this.id = id;
 		this.timestamp = timestamp;
 		this.reference = reference;
 		this.deleted = deleted;
 	}
-
+	
 	public final Long getId() {
 		return id;
 	}
-	
+
 	public final Long getTimestamp() {
 		return timestamp;
 	}
-	
-	public final Long getReference() {
+
+	public final Reference<T> getReference() {
 		return reference;
 	}
-	
+
 	public final boolean isDeleted() {
 		return deleted;
 	}
-
+	
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("id", id).add("timestamp", timestamp).add("reference", reference)

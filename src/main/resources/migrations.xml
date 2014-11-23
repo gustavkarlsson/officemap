@@ -9,16 +9,25 @@
 
 		<createTable tableName="Sequence">
 			<column name="name" type="varchar(64)">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" />
 			</column>
 			<column name="count" type="bigint">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
 
+		<createTable tableName="Reference">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="type" type="varchar(64)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
 		<createTable tableName="Item">
 			<column name="id" type="bigint">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" />
 			</column>
 			<column name="type" type="varchar(64)">
 				<constraints nullable="false" />
@@ -26,7 +35,7 @@
 			<column name="timestamp" type="bigint">
 				<constraints nullable="false" />
 			</column>
-			<column name="reference" type="bigint">
+			<column name="referenceFK" type="bigint">
 				<constraints nullable="false" />
 			</column>
 			<column name="deleted" type="boolean">
@@ -34,9 +43,13 @@
 			</column>
 		</createTable>
 
+		<addForeignKeyConstraint constraintName="Item_referenceFK_to_Reference_id"
+			baseTableName="Item" baseColumnNames="referenceFK" referencedTableName="Reference"
+			referencedColumnNames="id" />
+
 		<createTable tableName="Person">
 			<column name="id" type="bigint">
-				<constraints primaryKey="true" nullable="false" />
+				<constraints primaryKey="true" />
 			</column>
 			<column name="username" type="varchar(64)">
 				<constraints nullable="false" />
@@ -52,8 +65,22 @@
 			</column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="Person_inherit_Item"
+		<addForeignKeyConstraint constraintName="Person_id_to_Item_id"
 			baseTableName="Person" baseColumnNames="id" referencedTableName="Item"
 			referencedColumnNames="id" />
+
+		<createTable tableName="Area">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="Area_id_to_Item_id"
+			baseTableName="Area" baseColumnNames="id" referencedTableName="Item"
+			referencedColumnNames="id" />
+
 	</changeSet>
 </databaseChangeLog>

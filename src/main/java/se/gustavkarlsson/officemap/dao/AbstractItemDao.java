@@ -5,112 +5,140 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import io.dropwizard.hibernate.AbstractDAO;
 
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import se.gustavkarlsson.officemap.api.Item;
+import se.gustavkarlsson.officemap.api.Reference;
 
 import com.google.common.base.Optional;
 
-public abstract class AbstractItemDao<E extends Item> extends AbstractDAO<E> implements ItemDao<E> {
+abstract class AbstractItemDao<E extends Item<E>> extends AbstractDAO<E> implements ItemDao<E> {
 
 	public AbstractItemDao(final SessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
-	
+
 	// TODO Synchronize
 	@Override
 	public Optional<Long> insert(final E item) {
 		checkNotNull(item);
 		
+		final Reference<E> reference = createNewReference();
+
 		E preparedItem = item;
 		preparedItem = setId(preparedItem, null);
 		preparedItem = setTimestamp(preparedItem, System.currentTimeMillis());
-		preparedItem = setReference(preparedItem, getFreeReference());
-		
+		preparedItem = setReference(preparedItem, reference);
+		reference.getItems().add(preparedItem);
+
 		persistCheck(preparedItem);
 
-		currentSession().save(preparedItem);
+		currentSession().save(reference);
 		currentSession().flush();
-		return Optional.of(preparedItem.getReference());
+		return Optional.of(reference.getId());
 	}
 
 	// TODO Synchronize
 	@Override
-	public UpdateResponse update(final long reference, final E item) {
-		checkArgument(reference >= 0, "reference is negative");
+	public UpdateResponse update(final long referenceId, final E item) {
+		checkArgument(referenceId >= 0, "reference is negative");
 		checkNotNull(item);
-		final Optional<E> possiblyEqualHead = findHeadByRef(reference);
-		if (!possiblyEqualHead.isPresent()) {
+
+		final Optional<Reference<E>> possibleReference = getReferenceById(referenceId);
+		if (!possibleReference.isPresent()) {
 			return UpdateResponse.NOT_FOUND;
+		}
+		final Reference<E> reference = possibleReference.get();
+
+		final E head = possibleReference.get().getHead();
+		if (item.equals(head)) {
+			return UpdateResponse.SAME;
 		}
 
 		E preparedItem = item;
 		preparedItem = setId(preparedItem, null);
 		preparedItem = setTimestamp(preparedItem, System.currentTimeMillis());
+		preparedItem = setReference(preparedItem, reference);
+		reference.getItems().add(preparedItem);
 
 		persistCheck(preparedItem);
 
-		currentSession().save(preparedItem);
+		currentSession().save(reference);
 		currentSession().flush();
 
 		return UpdateResponse.UPDATED;
 	}
-	
+
 	@Override
-	public Optional<E> findHeadByRef(final long ref) {
-		@SuppressWarnings("unchecked")
-		final E result = (E) criteria().add(Restrictions.eq("reference", ref)).addOrder(Order.desc("id"))
-				.setMaxResults(1).uniqueResult();
-		return Optional.fromNullable(result);
+	public Optional<E> findHeadByReference(final long referenceId) {
+		checkArgument(referenceId >= 0, "reference is negative");
+
+		final Optional<Reference<E>> possibleReference = getReferenceById(referenceId);
+		if (!possibleReference.isPresent()) {
+			return Optional.absent();
+		}
+
+		final E head = possibleReference.get().getHead();
+		return Optional.of(head);
 	}
-	
+
 	@Override
-	public List<E> findAllByRef(final long ref) {
-		@SuppressWarnings("unchecked")
-		final List<E> result = criteria().add(Restrictions.eq("reference", ref)).addOrder(Order.asc("id")).list();
-		return result;
+	public List<E> findAllByReference(final long referenceId) {
+		checkArgument(referenceId >= 0, "reference is negative");
+
+		final Optional<Reference<E>> possibleReference = getReferenceById(referenceId);
+		if (!possibleReference.isPresent()) {
+			return new ArrayList<E>();
+		}
+
+		final List<E> items = possibleReference.get().getItems();
+		return items;
 	}
-	
+
 	@Override
 	public List<E> findAllHeads() {
-		@SuppressWarnings("unchecked")
-		final List<E> list = currentSession().createQuery(
-				"select e from Item e where e.id = "
-						+ "(select max(e_sub.id) from Item e_sub where e_sub.reference = e.reference) "
-						+ "order by e.id asc").list();
-		return list;
+		final List<E> heads = new ArrayList<E>();
+
+		final List<Reference<E>> references = getReferences();
+		for (final Reference<E> reference : references) {
+			final E head = reference.getHead();
+			heads.add(head);
+		}
+
+		return heads;
 	}
-	
-	@Override
-	public List<E> findAll() {
-		@SuppressWarnings("unchecked")
-		final List<E> list = criteria().addOrder(Order.asc("id")).list();
-		return list;
-	}
-	
+
 	private void persistCheck(final E item) {
 		checkNotNull(item);
 		checkState(item.getId() == null, "item id is not null");
 		checkNotNull(item.getTimestamp());
 		checkNotNull(item.getReference());
 	}
-	
-	protected long getFreeReference() {
-		final BigInteger result = (BigInteger) currentSession().createSQLQuery("select max(reference) from Item")
-				.uniqueResult();
-		final BigInteger highestReference = Optional.fromNullable(result).or(BigInteger.valueOf(0l));
-		final long nextReference = highestReference.longValue() + 1;
-		return nextReference;
+
+	private Optional<Reference<E>> getReferenceById(final long referenceId) {
+		final Class<? extends Reference<E>> referenceClass = getReferenceClass();
+		@SuppressWarnings("unchecked")
+		final Reference<E> reference = (Reference<E>) currentSession().get(referenceClass, referenceId);
+		return Optional.fromNullable(reference);
 	}
 
+	private List<Reference<E>> getReferences() {
+		final Class<? extends Reference<E>> referenceClass = getReferenceClass();
+		@SuppressWarnings("unchecked")
+		final List<Reference<E>> list = currentSession().createCriteria(referenceClass).list();
+		return list;
+	}
+
+	protected abstract Reference<E> createNewReference();
+
+	protected abstract Class<? extends Reference<E>> getReferenceClass();
+	
 	protected abstract E setId(E item, Long id);
 
-	protected abstract E setReference(E item, Long reference);
+	protected abstract E setReference(E item, Reference<E> reference);
 
 	protected abstract E setTimestamp(E item, Long timestamp);
 

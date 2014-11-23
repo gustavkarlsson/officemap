@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api;
+package se.gustavkarlsson.officemap.api.person;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -9,32 +9,34 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import se.gustavkarlsson.officemap.api.Item;
+import se.gustavkarlsson.officemap.api.Reference;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
 
 @Entity
-@Table(name = "Person")
+@Table(name = Person.TYPE)
 @DiscriminatorValue(Person.TYPE)
-public final class Person extends Item {
+@JsonSerialize(using = PersonSerializer.class)
+@JsonDeserialize(using = PersonDeserializer.class)
+public final class Person extends Item<Person> {
 	
 	public static final String TYPE = "Person";
-	
-	@JsonProperty
+
 	@NotBlank
 	@Column(name = "username", nullable = false)
 	private final String username;
-	
-	@JsonProperty
+
 	@NotBlank
 	@Column(name = "firstName", nullable = false)
 	private final String firstName;
 
-	@JsonProperty
 	@NotBlank
 	@Column(name = "lastName", nullable = false)
 	private final String lastName;
 
-	@JsonProperty
 	@Email
 	@NotBlank
 	@Column(name = "email", nullable = false)
@@ -49,10 +51,8 @@ public final class Person extends Item {
 		this.email = null;
 	}
 	
-	private Person(@JsonProperty("id") final Long id, @JsonProperty("timestamp") final Long timestamp,
-			@JsonProperty("reference") final Long reference, @JsonProperty("deleted") final boolean deleted,
-			@JsonProperty("username") final String username, @JsonProperty("firstName") final String firstName,
-			@JsonProperty("lastName") final String lastName, @JsonProperty("email") final String email) {
+	private Person(final Long id, final Long timestamp, final Reference<Person> reference, final boolean deleted,
+			final String username, final String firstName, final String lastName, final String email) {
 		super(id, timestamp, reference, deleted);
 		this.username = username;
 		this.firstName = firstName;
@@ -108,7 +108,7 @@ public final class Person extends Item {
 		
 		private Long id;
 		
-		private Long reference;
+		private Reference<Person> reference;
 		
 		private Long timestamp;
 		
@@ -122,8 +122,9 @@ public final class Person extends Item {
 		
 		private String email;
 		
-		protected Builder(final Long id, final Long timestamp, final Long reference, final boolean deleted,
-				final String username, final String firstName, final String lastName, final String email) {
+		protected Builder(final Long id, final Long timestamp, final Reference<Person> reference,
+				final boolean deleted, final String username, final String firstName, final String lastName,
+				final String email) {
 			this.id = id;
 			this.timestamp = timestamp;
 			this.reference = reference;
@@ -138,7 +139,7 @@ public final class Person extends Item {
 			return new Builder(null, null, null, false, null, null, null, null);
 		}
 		
-		public static Builder withFields(final Long id, final Long timestamp, final Long reference,
+		public static Builder withFields(final Long id, final Long timestamp, final Reference<Person> reference,
 				final boolean deleted, final String username, final String firstName, final String lastName,
 				final String email) {
 			return new Builder(id, timestamp, reference, deleted, username, firstName, lastName, email);
@@ -171,11 +172,11 @@ public final class Person extends Item {
 			return this;
 		}
 		
-		public Long getReference() {
+		public Reference<Person> getReference() {
 			return reference;
 		}
 		
-		public Builder withReference(final Long reference) {
+		public Builder withReference(final Reference<Person> reference) {
 			this.reference = reference;
 			return this;
 		}

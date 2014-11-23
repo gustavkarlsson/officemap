@@ -6,20 +6,18 @@ import se.gustavkarlsson.officemap.api.Item;
 
 import com.google.common.base.Optional;
 
-public interface ItemDao<E extends Item> {
-
-	Optional<Long> insert(E item);
+public interface ItemDao<E extends Item<E>> {
 	
-	UpdateResponse update(long ref, E item);
+	Optional<Long> insert(E item);
 
-	Optional<E> findHeadByRef(long ref);
-
-	List<E> findAllByRef(long ref);
+	UpdateResponse update(long referenceId, E item);
+	
+	Optional<E> findHeadByReference(long referenceId);
+	
+	List<E> findAllByReference(long referenceId);
 
 	List<E> findAllHeads();
-
-	List<E> findAll();
-
+	
 	public static enum UpdateResponse {
 		UPDATED, SAME, NOT_FOUND;
 	}

@@ -25,27 +25,33 @@ import org.junit.ClassRule;
 
 import se.gustavkarlsson.officemap.OfficeMap;
 import se.gustavkarlsson.officemap.OfficeMapConfiguration;
-import se.gustavkarlsson.officemap.api.Person;
+import se.gustavkarlsson.officemap.api.Item;
+import se.gustavkarlsson.officemap.api.Reference;
+import se.gustavkarlsson.officemap.api.area.Area;
+import se.gustavkarlsson.officemap.api.area.AreaReference;
+import se.gustavkarlsson.officemap.api.person.Person;
+import se.gustavkarlsson.officemap.api.person.PersonReference;
 
 import com.google.common.io.Resources;
 
 public abstract class AbstractDaoTest {
-
+	
 	@ClassRule
 	public static final DropwizardAppRule<OfficeMapConfiguration> RULE = new DropwizardAppRule<OfficeMapConfiguration>(
 			OfficeMap.class, Resources.getResource("testconfiguration.yml").getPath());
-
+	
 	private static Liquibase liquibase;
 	private static SessionFactory sessionFactory;
 	private Session session;
-
+	
 	@BeforeClass
 	public static void setupDatabase() throws Exception {
 		liquibase = createLiquibase(RULE.getConfiguration().getDataSourceFactory());
 		sessionFactory = new SessionFactoryFactory().build(createHibernateBundle(), RULE.getEnvironment(), RULE
-				.getConfiguration().getDataSourceFactory(), Arrays.<Class<?>> asList(Person.class));
+				.getConfiguration().getDataSourceFactory(), Arrays.<Class<?>> asList(Item.class, Person.class,
+				Area.class, Reference.class, PersonReference.class, AreaReference.class));
 	}
-	
+
 	@Before
 	public void prepare() throws Exception {
 		liquibase.dropAll();
@@ -54,17 +60,17 @@ public abstract class AbstractDaoTest {
 		ManagedSessionContext.bind(session);
 		session.createSQLQuery("delete from Sequence").executeUpdate();
 	}
-
+	
 	@After
 	public void finish() throws Exception {
 		session.close();
 		ManagedSessionContext.unbind(getSessionFactory());
 	}
-
+	
 	protected static SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
-
+	
 	private static Liquibase createLiquibase(final DataSourceFactory dataSourceFactory) throws Exception {
 		final Properties info = new Properties();
 		info.setProperty("user", dataSourceFactory.getUser());
@@ -75,7 +81,7 @@ public abstract class AbstractDaoTest {
 		final Liquibase liquibase = new Liquibase("migrations.xml", new ClassLoaderResourceAccessor(), database);
 		return liquibase;
 	}
-
+	
 	private static HibernateBundle<?> createHibernateBundle() {
 		final HibernateBundle<OfficeMapConfiguration> bundle = new HibernateBundle<OfficeMapConfiguration>(Person.class) {
 			@Override

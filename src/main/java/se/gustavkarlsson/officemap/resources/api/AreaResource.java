@@ -15,45 +15,45 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.dao.PersonDao;
+import se.gustavkarlsson.officemap.api.area.Area;
+import se.gustavkarlsson.officemap.dao.AreaDao;
 
 import com.codahale.metrics.annotation.Timed;
 
-@Path("/persons")
+@Path("/areas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public final class PersonResource extends AbstractItemResource<Person> {
-	
-	public PersonResource(final PersonDao dao) {
+public final class AreaResource extends AbstractItemResource<Area> {
+
+	public AreaResource(final AreaDao dao) {
 		super(dao);
 	}
-	
+
 	@Override
 	@Path("/{reference}")
 	@GET
 	@Consumes(MediaType.WILDCARD)
 	@UnitOfWork
 	@Timed
-	public Person find(@PathParam("reference") final LongParam reference) {
+	public Area find(@PathParam("reference") final LongParam reference) {
 		return super.find(reference);
 	}
-	
+
 	@Override
 	@GET
 	@Consumes(MediaType.WILDCARD)
 	@UnitOfWork
 	@Timed
-	public Person[] list() {
+	public Area[] list() {
 		return super.list();
 	}
-	
+
 	@Override
 	@POST
 	@UnitOfWork
 	@Timed
-	public Response insert(@Valid final Person person) {
-		return super.insert(person);
+	public Response insert(@Valid final Area area) {
+		return super.insert(area);
 	}
 
 	@Override
@@ -61,10 +61,10 @@ public final class PersonResource extends AbstractItemResource<Person> {
 	@PUT
 	@UnitOfWork
 	@Timed
-	public Response update(@PathParam("reference") final LongParam reference, @Valid final Person person) {
-		return super.update(reference, person);
+	public Response update(@PathParam("reference") final LongParam reference, @Valid final Area area) {
+		return super.update(reference, area);
 	}
-	
+
 	@Override
 	@Path("/{reference}")
 	@DELETE
@@ -73,10 +73,10 @@ public final class PersonResource extends AbstractItemResource<Person> {
 	public Response delete(@PathParam("reference") final LongParam reference) {
 		return super.delete(reference);
 	}
-
+	
 	@Override
-	protected Person getDeletedInstance(final Person person) {
-		final Person deletedPerson = Person.Builder.fromPerson(person).withDeleted(true).build();
-		return deletedPerson;
+	protected Area getDeletedInstance(final Area area) {
+		final Area deletedArea = Area.Builder.fromArea(area).withDeleted(true).build();
+		return deletedArea;
 	}
 }

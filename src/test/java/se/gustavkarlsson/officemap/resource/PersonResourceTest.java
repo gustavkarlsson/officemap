@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 
-import se.gustavkarlsson.officemap.api.Person;
+import se.gustavkarlsson.officemap.api.person.Person;
 import se.gustavkarlsson.officemap.dao.PersonDao;
 import se.gustavkarlsson.officemap.resources.api.PersonResource;
 import se.gustavkarlsson.officemap.test.TestPersonBuilder;
@@ -33,7 +33,7 @@ public class PersonResourceTest {
 
 	@Before
 	public void setup() {
-		when(dao.findHeadByRef(eq(1l))).thenReturn(Optional.of(person1));
+		when(dao.findHeadByReference(eq(1l))).thenReturn(Optional.of(person1));
 		when(dao.findAllHeads()).thenReturn(Arrays.asList(persons));
 	}
 
