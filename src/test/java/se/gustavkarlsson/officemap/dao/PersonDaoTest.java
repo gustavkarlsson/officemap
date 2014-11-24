@@ -18,7 +18,7 @@ import se.gustavkarlsson.officemap.dao.ItemDao.UpdateResponse;
 import com.google.common.base.Optional;
 
 public class PersonDaoTest extends AbstractDaoTest {
-
+	
 	private static final Person validPerson1 = Person.Builder.withFields(7l, null,
 			new PersonReference(1l, Collections.<Person> emptyList()), false, "gustavkarlsson", "Gustav", "Karlsson",
 			"gustav.karlsson@gmail.com").build();
@@ -28,21 +28,21 @@ public class PersonDaoTest extends AbstractDaoTest {
 	private static final Person validPerson3 = Person.Builder.withFields(null, null,
 			new PersonReference(3l, Collections.<Person> emptyList()), true, "michaeljackson", "Michael", "Jackson",
 			"michael.jackson@neverland.com").build();
-	
-	private static PersonDao dao;
-	
+
+	private static ItemDao<Person> dao;
+
 	@BeforeClass
 	public static void initDao() {
 		dao = new PersonDao(getSessionFactory());
 	}
-	
+
 	@Test
 	public void insertValidPersonsSucceeds() throws Exception {
 		dao.insert(validPerson1);
 		dao.insert(validPerson2);
 		dao.insert(validPerson3);
 	}
-	
+
 	@Test
 	public void personEqualsAfterPersistence() throws Exception {
 		final Optional<Long> ref = dao.insert(validPerson1);
@@ -51,7 +51,7 @@ public class PersonDaoTest extends AbstractDaoTest {
 		assertThat(fetchedPerson.isPresent()).isTrue();
 		assertThat(fetchedPerson.get()).isEqualTo(validPerson1);
 	}
-	
+
 	@Test
 	public void refIncrementsAfterInsert() throws Exception {
 		final Optional<Long> ref1 = dao.insert(validPerson1);
@@ -61,7 +61,7 @@ public class PersonDaoTest extends AbstractDaoTest {
 		assertThat(ref2.get()).isEqualTo(ref1Id + 1);
 		assertThat(ref3.get()).isEqualTo(ref1Id + 2);
 	}
-	
+
 	@Test
 	public void updateSetsHead() throws Exception {
 		final Optional<Long> ref = dao.insert(validPerson1);
@@ -74,7 +74,7 @@ public class PersonDaoTest extends AbstractDaoTest {
 		assertThat(fetchedModifiedPerson).isEqualTo(modifiedPerson);
 		assertThat(fetchedModifiedPerson.getId()).isEqualTo(2l);
 	}
-	
+
 	// TODO rename and extract into more tests
 	@Test
 	public void find() throws Exception {
@@ -83,43 +83,43 @@ public class PersonDaoTest extends AbstractDaoTest {
 		final Person person2Fetched = dao.findHeadByReference(person2Ref).get();
 		final Person person2Updated = Person.Builder.fromPerson(person2Fetched).withEmail("no@email.com").build();
 		dao.update(person2Updated.getReference().getId(), person2Updated);
-		
+
 		final List<Person> heads = dao.findAllHeads();
 		assertThat(heads).containsExactly(validPerson1, person2Updated);
-		
+
 		final List<Person> allWithPerson2Ref = dao.findAllByReference(person2Ref);
 		assertThat(allWithPerson2Ref).containsExactly(validPerson2, person2Updated);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void insertNullFails() throws Exception {
 		dao.insert(null);
 	}
-	
+
 	@Test(expected = ConstraintViolationException.class)
 	public void insertWithInvalidUsernameFails() throws Exception {
 		final Person person = Person.Builder.fromPerson(validPerson1).withUsername("").build();
 		dao.insert(person);
 	}
-	
+
 	@Test(expected = ConstraintViolationException.class)
 	public void insertWithInvalidFirstNameFails() throws Exception {
 		final Person person = Person.Builder.fromPerson(validPerson1).withFirstName("").build();
 		dao.insert(person);
 	}
-	
+
 	@Test(expected = ConstraintViolationException.class)
 	public void insertWithInvalidLastNameFails() throws Exception {
 		final Person person = Person.Builder.fromPerson(validPerson1).withLastName("").build();
 		dao.insert(person);
 	}
-	
+
 	@Test(expected = ConstraintViolationException.class)
 	public void insertWithInvalidEmailFails() throws Exception {
 		final Person person = Person.Builder.fromPerson(validPerson1).withEmail("gustav.karlsson at gmail.com").build();
 		dao.insert(person);
 	}
-
+	
 	@Test
 	public void timestampUpdatesOnInsert() throws Exception {
 		final long presetTimestamp = -1l;
@@ -128,7 +128,7 @@ public class PersonDaoTest extends AbstractDaoTest {
 		final Person fetchedPerson = dao.findHeadByReference(reference.get()).get();
 		assertThat(fetchedPerson.getTimestamp()).isNotEqualTo(presetTimestamp);
 	}
-
+	
 	@Test
 	public void referenceUpdatesOnInsert() throws Exception {
 		final Reference<Person> presetReference = new PersonReference();
