@@ -1,6 +1,5 @@
 package se.gustavkarlsson.officemap.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -21,6 +20,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.Range;
+
+import com.google.common.base.Objects;
 
 @Entity
 @Table(name = Reference.TYPE)
@@ -45,7 +46,7 @@ public abstract class Reference<T extends Item<T>> {
 	
 	protected Reference() {
 		this.id = null;
-		this.items = new ArrayList<T>();
+		this.items = null;
 	}
 	
 	protected Reference(final Long id, final List<T> items) {
@@ -63,5 +64,10 @@ public abstract class Reference<T extends Item<T>> {
 	
 	public T getHead() {
 		return items.get(items.size() - 1);
+	}
+	
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("id", getId()).toString();
 	}
 }

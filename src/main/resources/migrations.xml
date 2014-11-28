@@ -82,5 +82,24 @@
 			baseTableName="Area" baseColumnNames="id" referencedTableName="Item"
 			referencedColumnNames="id" />
 
+		<createTable tableName="Area_PersonReferences">
+			<column name="areaFK" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="personReferenceFK" type="bigint">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		
+		<addPrimaryKey tableName="Area_PersonReferences" columnNames="areaFK, personReferenceFK" />
+
+		<addForeignKeyConstraint constraintName="Area_PersonReferences_areaFK_to_Area_id"
+			baseTableName="Area_PersonReferences" baseColumnNames="areaFK" referencedTableName="Area"
+			referencedColumnNames="id" />
+
+		<addForeignKeyConstraint constraintName="Area_PersonReferences_personReferenceFK_to_Reference_id"
+			baseTableName="Area_PersonReferences" baseColumnNames="personReferenceFK" referencedTableName="Reference"
+			referencedColumnNames="id" />
+
 	</changeSet>
 </databaseChangeLog>

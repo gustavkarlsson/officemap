@@ -75,17 +75,22 @@ public class PersonDaoTest extends AbstractDaoTest {
 		assertThat(fetchedModifiedPerson.getId()).isEqualTo(2l);
 	}
 
-	// TODO rename and extract into more tests
 	@Test
-	public void find() throws Exception {
+	public void findAllHeads() throws Exception {
+		dao.insert(validPerson1);
+		dao.insert(validPerson2);
+
+		final List<Person> heads = dao.findAllHeads();
+		assertThat(heads).containsExactly(validPerson1, validPerson2);
+	}
+
+	@Test
+	public void findAllByReference() throws Exception {
 		dao.insert(validPerson1);
 		final Long person2Ref = dao.insert(validPerson2).get();
 		final Person person2Fetched = dao.findHeadByReference(person2Ref).get();
 		final Person person2Updated = Person.Builder.fromPerson(person2Fetched).withEmail("no@email.com").build();
 		dao.update(person2Updated.getReference().getId(), person2Updated);
-
-		final List<Person> heads = dao.findAllHeads();
-		assertThat(heads).containsExactly(validPerson1, person2Updated);
 
 		final List<Person> allWithPerson2Ref = dao.findAllByReference(person2Ref);
 		assertThat(allWithPerson2Ref).containsExactly(validPerson2, person2Updated);
