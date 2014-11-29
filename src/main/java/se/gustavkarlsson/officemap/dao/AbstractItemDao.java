@@ -21,7 +21,7 @@ abstract class AbstractItemDao<E extends Item<E>> extends AbstractDAO<E> impleme
 		super(sessionFactory);
 	}
 
-	// TODO Synchronize
+	// TODO Synchronize?
 	@Override
 	public Optional<Long> insert(final E item) {
 		checkNotNull(item);
@@ -41,13 +41,13 @@ abstract class AbstractItemDao<E extends Item<E>> extends AbstractDAO<E> impleme
 		return Optional.of(reference.getId());
 	}
 
-	// TODO Synchronize
+	// TODO Synchronize?
 	@Override
 	public UpdateResponse update(final long referenceId, final E item) {
 		checkArgument(referenceId >= 0, "reference is negative");
 		checkNotNull(item);
 
-		final Optional<Reference<E>> possibleReference = getReferenceById(referenceId);
+		final Optional<Reference<E>> possibleReference = findReference(referenceId);
 		if (!possibleReference.isPresent()) {
 			return UpdateResponse.NOT_FOUND;
 		}
@@ -76,7 +76,7 @@ abstract class AbstractItemDao<E extends Item<E>> extends AbstractDAO<E> impleme
 	public Optional<E> findHeadByReference(final long referenceId) {
 		checkArgument(referenceId >= 0, "reference is negative");
 
-		final Optional<Reference<E>> possibleReference = getReferenceById(referenceId);
+		final Optional<Reference<E>> possibleReference = findReference(referenceId);
 		if (!possibleReference.isPresent()) {
 			return Optional.absent();
 		}
@@ -89,7 +89,7 @@ abstract class AbstractItemDao<E extends Item<E>> extends AbstractDAO<E> impleme
 	public List<E> findAllByReference(final long referenceId) {
 		checkArgument(referenceId >= 0, "reference is negative");
 
-		final Optional<Reference<E>> possibleReference = getReferenceById(referenceId);
+		final Optional<Reference<E>> possibleReference = findReference(referenceId);
 		if (!possibleReference.isPresent()) {
 			return new ArrayList<E>();
 		}
@@ -111,18 +111,19 @@ abstract class AbstractItemDao<E extends Item<E>> extends AbstractDAO<E> impleme
 		return heads;
 	}
 
+	@Override
+	public Optional<Reference<E>> findReference(final long referenceId) {
+		final Class<? extends Reference<E>> referenceClass = getReferenceClass();
+		@SuppressWarnings("unchecked")
+		final Reference<E> reference = (Reference<E>) currentSession().get(referenceClass, referenceId);
+		return Optional.fromNullable(reference);
+	}
+
 	private void persistCheck(final E item) {
 		checkNotNull(item);
 		checkState(item.getId() == null, "item id is not null");
 		checkNotNull(item.getTimestamp());
 		checkNotNull(item.getReference());
-	}
-
-	private Optional<Reference<E>> getReferenceById(final long referenceId) {
-		final Class<? extends Reference<E>> referenceClass = getReferenceClass();
-		@SuppressWarnings("unchecked")
-		final Reference<E> reference = (Reference<E>) currentSession().get(referenceClass, referenceId);
-		return Optional.fromNullable(reference);
 	}
 
 	private List<Reference<E>> getReferences() {

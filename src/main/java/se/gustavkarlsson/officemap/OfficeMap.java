@@ -19,34 +19,36 @@ import se.gustavkarlsson.officemap.resources.api.AreaResource;
 import se.gustavkarlsson.officemap.resources.api.PersonResource;
 
 public class OfficeMap extends Application<OfficeMapConfiguration> {
-
+	
 	HibernateBundle<OfficeMapConfiguration> hibernate = createHibernateBundle();
 	MigrationsBundle<OfficeMapConfiguration> migrations = createMigrationsBundle();
-
+	
 	public static void main(final String[] args) throws Exception {
 		new OfficeMap().run(args);
 	}
-
+	
 	@Override
 	public String getName() {
 		return "OfficeMap";
 	}
-
+	
 	@Override
 	public void initialize(final Bootstrap<OfficeMapConfiguration> bootstrap) {
 		bootstrap.addBundle(hibernate);
 		bootstrap.addBundle(migrations);
 		bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html"));
 	}
-
+	
 	@Override
 	public void run(final OfficeMapConfiguration configuration, final Environment environment) throws Exception {
 		environment.healthChecks().register("person", new DummyHealthCheck());
-		environment.jersey().register(new PersonResource(new PersonDao(hibernate.getSessionFactory())));
-		environment.jersey().register(new AreaResource(new AreaDao(hibernate.getSessionFactory())));
+		final PersonDao personDao = new PersonDao(hibernate.getSessionFactory());
+		final AreaDao areaDao = new AreaDao(hibernate.getSessionFactory());
+		environment.jersey().register(new PersonResource(personDao));
+		environment.jersey().register(new AreaResource(areaDao, personDao));
 		environment.jersey().setUrlPattern("/api/*");
 	}
-
+	
 	private HibernateBundle<OfficeMapConfiguration> createHibernateBundle() {
 		final HibernateBundle<OfficeMapConfiguration> bundle = new HibernateBundle<OfficeMapConfiguration>(
 				Person.class, Area.class, Reference.class, PersonReference.class, AreaReference.class) {
@@ -57,7 +59,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		};
 		return bundle;
 	}
-
+	
 	private MigrationsBundle<OfficeMapConfiguration> createMigrationsBundle() {
 		final MigrationsBundle<OfficeMapConfiguration> bundle = new MigrationsBundle<OfficeMapConfiguration>() {
 			@Override

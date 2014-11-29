@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
@@ -28,9 +29,9 @@ import com.google.common.base.Objects;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Reference<T extends Item<T>> {
-	
-	public static final String TYPE = "Reference";
 
+	public static final String TYPE = "Reference";
+	
 	@Range(min = 0)
 	@Id
 	@Column(name = "id")
@@ -38,34 +39,35 @@ public abstract class Reference<T extends Item<T>> {
 			pkColumnValue = "ReferenceId")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private final Long id;
-
+	
 	@Size(min = 1)
+	@NotNull
 	@OneToMany(mappedBy = "reference", fetch = FetchType.LAZY, targetEntity = Item.class)
 	@Cascade(CascadeType.SAVE_UPDATE)
 	private final List<T> items;
-	
+
 	protected Reference() {
 		this.id = null;
 		this.items = null;
 	}
-	
+
 	protected Reference(final Long id, final List<T> items) {
 		this.id = id;
 		this.items = items;
 	}
-	
+
 	public final Long getId() {
 		return id;
 	}
-
+	
 	public final List<T> getItems() {
 		return items;
 	}
-	
+
 	public T getHead() {
 		return items.get(items.size() - 1);
 	}
-	
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("id", getId()).toString();
