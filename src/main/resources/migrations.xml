@@ -101,5 +101,14 @@
 			baseTableName="Area_PersonReferences" baseColumnNames="personReferenceFK" referencedTableName="Reference"
 			referencedColumnNames="id" />
 
+		<createTable tableName="BlobHash">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="sha1" type="binary(20)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
 	</changeSet>
 </databaseChangeLog>
