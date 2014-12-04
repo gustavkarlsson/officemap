@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import se.gustavkarlsson.officemap.api.Reference;
+import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.area.Area;
 import se.gustavkarlsson.officemap.api.area.AreaReference;
 import se.gustavkarlsson.officemap.api.person.Person;
@@ -28,10 +29,10 @@ public class AreaDaoTest extends AbstractDaoTest {
 
 	private static final Person validPerson1 = Person.Builder.withFields(7l, null,
 			new PersonReference(1l, Collections.<Person> emptyList()), false, "gustavkarlsson", "Gustav", "Karlsson",
-			"gustav.karlsson@gmail.com").build();
+			"gustav.karlsson@gmail.com", new Sha1("cf23df2207d99a74fbe169e3eba035e633b65d94")).build();
 	private static final Person validPerson2 = Person.Builder.withFields(null, 500l,
 			new PersonReference(2l, Collections.<Person> emptyList()), false, "mickeymouse", "Mickey", "Mouse",
-			"mickey.mouse@disney.com").build();
+			"mickey.mouse@disney.com", new Sha1("cf23df2207d99a74fbe169e3eba035e633b65d9a")).build();
 
 	private static ItemDao<Area> dao;
 	private static ItemDao<Person> personDao;
@@ -73,13 +74,12 @@ public class AreaDaoTest extends AbstractDaoTest {
 	public void updateSetsHead() throws Exception {
 		final Optional<Long> ref = dao.insert(validArea1);
 		final Area fetchedArea = dao.findHeadByReference(ref.get()).get();
-		assertThat(fetchedArea.getId()).isEqualTo(1l);
 		final Area modifiedArea = Area.Builder.fromArea(fetchedArea).withName("Floor 11").build();
 		final UpdateResponse updateResponse = dao.update(modifiedArea.getReference().getId(), modifiedArea);
 		assertThat(updateResponse).isEqualTo(UpdateResponse.UPDATED);
 		final Area fetchedModifiedArea = dao.findHeadByReference(ref.get()).get();
 		assertThat(fetchedModifiedArea).isEqualTo(modifiedArea);
-		assertThat(fetchedModifiedArea.getId()).isEqualTo(2l);
+		assertThat(fetchedModifiedArea.getId()).isEqualTo(fetchedArea.getId() + 1);
 	}
 
 	@Test

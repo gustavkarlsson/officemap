@@ -44,8 +44,8 @@
 		</createTable>
 
 		<addForeignKeyConstraint constraintName="Item_referenceFK_to_Reference_id"
-			baseTableName="Item" baseColumnNames="referenceFK" referencedTableName="Reference"
-			referencedColumnNames="id" />
+			baseTableName="Item" baseColumnNames="referenceFK"
+			referencedTableName="Reference" referencedColumnNames="id" />
 
 		<createTable tableName="Person">
 			<column name="id" type="bigint">
@@ -63,6 +63,7 @@
 			<column name="email" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
+			<column name="portrait" type="binary(20)"></column>
 		</createTable>
 
 		<addForeignKeyConstraint constraintName="Person_id_to_Item_id"
@@ -90,25 +91,18 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		
-		<addPrimaryKey tableName="Area_PersonReferences" columnNames="areaFK, personReferenceFK" />
+
+		<addPrimaryKey tableName="Area_PersonReferences"
+			columnNames="areaFK, personReferenceFK" />
 
 		<addForeignKeyConstraint constraintName="Area_PersonReferences_areaFK_to_Area_id"
-			baseTableName="Area_PersonReferences" baseColumnNames="areaFK" referencedTableName="Area"
-			referencedColumnNames="id" />
+			baseTableName="Area_PersonReferences" baseColumnNames="areaFK"
+			referencedTableName="Area" referencedColumnNames="id" />
 
-		<addForeignKeyConstraint constraintName="Area_PersonReferences_personReferenceFK_to_Reference_id"
-			baseTableName="Area_PersonReferences" baseColumnNames="personReferenceFK" referencedTableName="Reference"
-			referencedColumnNames="id" />
-
-		<createTable tableName="BlobHash">
-			<column name="id" type="bigint">
-				<constraints primaryKey="true" />
-			</column>
-			<column name="sha1" type="binary(20)">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
+		<addForeignKeyConstraint
+			constraintName="Area_PersonReferences_personReferenceFK_to_Reference_id"
+			baseTableName="Area_PersonReferences" baseColumnNames="personReferenceFK"
+			referencedTableName="Reference" referencedColumnNames="id" />
 
 	</changeSet>
 </databaseChangeLog>
