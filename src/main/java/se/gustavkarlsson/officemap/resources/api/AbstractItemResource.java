@@ -15,9 +15,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import se.gustavkarlsson.officemap.api.Item;
-import se.gustavkarlsson.officemap.dao.ItemDao;
-import se.gustavkarlsson.officemap.dao.ItemDao.UpdateResponse;
+import se.gustavkarlsson.officemap.api.item.Item;
+import se.gustavkarlsson.officemap.dao.item.ItemDao;
+import se.gustavkarlsson.officemap.dao.item.ItemDao.UpdateResponse;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;

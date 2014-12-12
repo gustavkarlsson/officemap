@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api;
+package se.gustavkarlsson.officemap.api.item;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -24,9 +24,9 @@ import com.google.common.base.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Item<T extends Item<T>> {
-
+	
 	public static final String TYPE = "Item";
-
+	
 	@Range(min = 0)
 	@JsonProperty
 	@Id
@@ -35,43 +35,43 @@ public abstract class Item<T extends Item<T>> {
 			pkColumnValue = "ItemId")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	private final Long id;
-	
+
 	@Range(min = 0)
 	@Column(name = "timestamp", nullable = false)
 	private final Long timestamp;
-
+	
 	@JsonProperty
 	@ManyToOne(optional = false, targetEntity = Reference.class)
-	@JoinColumn(name = "referenceFK", nullable = false)
+	@JoinColumn(name = "reference_fk", nullable = false)
 	private final Reference<T> reference;
-
+	
 	@JsonProperty
 	@Column(name = "deleted", nullable = false)
 	private final boolean deleted;
-	
+
 	protected Item(final Long id, final Long timestamp, final Reference<T> reference, final boolean deleted) {
 		this.id = id;
 		this.timestamp = timestamp;
 		this.reference = reference;
 		this.deleted = deleted;
 	}
-	
+
 	public final Long getId() {
 		return id;
 	}
-
+	
 	public final Long getTimestamp() {
 		return timestamp;
 	}
-
+	
 	public final Reference<T> getReference() {
 		return reference;
 	}
-
+	
 	public final boolean isDeleted() {
 		return deleted;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("id", id).add("timestamp", timestamp).add("reference", reference)

@@ -25,13 +25,13 @@ import org.junit.ClassRule;
 
 import se.gustavkarlsson.officemap.OfficeMap;
 import se.gustavkarlsson.officemap.OfficeMapConfiguration;
-import se.gustavkarlsson.officemap.api.Sha1;
-import se.gustavkarlsson.officemap.api.Item;
-import se.gustavkarlsson.officemap.api.Reference;
-import se.gustavkarlsson.officemap.api.area.Area;
-import se.gustavkarlsson.officemap.api.area.AreaReference;
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.api.person.PersonReference;
+import se.gustavkarlsson.officemap.api.fileentry.FileEntry;
+import se.gustavkarlsson.officemap.api.item.Item;
+import se.gustavkarlsson.officemap.api.item.Reference;
+import se.gustavkarlsson.officemap.api.item.area.Area;
+import se.gustavkarlsson.officemap.api.item.area.AreaReference;
+import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.person.PersonReference;
 
 import com.google.common.io.Resources;
 
@@ -50,7 +50,7 @@ public abstract class AbstractDaoTest {
 		liquibase = createLiquibase(RULE.getConfiguration().getDataSourceFactory());
 		sessionFactory = new SessionFactoryFactory().build(createHibernateBundle(), RULE.getEnvironment(), RULE
 				.getConfiguration().getDataSourceFactory(), Arrays.<Class<?>> asList(Item.class, Person.class,
-				Area.class, Reference.class, PersonReference.class, AreaReference.class, Sha1.class));
+				Area.class, Reference.class, PersonReference.class, AreaReference.class, FileEntry.class));
 	}
 	
 	@Before

@@ -18,10 +18,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import se.gustavkarlsson.officemap.api.Reference;
-import se.gustavkarlsson.officemap.api.area.Area;
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.dao.ItemDao;
+import se.gustavkarlsson.officemap.api.item.Reference;
+import se.gustavkarlsson.officemap.api.item.area.Area;
+import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.dao.item.ItemDao;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
@@ -87,7 +87,7 @@ public final class AreaResource extends AbstractItemResource<Area> {
 
 	@Override
 	protected Area getDeletedInstance(final Area area) {
-		final Area deletedArea = Area.Builder.fromArea(area).withDeleted(true).build();
+		final Area deletedArea = area.toBuilder().withDeleted(true).build();
 		return deletedArea;
 	}
 
@@ -100,7 +100,7 @@ public final class AreaResource extends AbstractItemResource<Area> {
 			}
 			personReferences.add(actualReference.get());
 		}
-		final Area updatedArea = Area.Builder.fromArea(area).withPersons(personReferences).build();
+		final Area updatedArea = area.toBuilder().withPersons(personReferences).build();
 		return updatedArea;
 	}
 }

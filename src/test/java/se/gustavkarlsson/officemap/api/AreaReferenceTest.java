@@ -9,8 +9,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-import se.gustavkarlsson.officemap.api.area.Area;
-import se.gustavkarlsson.officemap.api.area.AreaReference;
+import se.gustavkarlsson.officemap.api.item.area.Area;
+import se.gustavkarlsson.officemap.api.item.area.AreaReference;
 import se.gustavkarlsson.officemap.test.TestAreaBuilder;
 
 import com.google.common.collect.Lists;

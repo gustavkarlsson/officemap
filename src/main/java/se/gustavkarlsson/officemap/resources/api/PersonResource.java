@@ -15,8 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.dao.ItemDao;
+import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.dao.item.ItemDao;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -76,7 +76,7 @@ public final class PersonResource extends AbstractItemResource<Person> {
 	
 	@Override
 	protected Person getDeletedInstance(final Person person) {
-		final Person deletedPerson = Person.Builder.fromPerson(person).withDeleted(true).build();
+		final Person deletedPerson = person.toBuilder().withDeleted(true).build();
 		return deletedPerson;
 	}
 }

@@ -12,8 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.dao.PersonDao;
+import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.dao.item.PersonDao;
 import se.gustavkarlsson.officemap.resources.api.PersonResource;
 import se.gustavkarlsson.officemap.test.TestPersonBuilder;
 

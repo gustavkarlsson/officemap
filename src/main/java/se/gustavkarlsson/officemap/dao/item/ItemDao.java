@@ -1,9 +1,9 @@
-package se.gustavkarlsson.officemap.dao;
+package se.gustavkarlsson.officemap.dao.item;
 
 import java.util.List;
 
-import se.gustavkarlsson.officemap.api.Item;
-import se.gustavkarlsson.officemap.api.Reference;
+import se.gustavkarlsson.officemap.api.item.Item;
+import se.gustavkarlsson.officemap.api.item.Reference;
 
 import com.google.common.base.Optional;
 

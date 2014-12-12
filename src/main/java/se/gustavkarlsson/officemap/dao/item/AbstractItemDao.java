@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.dao;
+package se.gustavkarlsson.officemap.dao.item;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 
-import se.gustavkarlsson.officemap.api.Item;
-import se.gustavkarlsson.officemap.api.Reference;
+import se.gustavkarlsson.officemap.api.item.Item;
+import se.gustavkarlsson.officemap.api.item.Reference;
 
 import com.google.common.base.Optional;
 

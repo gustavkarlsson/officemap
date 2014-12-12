@@ -2,26 +2,28 @@ package se.gustavkarlsson.officemap.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 
-import se.gustavkarlsson.officemap.api.Reference;
-import se.gustavkarlsson.officemap.api.area.Area;
-import se.gustavkarlsson.officemap.api.area.AreaReference;
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.api.person.PersonReference;
+import se.gustavkarlsson.officemap.api.fileentry.FileEntry;
+import se.gustavkarlsson.officemap.api.item.Reference;
+import se.gustavkarlsson.officemap.api.item.area.Area;
+import se.gustavkarlsson.officemap.api.item.area.AreaReference;
+import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.person.PersonReference;
 
 public class TestAreaBuilder extends Area.Builder {
-
-	public TestAreaBuilder(final Long id, final Reference<Area> reference, final Long timestamp, final boolean deleted,
-			final String name, final Collection<Reference<Person>> persons) {
-		super(id, reference, timestamp, deleted, name, persons);
-	}
-
-	public static TestAreaBuilder withTestParameters() {
-		return new TestAreaBuilder(3l, new AreaReference(1l, new ArrayList<Area>()), 1_000_000l, false, "Floor 1",
+	
+	public static Area.Builder withTestParameters() {
+		return new TestAreaBuilder().with(
+				3l,
+				1_000_000l,
+				new AreaReference(1l, new ArrayList<Area>()),
+				false,
+				"Floor 1",
+				FileEntry.builder().withSha1Hex("cf23df2207d99a74fbe169e3eba045e633b65d94")
+						.withMimeType("application/png").build(),
 				new HashSet<Reference<Person>>(Arrays.asList(new PersonReference(1l, null), new PersonReference(3l,
 						null), new PersonReference(5l, null))));
 	}
-
+	
 }

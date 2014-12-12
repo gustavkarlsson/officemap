@@ -9,8 +9,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.api.person.PersonReference;
+import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.person.PersonReference;
 import se.gustavkarlsson.officemap.test.TestPersonBuilder;
 
 import com.google.common.collect.Lists;

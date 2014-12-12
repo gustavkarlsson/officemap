@@ -7,13 +7,21 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+import se.gustavkarlsson.officemap.api.fileentry.FileEntry;
+
 public class Sha1Test {
 	
 	@Test
 	public void validSha1Validates() throws Exception {
-		assertThat(new Sha1(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }))
+		assertThat(
+				FileEntry
+						.builder()
+						.with(null, "application/pdf",
+								new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 })
+						.build()).isValid();
+		assertThat(
+				FileEntry.builder().with(null, "application/text", "cf23df2207d99a74fbe169e3eba035e633b65d94").build())
 				.isValid();
-		assertThat(new Sha1("cf23df2207d99a74fbe169e3eba035e633b65d94")).isValid();
 	}
 	
 	@Test
@@ -35,24 +43,24 @@ public class Sha1Test {
 	@Test(expected = NullPointerException.class)
 	public void nullSha1Fails() throws Exception {
 		final byte[] nullValue = null;
-		new Sha1(nullValue);
+		FileEntry.builder().with(null, "application/text", nullValue).build();
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void nullSha1HexFails() throws Exception {
 		final String nullValue = null;
-		new Sha1(nullValue);
+		FileEntry.builder().with(null, "application/text", nullValue).build();
 	}
 	
 	@Test
 	public void equalsContract() throws Exception {
-		EqualsVerifier.forClass(Sha1.class).usingGetClass().allFieldsShouldBeUsed().suppress(Warning.NULL_FIELDS)
-				.verify();
+		EqualsVerifier.forClass(FileEntry.class).usingGetClass().allFieldsShouldBeUsedExcept("id")
+				.suppress(Warning.NULL_FIELDS).verify();
 	}
 	
 	private void assertIllegalArgumentExceptionForBytes(final byte[] bytes) {
 		try {
-			new Sha1(bytes);
+			FileEntry.builder().with(null, "application/text", bytes).build();
 			fail("Expected IllegalArgumentException");
 		} catch (final IllegalArgumentException e) {
 		}
@@ -60,7 +68,7 @@ public class Sha1Test {
 	
 	private void assertIllegalArgumentExceptionForText(final String text) {
 		try {
-			new Sha1(text);
+			FileEntry.builder().with(null, "application/text", text).build();
 			fail("Expected IllegalArgumentException");
 		} catch (final IllegalArgumentException e) {
 		}

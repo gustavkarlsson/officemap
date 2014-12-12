@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api;
+package se.gustavkarlsson.officemap.api.item;
 
 import java.io.IOException;
 

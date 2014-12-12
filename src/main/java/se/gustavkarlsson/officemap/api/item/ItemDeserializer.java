@@ -1,10 +1,12 @@
-package se.gustavkarlsson.officemap.api;
+package se.gustavkarlsson.officemap.api.item;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
@@ -20,9 +22,10 @@ public abstract class ItemDeserializer<T extends Item<T>> extends StdDeserialize
 			JsonProcessingException {
 		final JsonNode node = jp.getCodec().readTree(jp);
 		final boolean deleted = node.get("deleted").asBoolean();
-		final T item = deserialize(node, deleted);
+		final T item = deserialize(jp, node, deleted);
 		return item;
 	}
 
-	protected abstract T deserialize(JsonNode node, boolean deleted);
+	protected abstract T deserialize(JsonParser jp, JsonNode node, boolean deleted) throws JsonParseException,
+			JsonMappingException, IOException;
 }

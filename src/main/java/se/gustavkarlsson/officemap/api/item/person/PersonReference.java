@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.area;
+package se.gustavkarlsson.officemap.api.item.person;
 
 import java.util.List;
 
@@ -7,22 +7,22 @@ import javax.persistence.Entity;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
-import se.gustavkarlsson.officemap.api.Reference;
+import se.gustavkarlsson.officemap.api.item.Reference;
 
 import com.google.common.base.Objects;
 
 @Entity
-@DiscriminatorValue(AreaReference.TYPE)
-public final class AreaReference extends Reference<Area> {
-	
-	public static final String TYPE = "AreaReference";
-	
-	public AreaReference() {
+@DiscriminatorValue(PersonReference.TYPE)
+public final class PersonReference extends Reference<Person> {
+
+	public static final String TYPE = "PersonReference";
+
+	public PersonReference() {
 		// Required by Hibernate
 		super();
 	}
-	
-	public AreaReference(final Long id, final List<Area> items) {
+
+	public PersonReference(final Long id, final List<Person> items) {
 		super(id, items);
 	}
 
@@ -42,8 +42,8 @@ public final class AreaReference extends Reference<Area> {
 		if (obj.getClass() != getClass()) {
 			return false;
 		}
-		final AreaReference rhs = (AreaReference) obj;
+		final PersonReference rhs = (PersonReference) obj;
 		return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
 	}
-
+	
 }

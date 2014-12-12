@@ -9,9 +9,9 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.gustavkarlsson.officemap.api.area.Area;
-import se.gustavkarlsson.officemap.api.area.Area.Builder;
-import se.gustavkarlsson.officemap.api.person.Person;
+import se.gustavkarlsson.officemap.api.item.Reference;
+import se.gustavkarlsson.officemap.api.item.area.Area;
+import se.gustavkarlsson.officemap.api.item.person.Person;
 import se.gustavkarlsson.officemap.test.TestAreaBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,14 +67,14 @@ public class AreaTest {
 
 	@Test
 	public void nullPersonsCreatesEmptyPersons() throws Exception {
-		final Area areaToTest = Area.Builder.fromArea(area).withPersons(null).build();
+		final Area areaToTest = area.toBuilder().withPersons(null).build();
 		assertThat(areaToTest).isValid();
 	}
 
 	@Test
 	public void nullPersonsAreRemoved() throws Exception {
 		final Reference<Person> nullPerson = null;
-		final Area areaToTest = Area.Builder.fromArea(area).withPersonsVararg(nullPerson).build();
+		final Area areaToTest = area.toBuilder().withPersonsVararg(nullPerson).build();
 		org.fest.assertions.api.Assertions.assertThat(areaToTest.getPersons()).isEmpty();
 	}
 
@@ -85,17 +85,17 @@ public class AreaTest {
 	}
 
 	private void assertInvalidId(final Long id) {
-		final Area invalidArea = Builder.fromArea(area).withId(id).build();
+		final Area invalidArea = area.toBuilder().withId(id).build();
 		assertThatAreaHasInvalid(invalidArea, "id");
 	}
 
 	private void assertInvalidTimestamp(final Long timestamp) {
-		final Area invalidArea = Builder.fromArea(area).withTimestamp(timestamp).build();
+		final Area invalidArea = area.toBuilder().withTimestamp(timestamp).build();
 		assertThatAreaHasInvalid(invalidArea, "timestamp");
 	}
 
 	private void assertInvalidName(final String username) {
-		final Area invalidArea = Builder.fromArea(area).withName(username).build();
+		final Area invalidArea = area.toBuilder().withName(username).build();
 		assertThatAreaHasInvalid(invalidArea, "name");
 	}
 

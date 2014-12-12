@@ -1,12 +1,12 @@
-package se.gustavkarlsson.officemap.dao;
+package se.gustavkarlsson.officemap.dao.item;
 
 import java.util.ArrayList;
 
 import org.hibernate.SessionFactory;
 
-import se.gustavkarlsson.officemap.api.Reference;
-import se.gustavkarlsson.officemap.api.person.Person;
-import se.gustavkarlsson.officemap.api.person.PersonReference;
+import se.gustavkarlsson.officemap.api.item.Reference;
+import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.person.PersonReference;
 
 public final class PersonDao extends AbstractItemDao<Person> {
 
@@ -16,19 +16,19 @@ public final class PersonDao extends AbstractItemDao<Person> {
 
 	@Override
 	protected Person setId(final Person item, final Long id) {
-		final Person prepared = Person.Builder.fromPerson(item).withId(id).build();
+		final Person prepared = item.toBuilder().withId(id).build();
 		return prepared;
 	}
 
 	@Override
 	protected Person setReference(final Person item, final Reference<Person> reference) {
-		final Person prepared = Person.Builder.fromPerson(item).withReference(reference).build();
+		final Person prepared = item.toBuilder().withReference(reference).build();
 		return prepared;
 	}
 
 	@Override
 	protected Person setTimestamp(final Person item, final Long timestamp) {
-		final Person prepared = Person.Builder.fromPerson(item).withTimestamp(timestamp).build();
+		final Person prepared = item.toBuilder().withTimestamp(timestamp).build();
 		return prepared;
 	}
 
