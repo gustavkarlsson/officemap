@@ -42,12 +42,11 @@
 	</form>
 
 	<div id="areas" class="list-group"
-		ng-controller="AreasController"
-		ng-init="getAreas()">
+		ng-controller="AreasController">
 			<a class="list-group-item"
 				ng-href="#/areas/{{area.reference}}"
 				ng-class="{ active: isActive(area)}"
-				ng-repeat="area in getAreas()">
+				ng-repeat="area in areas">
 					{{area.name}}
 			</a>
 	</div>

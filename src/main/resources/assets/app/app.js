@@ -1,35 +1,36 @@
 (function () {
 	var app = angular.module("main", ["ui.bootstrap", "ngRoute", "leaflet-directive"]);
 
-	app.factory("AreaService", function ($http) {
-		// Constants
-		var apiCall = "api/areas";
+	app.factory("AreaService", function ($http, $q) {
 		
 		// Members
-		var areas = [];
 		var active = undefined;
-		
-		// Init
-		$http.get(apiCall)
-			.success(function (data) {
-				areas = data;
-			})
-			.error(function (data) {
-				alert("Error: No data from call to " + apiCall);
-			});
 		
 		// Methods
 		return {
 			getArea: function (ref) {
-				for (area of areas) {
-					if (area.reference === ref) {
-						return area;
-					}
-				}
-				return null;
+				var deferred = $q.defer();
+				$http.get("api/areas/" + ref)
+				.success(function(data, status) {
+					deferred.resolve(data);
+				})
+				.error(function(data, status) {
+					deferred.reject(data);
+				});
+
+				return deferred.promise;
 			},
 			getAreas: function () {
-				return areas;
+				var deferred = $q.defer();
+				$http.get("api/areas")
+				.success(function(data, status) {
+					deferred.resolve(data);
+				})
+				.error(function(data, status) {
+					deferred.reject(data);
+				});
+
+				return deferred.promise;
 			},
 			getActive: function () {
 				return active;
@@ -44,22 +45,43 @@
 
 	app.controller("AreasController", function ($scope, $http, AreaService) {
 		
-		$scope.getAreas = AreaService.getAreas;
+		// Init
+		var areasPromise = AreaService.getAreas();
+		areasPromise.then(
+			function (areas) {
+				$scope.areas = areas;
+			},
+			function (reason) {
+				alert("Failed: " + reason);
+			}
+		);
 		
-		$scope.getActive = AreaService.getActive;
+		// Members
+		$scope.areas = [];
 		
+		// Methods
 		$scope.isActive = function (area) {
-			return area === $scope.getActive();
+			var active = AreaService.getActive();
+			return typeof active === "undefined" ? false : area.reference === active.reference;
 		};
 		
 	});
 
-	app.controller("MapController", function ($scope, AreaService, area) {
-		$scope.area = area;
+	app.controller("MapController", function ($scope, $http, $q, AreaService, area) {
+		
+		// Init
+		AreaService.setActive(area);
+		var mapUrl = "api/file/" + area.map;
+		var bounds = [[-540, -960], [540, 960]]; // TODO get bounds programatically
+		
+		var getBounds = function (area) {
+			
+		};
+		
 		angular.extend($scope, {
 			defaults: {
 				zoomControl: false,
-				crs: 'Simple',
+				crs: "Simple",
 				maxZoom: 2
 			},
 			controls: {
@@ -75,10 +97,10 @@
 			layers: {
 				baselayers: {
 					andes: {
-						name: 'Andes',
-						type: 'imageOverlay',
-						url: 'http://tombatossals.github.io/angular-leaflet-directive/examples/img/andes.jpg',
-						bounds: [[-540, -960], [540, 960]],
+						name: "Andes",
+						type: "imageOverlay",
+						url: mapUrl,
+						bounds: bounds,
 						layerParams: {
 							noWrap: true
 						}
@@ -89,16 +111,13 @@
 	});
 
 	app.config(function ($routeProvider) {
-		
 		$routeProvider
 		.when("/areas/:reference", {
 			templateUrl: "partials/area.html",
 			controller: "MapController",
 			resolve: {
 				area: function (AreaService, $route) {
-					var area = AreaService.getArea(parseInt($route.current.params.reference));
-					AreaService.setActive(area);
-					return area;
+					return AreaService.getArea($route.current.params.reference);
 				}
 			}
 		})
