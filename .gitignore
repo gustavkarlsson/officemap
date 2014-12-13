@@ -10,7 +10,6 @@
 hs_err_pid*
 
 # Eclipse
-
 .settings/
 .project
 .classpath
@@ -20,3 +19,7 @@ target/
 
 # Embedded Databases
 *.db
+
+# Runtime data
+/data/
+/temp/
