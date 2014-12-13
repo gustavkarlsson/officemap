@@ -43,6 +43,28 @@
 		
 	});
 
+	app.factory("ImageService", function ($q) {
+		
+		// Methods
+		return {
+			getDimensions: function (url) {
+				var deferred = $q.defer();
+				var image = new Image();
+				
+				image.onload = function () {
+					deferred.resolve([this.width, this.height])
+				};
+				image.error = function () {
+					deferred.reject(false);
+				};
+
+				image.src = url;
+				return deferred.promise;
+			}
+		};
+		
+	});
+
 	app.controller("AreasController", function ($scope, $http, AreaService) {
 		
 		// Init
@@ -67,16 +89,13 @@
 		
 	});
 
-	app.controller("MapController", function ($scope, $http, $q, AreaService, area) {
+	app.controller("MapController", function ($scope, AreaService, ImageService, leafletData, area) {
+		
+		$scope.leafletData = leafletData;
 		
 		// Init
 		AreaService.setActive(area);
 		var mapUrl = "api/file/" + area.map;
-		var bounds = [[-540, -960], [540, 960]]; // TODO get bounds programatically
-		
-		var getBounds = function (area) {
-			
-		};
 		
 		angular.extend($scope, {
 			defaults: {
@@ -96,11 +115,11 @@
 			},
 			layers: {
 				baselayers: {
-					andes: {
-						name: "Andes",
+					dummy: {
+						name: "dummy",
 						type: "imageOverlay",
-						url: mapUrl,
-						bounds: bounds,
+						url: "images/dummy_map.png",
+						bounds: [[0, 0], [0, 0]],
 						layerParams: {
 							noWrap: true
 						}
@@ -108,6 +127,22 @@
 				}
 			}
 		});
+		
+		var dimensionsPromise = ImageService.getDimensions("api/file/" + area.map);
+		dimensionsPromise.then(
+			function (dimensions) {
+				$scope.leafletData.getMap().then( function (map) {
+					map.eachLayer(function (layer) {
+						map.removeLayer(layer);
+					});
+					var bounds = [[-(dimensions[1]/2), -(dimensions[0]/2)], [(dimensions[1]/2), (dimensions[0]/2)]];
+					L.imageOverlay(mapUrl, bounds).addTo(map).bringToFront();
+				});
+			},
+			function (reason) {
+				alert("Failed: " + reason);
+			}
+		);
 	});
 
 	app.config(function ($routeProvider) {
