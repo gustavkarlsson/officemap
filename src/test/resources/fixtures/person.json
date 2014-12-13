@@ -6,8 +6,5 @@
     "firstName": "John",
     "lastName": "Doe",
     "email": "john.doe@company.com",
-    "portrait": {
-    	"sha1": "cf23df2207d99a74fbe169e3eba035e633b65d94",
-    	"mimeType": "application/png"
-    }
+    "portrait": "cf23df2207d99a74fbe169e3eba035e633b65d94"
 }

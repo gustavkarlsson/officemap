@@ -25,7 +25,7 @@ import org.junit.ClassRule;
 
 import se.gustavkarlsson.officemap.OfficeMap;
 import se.gustavkarlsson.officemap.OfficeMapConfiguration;
-import se.gustavkarlsson.officemap.api.fileentry.FileEntry;
+import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.item.Item;
 import se.gustavkarlsson.officemap.api.item.Reference;
 import se.gustavkarlsson.officemap.api.item.area.Area;
@@ -50,7 +50,7 @@ public abstract class AbstractDaoTest {
 		liquibase = createLiquibase(RULE.getConfiguration().getDataSourceFactory());
 		sessionFactory = new SessionFactoryFactory().build(createHibernateBundle(), RULE.getEnvironment(), RULE
 				.getConfiguration().getDataSourceFactory(), Arrays.<Class<?>> asList(Item.class, Person.class,
-				Area.class, Reference.class, PersonReference.class, AreaReference.class, FileEntry.class));
+				Area.class, Reference.class, PersonReference.class, AreaReference.class, Sha1.class));
 	}
 	
 	@Before

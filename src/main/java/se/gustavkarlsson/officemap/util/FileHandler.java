@@ -3,7 +3,6 @@ package se.gustavkarlsson.officemap.util;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,9 +12,11 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import javax.ws.rs.core.StreamingOutput;
+import org.apache.tika.Tika;
 
-import se.gustavkarlsson.officemap.api.fileentry.FileEntry;
+import se.gustavkarlsson.officemap.api.Sha1;
+
+import com.google.common.base.Optional;
 
 public class FileHandler {
 	
@@ -23,6 +24,8 @@ public class FileHandler {
 	private static final int NO_BYTES_READ = -1;
 	private static final int FILENAME_ATTEMPTS = 1000;
 	private static final String UPLOADED_FILE_PREFIX = "uploaded_file_";
+	
+	private final Tika tika = new Tika();
 	
 	private final String dataDirectory;
 	private final String tempDirectory;
@@ -34,16 +37,16 @@ public class FileHandler {
 		this.tempDirectory = tempDirectory;
 	}
 	
-	public FileEntry receive(final InputStream inputStream, final String mimeType) throws IOException {
+	public Sha1 saveFile(final InputStream inputStream) throws IOException {
 		for (int i = 0; i < FILENAME_ATTEMPTS; i++) {
 			final String tempFileName = UPLOADED_FILE_PREFIX + i;
 			final String tempFileLocation = tempDirectory + "/" + tempFileName;
 			final File tempFile = new File(tempFileLocation);
 			final byte[] sha1 = transferData(inputStream, tempFile);
-			final FileEntry fileEntry = FileEntry.builder().with(null, mimeType, sha1).build();
+			final Sha1 fileEntry = Sha1.builder().withSha1(sha1).build();
 			
 			if (sha1 != null) {
-				final File targetFile = new File(dataDirectory + "/" + fileEntry.getSha1Hex());
+				final File targetFile = new File(dataDirectory + "/" + fileEntry.getHex());
 				if (!targetFile.exists()) {
 					Files.move(tempFile.toPath(), targetFile.toPath());
 					// TODO handle errors
@@ -76,20 +79,29 @@ public class FileHandler {
 		}
 	}
 
-	public StreamingOutput send(final FileEntry sha1) {
-		return new StreamingOutput() {
-			@Override
-			public void write(final OutputStream output) throws IOException {
-				final String fileLocation = dataDirectory + "/" + sha1.getSha1Hex();
-				final File file = new File(fileLocation);
-				try (final FileInputStream inputStream = new FileInputStream(file)) {
-					int read = 0;
-					final byte[] bytes = new byte[BUFFER_SIZE];
-					while ((read = inputStream.read(bytes)) != NO_BYTES_READ) {
-						output.write(bytes, 0, read);
-					}
-				}
+	public Optional<File> getFile(final Sha1 sha1) {
+		try {
+			final String fileLocation = dataDirectory + "/" + sha1.getHex();
+			final File file = new File(fileLocation);
+			if (!file.isFile()) {
+				throw new FileNotFoundException(file.getCanonicalPath());
 			}
-		};
+			return Optional.of(file);
+		} catch (final IOException e) {
+			// TODO log exception
+			return Optional.absent();
+		}
+	}
+	
+	public String getMimeType(final File file) {
+		String mimeType;
+		try {
+			mimeType = tika.detect(file);
+			return mimeType;
+		} catch (final IOException e) {
+			// TODO log warning
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

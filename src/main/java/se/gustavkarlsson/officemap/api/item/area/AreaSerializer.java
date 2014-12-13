@@ -13,19 +13,19 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 class AreaSerializer extends ItemSerializer<Area> {
-
+	
 	AreaSerializer() {
 		super(Area.class);
 	}
-
+	
 	@Override
 	protected void writeLeafFields(final Area value, final JsonGenerator jgen) throws IOException,
 			JsonGenerationException {
 		jgen.writeStringField("name", value.getName());
-		jgen.writeObjectField("map", value.getMap());
+		jgen.writeStringField("map", value.getMap().getHex());
 		writePersonsField("persons", value, jgen);
 	}
-
+	
 	private void writePersonsField(final String fieldName, final Area value, final JsonGenerator jgen)
 			throws IOException, JsonGenerationException {
 		jgen.writeArrayFieldStart(fieldName);
@@ -35,7 +35,7 @@ class AreaSerializer extends ItemSerializer<Area> {
 		}
 		jgen.writeEndArray();
 	}
-	
+
 	private List<Long> getSortedReferenceIds(final Collection<? extends Reference<?>> references) {
 		final List<Long> sortedReferenceIds = new ArrayList<>();
 		for (final Reference<?> ref : references) {
@@ -44,5 +44,5 @@ class AreaSerializer extends ItemSerializer<Area> {
 		Collections.sort(sortedReferenceIds);
 		return sortedReferenceIds;
 	}
-	
+
 }

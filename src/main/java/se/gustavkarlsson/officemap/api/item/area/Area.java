@@ -4,23 +4,23 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
-import se.gustavkarlsson.officemap.api.fileentry.FileEntry;
+import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.item.Item;
 import se.gustavkarlsson.officemap.api.item.Reference;
 import se.gustavkarlsson.officemap.api.item.person.Person;
@@ -45,10 +45,9 @@ public class Area extends Item<Area> {
 	private final String name;
 	
 	@NotNull
-	@OneToMany
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@PrimaryKeyJoinColumn
-	private final FileEntry map;
+	@Embedded
+	@AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "map")))
+	private final Sha1 map;
 	
 	// TODO Make sure only one head can have the same persons
 	@NotNull
@@ -66,7 +65,7 @@ public class Area extends Item<Area> {
 	}
 	
 	private Area(final Long id, final Long timestamp, final Reference<Area> reference, final boolean deleted,
-			final String name, final FileEntry map, final Set<Reference<Person>> persons) {
+			final String name, final Sha1 map, final Set<Reference<Person>> persons) {
 		super(id, timestamp, reference, deleted);
 		this.name = name;
 		this.map = map;
@@ -77,7 +76,7 @@ public class Area extends Item<Area> {
 		return name;
 	}
 	
-	public FileEntry getMap() {
+	public Sha1 getMap() {
 		return map;
 	}
 	
@@ -132,7 +131,7 @@ public class Area extends Item<Area> {
 
 		private String name;
 
-		private FileEntry map;
+		private Sha1 map;
 
 		private Set<Reference<Person>> persons;
 
@@ -144,8 +143,7 @@ public class Area extends Item<Area> {
 		}
 
 		public Builder with(final Long id, final Long timestamp, final Reference<Area> reference,
-				final boolean deleted, final String name, final FileEntry map,
-				final Collection<Reference<Person>> persons) {
+				final boolean deleted, final String name, final Sha1 map, final Collection<Reference<Person>> persons) {
 			this.id = id;
 			this.timestamp = timestamp;
 			this.reference = reference;
@@ -181,7 +179,7 @@ public class Area extends Item<Area> {
 			return this;
 		}
 
-		public Builder withMap(final FileEntry map) {
+		public Builder withMap(final Sha1 map) {
 			this.map = map;
 			return this;
 		}

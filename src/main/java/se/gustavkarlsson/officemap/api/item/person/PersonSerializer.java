@@ -8,11 +8,11 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 class PersonSerializer extends ItemSerializer<Person> {
-	
+
 	PersonSerializer() {
 		super(Person.class);
 	}
-
+	
 	@Override
 	protected void writeLeafFields(final Person value, final JsonGenerator jgen) throws JsonGenerationException,
 			IOException {
@@ -20,7 +20,7 @@ class PersonSerializer extends ItemSerializer<Person> {
 		jgen.writeStringField("firstName", value.getFirstName());
 		jgen.writeStringField("lastName", value.getLastName());
 		jgen.writeStringField("email", value.getEmail());
-		jgen.writeObjectField("portrait", value.getPortrait());
+		jgen.writeObjectField("portrait", value.getPortrait().getHex());
 	}
-
+	
 }

@@ -16,18 +16,6 @@
 			</column>
 		</createTable>
 
-		<createTable tableName="FileEntry">
-			<column name="id" type="bigint">
-				<constraints primaryKey="true" />
-			</column>
-			<column name="mimeType" type="varchar(64)">
-				<constraints nullable="false" />
-			</column>
-			<column name="sha1" type="binary(20)">
-				<constraints nullable="false" unique="true" />
-			</column>
-		</createTable>
-
 		<createTable tableName="Reference">
 			<column name="id" type="bigint">
 				<constraints primaryKey="true" />
@@ -75,15 +63,11 @@
 			<column name="email" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
-			<column name="portrait_fk" type="bigint"></column>
+			<column name="portrait" type="binary(20)"></column>
 		</createTable>
 
 		<addForeignKeyConstraint constraintName="Person_id_to_Item_id"
 			baseTableName="Person" baseColumnNames="id" referencedTableName="Item"
-			referencedColumnNames="id" />
-
-		<addForeignKeyConstraint constraintName="Person_portrait_fk_to_FileEntry_id"
-			baseTableName="Person" baseColumnNames="portrait_fk" referencedTableName="FileEntry"
 			referencedColumnNames="id" />
 
 		<createTable tableName="Area">
@@ -91,6 +75,9 @@
 				<constraints primaryKey="true" />
 			</column>
 			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="map" type="binary(20)">
 				<constraints nullable="false" />
 			</column>
 		</createTable>

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.gustavkarlsson.officemap.api.fileentry.FileEntry;
+import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.item.ItemDeserializer;
 import se.gustavkarlsson.officemap.api.item.Reference;
 import se.gustavkarlsson.officemap.api.item.person.Person;
@@ -26,7 +26,7 @@ class AreaDeserializer extends ItemDeserializer<Area> {
 	protected Area deserialize(final JsonParser jp, final JsonNode node, final boolean deleted)
 			throws JsonParseException, JsonMappingException, IOException {
 		final String name = node.get("name").asText();
-		final FileEntry map = jp.getCodec().treeToValue(node.get("map"), FileEntry.class);
+		final Sha1 map = Sha1.builder().withSha1(node.get("map").asText()).build();
 		final List<Reference<Person>> personReferences = getPersonReferences(node);
 		final Area area = Area.builder().with(null, null, null, deleted, name, map, personReferences).build();
 		return area;

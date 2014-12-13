@@ -3,10 +3,7 @@
     "reference": 1,
     "deleted": false,
     "name": "Floor 1",
-    "map": {
-    	"sha1": "cf23df2207d99a74fbe169e3eba045e633b65d94",
-    	"mimeType": "application/png"
-    },
+    "map": "cf23df2207d99a74fbe169e3eba045e633b65d94",
     "persons": [
     	1,
     	3,
