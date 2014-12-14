@@ -98,12 +98,11 @@
 	app.controller("MapController", function ($scope, AreaService, ImageService, leafletData, area) {
 		
 		// Variable declarations
-		var getMap, mapUrl, getImageBounds, offsetBounds;
+		var getMap, getImageBounds, offsetBounds;
 		
 		// Init
 		AreaService.setActive(area);
 		getMap = leafletData.getMap;
-		mapUrl = "api/file/" + area.map;
 		
 		// Methods
 		getImageBounds = function (img) {
@@ -159,7 +158,7 @@
 					var bounds, maxBounds;
 					bounds = getImageBounds(img);
 					maxBounds = offsetBounds(bounds, 200);
-					L.imageOverlay(mapUrl, bounds).addTo(map).bringToFront();
+					L.imageOverlay("api/file/" + area.map, bounds).addTo(map).bringToFront();
 					map.setMaxBounds(maxBounds);
 				});
 			},
@@ -171,21 +170,21 @@
 
 	app.config(function ($routeProvider) {
 		$routeProvider
-			.when("/areas/:reference", {
+			.when("/areas/:ref", {
 				templateUrl: "partials/area.html",
 				controller: "MapController",
 				resolve: {
 					area: function (AreaService, $route) {
-						return AreaService.getArea($route.current.params.reference);
+						return AreaService.getArea($route.current.params.ref);
 					}
 				}
 			})
-			.when("/persons/:reference", {
+			.when("/persons/:ref", {
 				templateUrl: "partials/person.html",
 				controller: "PersonController",
 				resolve: {
 					person: function (PersonService, $route) {
-						return PersonService.getPerson($route.current.params.reference);
+						return PersonService.getPerson($route.current.params.ref);
 					}
 				}
 			})
@@ -196,8 +195,8 @@
 
 	app.factory("PersonService", function ($http, $q) {
 		return {
-			getPerson: function (reference) {
-				return $http.get("/api/persons/" + reference).then(
+			getPerson: function (ref) {
+				return $http.get("/api/persons/" + ref).then(
 					function (response) {
 						if (typeof response.data === "object") {
 							return response.data;
