@@ -1,34 +1,39 @@
+/*global alert */
+/*global L */
+/*global angular */
+
 (function () {
+	"use strict";
 	var app = angular.module("main", ["ui.bootstrap", "ngRoute", "leaflet-directive"]);
 
 	app.factory("AreaService", function ($http, $q) {
 		
 		// Members
-		var active = undefined;
+		var active;
 		
 		// Methods
 		return {
 			getArea: function (ref) {
 				var deferred = $q.defer();
 				$http.get("api/areas/" + ref)
-				.success(function(data, status) {
-					deferred.resolve(data);
-				})
-				.error(function(data, status) {
-					deferred.reject(data);
-				});
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
 
 				return deferred.promise;
 			},
 			getAreas: function () {
 				var deferred = $q.defer();
 				$http.get("api/areas")
-				.success(function(data, status) {
-					deferred.resolve(data);
-				})
-				.error(function(data, status) {
-					deferred.reject(data);
-				});
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
 
 				return deferred.promise;
 			},
@@ -47,12 +52,13 @@
 		
 		// Methods
 		return {
-			getDimensions: function (url) {
-				var deferred = $q.defer();
-				var image = new Image();
+			load: function (url) {
+				var deferred, image;
+				deferred = $q.defer();
+				image = new Image();
 				
 				image.onload = function () {
-					deferred.resolve([this.width, this.height])
+					deferred.resolve(this);
 				};
 				image.error = function () {
 					deferred.reject(false);
@@ -91,11 +97,22 @@
 
 	app.controller("MapController", function ($scope, AreaService, ImageService, leafletData, area) {
 		
-		$scope.leafletData = leafletData;
+		// Variable declarations
+		var getMap, mapUrl, getImageBounds, offsetBounds;
 		
 		// Init
 		AreaService.setActive(area);
-		var mapUrl = "api/file/" + area.map;
+		getMap = leafletData.getMap;
+		mapUrl = "api/file/" + area.map;
+		
+		// Methods
+		getImageBounds = function (img) {
+			return [[-(img.height / 2), -(img.width / 2)], [img.height / 2, img.width / 2]];
+		};
+		
+		offsetBounds = function (bounds, offset) {
+			return [[bounds[0][0] - offset, bounds[0][1] - offset], [bounds[1][0] + offset, bounds[1][1] + offset]];
+		};
 		
 		angular.extend($scope, {
 			defaults: {
@@ -128,15 +145,22 @@
 			}
 		});
 		
-		var dimensionsPromise = ImageService.getDimensions("api/file/" + area.map);
-		dimensionsPromise.then(
-			function (dimensions) {
-				$scope.leafletData.getMap().then( function (map) {
-					map.eachLayer(function (layer) {
-						map.removeLayer(layer);
-					});
-					var bounds = [[-(dimensions[1]/2), -(dimensions[0]/2)], [(dimensions[1]/2), (dimensions[0]/2)]];
+		// Clear layers
+		getMap().then(function (map) {
+			map.eachLayer(function (layer) {
+				map.removeLayer(layer);
+			});
+		});
+		
+		// Get dimensions of map and add map layer
+		ImageService.load("api/file/" + area.map).then(
+			function (img) {
+				getMap().then(function (map) {
+					var bounds, maxBounds;
+					bounds = getImageBounds(img);
+					maxBounds = offsetBounds(bounds, 200);
 					L.imageOverlay(mapUrl, bounds).addTo(map).bringToFront();
+					map.setMaxBounds(maxBounds);
 				});
 			},
 			function (reason) {
@@ -147,27 +171,27 @@
 
 	app.config(function ($routeProvider) {
 		$routeProvider
-		.when("/areas/:reference", {
-			templateUrl: "partials/area.html",
-			controller: "MapController",
-			resolve: {
-				area: function (AreaService, $route) {
-					return AreaService.getArea($route.current.params.reference);
+			.when("/areas/:reference", {
+				templateUrl: "partials/area.html",
+				controller: "MapController",
+				resolve: {
+					area: function (AreaService, $route) {
+						return AreaService.getArea($route.current.params.reference);
+					}
 				}
-			}
-		})
-		.when("/persons/:reference", {
-			templateUrl: "partials/person.html",
-			controller: "PersonController",
-			resolve: {
-				person: function (PersonService, $route) {
-					return PersonService.getPerson($route.current.params.reference);
+			})
+			.when("/persons/:reference", {
+				templateUrl: "partials/person.html",
+				controller: "PersonController",
+				resolve: {
+					person: function (PersonService, $route) {
+						return PersonService.getPerson($route.current.params.reference);
+					}
 				}
-			}
-		})
-		.otherwise({
-			redirectTo: "/"
-		});
+			})
+			.otherwise({
+				redirectTo: "/"
+			});
 	});
 
 	app.factory("PersonService", function ($http, $q) {
@@ -182,7 +206,8 @@
 							return $q.reject(response.data);
 						}
 
-					}, function (response) {
+					},
+					function (response) {
 						// something went wrong
 						return $q.reject(response.data);
 					}
@@ -211,4 +236,4 @@
 		};
 	});
 
-})();
+}());
