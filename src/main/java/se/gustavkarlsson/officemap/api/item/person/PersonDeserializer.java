@@ -12,21 +12,29 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 @SuppressWarnings("serial")
 class PersonDeserializer extends ItemDeserializer<Person> {
-	
+
 	PersonDeserializer() {
 		super(Person.class);
 	}
-	
+
 	@Override
-	protected Person deserialize(final JsonParser jp, final JsonNode node, final boolean deleted)
-			throws JsonParseException, JsonMappingException, IOException {
+	protected Person deserialize(final JsonParser jp, final JsonNode node) throws JsonParseException,
+			JsonMappingException, IOException {
 		final String username = node.get("username").asText();
 		final String firstName = node.get("firstName").asText();
 		final String lastName = node.get("lastName").asText();
 		final String email = node.get("email").asText();
-		final Sha1 portrait = Sha1.builder().withSha1(node.get("portrait").asText()).build();
-		final Person person = Person.builder()
-				.with(null, null, null, deleted, username, firstName, lastName, email, portrait).build();
+		final Sha1 portrait = parsePortrait(node);
+		final Person person = Person.builder().with(null, username, firstName, lastName, email, portrait).build();
 		return person;
+	}
+	
+	private Sha1 parsePortrait(final JsonNode node) {
+		final JsonNode portraitNode = node.get("portrait");
+		if (portraitNode == null || portraitNode.isNull()) {
+			return null;
+		}
+		final Sha1 portrait = Sha1.builder().withSha1(portraitNode.asText()).build();
+		return portrait;
 	}
 }

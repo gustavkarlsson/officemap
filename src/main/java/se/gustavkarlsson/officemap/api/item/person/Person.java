@@ -1,69 +1,38 @@
 package se.gustavkarlsson.officemap.api.item.person;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.item.Item;
-import se.gustavkarlsson.officemap.api.item.Reference;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
 
-@Entity
-@Table(name = Person.TYPE)
-@DiscriminatorValue(Person.TYPE)
 @JsonSerialize(using = PersonSerializer.class)
 @JsonDeserialize(using = PersonDeserializer.class)
-public final class Person extends Item<Person> {
-
-	public static final String TYPE = "Person";
+public final class Person extends Item {
 	
 	@NotBlank
-	@Column(name = "username", nullable = false)
 	private final String username;
 	
 	@NotBlank
-	@Column(name = "firstName", nullable = false)
 	private final String firstName;
 	
 	@NotBlank
-	@Column(name = "lastName", nullable = false)
 	private final String lastName;
 	
 	@Email
 	@NotBlank
-	@Column(name = "email", nullable = false)
 	private final String email;
 	
-	@Embedded
-	@AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "portrait")))
 	private final Sha1 portrait;
 
-	private Person() {
-		// Required by Hibernate
-		super(null, null, null, false);
-		this.username = null;
-		this.firstName = null;
-		this.lastName = null;
-		this.email = null;
-		this.portrait = null;
-	}
-
-	private Person(final Long id, final Long timestamp, final Reference<Person> reference, final boolean deleted,
-			final String username, final String firstName, final String lastName, final String email,
-			final Sha1 portrait) {
-		super(id, timestamp, reference, deleted);
+	private Person(final Long id, final String username, final String firstName, final String lastName,
+			final String email, final Sha1 portrait) {
+		super(id);
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -93,14 +62,13 @@ public final class Person extends Item<Person> {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("id", getId()).add("reference", getReference())
-				.add("deleted", isDeleted()).add("username", username).add("firstName", firstName)
+		return Objects.toStringHelper(this).add("id", getId()).add("username", username).add("firstName", firstName)
 				.add("lastName", lastName).add("email", email).add("portrait", portrait).toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(isDeleted(), username, firstName, lastName, email, portrait);
+		return Objects.hashCode(username, firstName, lastName, email, portrait);
 	}
 
 	@Override
@@ -115,14 +83,12 @@ public final class Person extends Item<Person> {
 			return false;
 		}
 		final Person rhs = (Person) obj;
-		return new EqualsBuilder().append(isDeleted(), rhs.isDeleted()).append(username, rhs.username)
-				.append(firstName, rhs.firstName).append(lastName, rhs.lastName).append(email, rhs.email)
-				.append(portrait, rhs.getPortrait()).isEquals();
+		return new EqualsBuilder().append(username, rhs.username).append(firstName, rhs.firstName)
+				.append(lastName, rhs.lastName).append(email, rhs.email).append(portrait, rhs.getPortrait()).isEquals();
 	}
 
 	public Builder toBuilder() {
-		return builder().with(getId(), getTimestamp(), getReference(), isDeleted(), username, firstName, lastName,
-				email, portrait);
+		return builder().with(getId(), username, firstName, lastName, email, portrait);
 	}
 	
 	public static Builder builder() {
@@ -132,12 +98,6 @@ public final class Person extends Item<Person> {
 	public static class Builder {
 
 		private Long id;
-
-		private Reference<Person> reference;
-
-		private Long timestamp;
-
-		private Boolean deleted;
 
 		private String username;
 
@@ -153,16 +113,12 @@ public final class Person extends Item<Person> {
 		}
 
 		public Person build() {
-			return new Person(id, timestamp, reference, deleted, username, firstName, lastName, email, portrait);
+			return new Person(id, username, firstName, lastName, email, portrait);
 		}
 		
-		public Builder with(final Long id, final Long timestamp, final Reference<Person> reference,
-				final boolean deleted, final String username, final String firstName, final String lastName,
+		public Builder with(final Long id, final String username, final String firstName, final String lastName,
 				final String email, final Sha1 portrait) {
 			this.id = id;
-			this.timestamp = timestamp;
-			this.reference = reference;
-			this.deleted = deleted;
 			this.username = username;
 			this.firstName = firstName;
 			this.lastName = lastName;
@@ -173,21 +129,6 @@ public final class Person extends Item<Person> {
 
 		public Builder withId(final Long id) {
 			this.id = id;
-			return this;
-		}
-
-		public Builder withReference(final Reference<Person> reference) {
-			this.reference = reference;
-			return this;
-		}
-
-		public Builder withTimestamp(final Long timestamp) {
-			this.timestamp = timestamp;
-			return this;
-		}
-
-		public Builder withDeleted(final boolean deleted) {
-			this.deleted = deleted;
 			return this;
 		}
 

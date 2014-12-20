@@ -16,16 +16,7 @@
 			</column>
 		</createTable>
 
-		<createTable tableName="Reference">
-			<column name="id" type="bigint">
-				<constraints primaryKey="true" />
-			</column>
-			<column name="type" type="varchar(64)">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-
-		<createTable tableName="Item">
+		<createTable tableName="Event">
 			<column name="id" type="bigint">
 				<constraints primaryKey="true" />
 			</column>
@@ -35,77 +26,7 @@
 			<column name="timestamp" type="bigint">
 				<constraints nullable="false" />
 			</column>
-			<column name="reference_fk" type="bigint">
-				<constraints nullable="false" />
-			</column>
-			<column name="deleted" type="boolean">
-				<constraints nullable="false" />
-			</column>
 		</createTable>
-
-		<addForeignKeyConstraint constraintName="Item_reference_fk_to_Reference_id"
-			baseTableName="Item" baseColumnNames="reference_fk"
-			referencedTableName="Reference" referencedColumnNames="id" />
-
-		<createTable tableName="Person">
-			<column name="id" type="bigint">
-				<constraints primaryKey="true" />
-			</column>
-			<column name="username" type="varchar(64)">
-				<constraints nullable="false" />
-			</column>
-			<column name="firstName" type="varchar(255)">
-				<constraints nullable="false" />
-			</column>
-			<column name="lastName" type="varchar(255)">
-				<constraints nullable="false" />
-			</column>
-			<column name="email" type="varchar(255)">
-				<constraints nullable="false" />
-			</column>
-			<column name="portrait" type="binary(20)"></column>
-		</createTable>
-
-		<addForeignKeyConstraint constraintName="Person_id_to_Item_id"
-			baseTableName="Person" baseColumnNames="id" referencedTableName="Item"
-			referencedColumnNames="id" />
-
-		<createTable tableName="Area">
-			<column name="id" type="bigint">
-				<constraints primaryKey="true" />
-			</column>
-			<column name="name" type="varchar(255)">
-				<constraints nullable="false" />
-			</column>
-			<column name="map" type="binary(20)">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-
-		<addForeignKeyConstraint constraintName="Area_id_to_Item_id"
-			baseTableName="Area" baseColumnNames="id" referencedTableName="Item"
-			referencedColumnNames="id" />
-
-		<createTable tableName="Area_PersonReferences">
-			<column name="area_fk" type="bigint">
-				<constraints nullable="false" />
-			</column>
-			<column name="personReference_fk" type="bigint">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-
-		<addPrimaryKey tableName="Area_PersonReferences"
-			columnNames="area_fk, personReference_fk" />
-
-		<addForeignKeyConstraint constraintName="Area_PersonReferences_area_fk_to_Area_id"
-			baseTableName="Area_PersonReferences" baseColumnNames="area_fk"
-			referencedTableName="Area" referencedColumnNames="id" />
-
-		<addForeignKeyConstraint
-			constraintName="Area_PersonReferences_personReference_fk_to_Reference_id"
-			baseTableName="Area_PersonReferences" baseColumnNames="personReference_fk"
-			referencedTableName="Reference" referencedColumnNames="id" />
 
 	</changeSet>
 </databaseChangeLog>

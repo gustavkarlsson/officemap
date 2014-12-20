@@ -113,6 +113,7 @@
 			return [[bounds[0][0] - offset, bounds[0][1] - offset], [bounds[1][0] + offset, bounds[1][1] + offset]];
 		};
 		
+		// Build map
 		angular.extend($scope, {
 			defaults: {
 				zoomControl: false,
@@ -166,6 +167,10 @@
 				alert("Failed: " + reason);
 			}
 		);
+		
+		area.persons.forEach(function (personRef) {
+			var map = getMap();
+		});
 	});
 
 	app.config(function ($routeProvider) {
