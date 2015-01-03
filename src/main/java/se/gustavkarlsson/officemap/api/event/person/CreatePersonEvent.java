@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import se.gustavkarlsson.officemap.State;
-import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.Person;
 
 @Entity
 @Table(name = CreatePersonEvent.TYPE)

@@ -9,8 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import se.gustavkarlsson.officemap.State;
-import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.event.map.MapEvent;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 
 @Entity
 @Table(name = UpdateMapImageEvent.TYPE)

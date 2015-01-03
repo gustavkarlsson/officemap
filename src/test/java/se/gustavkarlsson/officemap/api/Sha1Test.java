@@ -6,6 +6,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
+import se.gustavkarlsson.officemap.api.item.Sha1;
+
 public class Sha1Test {
 
 	@Test

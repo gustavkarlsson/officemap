@@ -1,8 +1,8 @@
 package se.gustavkarlsson.officemap;
 
 import se.gustavkarlsson.officemap.api.Items;
+import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.map.Map;
-import se.gustavkarlsson.officemap.api.item.person.Person;
 
 public class State {
 

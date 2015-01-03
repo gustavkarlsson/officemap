@@ -1,8 +1,8 @@
 package se.gustavkarlsson.officemap.test;
 
-import se.gustavkarlsson.officemap.api.Location;
-import se.gustavkarlsson.officemap.api.Sha1;
-import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.Location;
+import se.gustavkarlsson.officemap.api.item.Person;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 
 public class TestPersonBuilder extends Person.Builder {
 

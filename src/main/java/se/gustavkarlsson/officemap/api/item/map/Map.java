@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
-import se.gustavkarlsson.officemap.api.Sha1;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;

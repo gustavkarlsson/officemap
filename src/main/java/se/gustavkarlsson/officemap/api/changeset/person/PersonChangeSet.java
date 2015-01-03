@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import se.gustavkarlsson.officemap.api.Location;
-import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.event.person.PersonEvent;
 import se.gustavkarlsson.officemap.api.event.person.update.UpdatePersonEmailEvent;
 import se.gustavkarlsson.officemap.api.event.person.update.UpdatePersonFirstNameEvent;
@@ -14,6 +12,8 @@ import se.gustavkarlsson.officemap.api.event.person.update.UpdatePersonLastNameE
 import se.gustavkarlsson.officemap.api.event.person.update.UpdatePersonLocationEvent;
 import se.gustavkarlsson.officemap.api.event.person.update.UpdatePersonPortraitEvent;
 import se.gustavkarlsson.officemap.api.event.person.update.UpdatePersonUsernameEvent;
+import se.gustavkarlsson.officemap.api.item.Location;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 import se.gustavkarlsson.officemap.util.Value;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

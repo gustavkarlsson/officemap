@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import se.gustavkarlsson.officemap.api.item.person.Person;
-import se.gustavkarlsson.officemap.api.item.person.Person.Builder;
+import se.gustavkarlsson.officemap.api.item.Person;
+import se.gustavkarlsson.officemap.api.item.Person.Builder;
 
 @Entity
 @Table(name = UpdatePersonLastNameEvent.TYPE)

@@ -1,6 +1,6 @@
 package se.gustavkarlsson.officemap.test;
 
-import se.gustavkarlsson.officemap.api.Sha1;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 import se.gustavkarlsson.officemap.api.item.map.Map;
 
 public class TestMapBuilder extends Map.Builder {

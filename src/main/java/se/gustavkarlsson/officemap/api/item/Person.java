@@ -1,16 +1,12 @@
-package se.gustavkarlsson.officemap.api.item.person;
+package se.gustavkarlsson.officemap.api.item;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import se.gustavkarlsson.officemap.api.Location;
-import se.gustavkarlsson.officemap.api.Sha1;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
-@JsonSerialize(using = PersonSerializer.class)
 public final class Person {
 
 	@NotBlank
@@ -40,26 +36,32 @@ public final class Person {
 		this.location = location;
 	}
 
+	@JsonProperty("username")
 	public String getUsername() {
 		return username;
 	}
 
+	@JsonProperty("firstName")
 	public String getFirstName() {
 		return firstName;
 	}
 
+	@JsonProperty("lastName")
 	public String getLastName() {
 		return lastName;
 	}
 
+	@JsonProperty("email")
 	public String getEmail() {
 		return email;
 	}
 
+	@JsonProperty("portrait")
 	public Sha1 getPortrait() {
 		return portrait;
 	}
 
+	@JsonProperty("location")
 	public Location getLocation() {
 		return location;
 	}

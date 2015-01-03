@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import se.gustavkarlsson.officemap.api.Sha1;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 import se.gustavkarlsson.officemap.util.FileHandler;
 
 import com.google.common.base.Optional;

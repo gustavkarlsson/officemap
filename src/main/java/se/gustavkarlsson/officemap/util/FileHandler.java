@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.tika.Tika;
 
-import se.gustavkarlsson.officemap.api.Sha1;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 
 import com.google.common.base.Optional;
 

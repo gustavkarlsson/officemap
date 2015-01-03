@@ -30,7 +30,7 @@ import se.gustavkarlsson.officemap.api.event.ProcessEventException;
 import se.gustavkarlsson.officemap.api.event.person.CreatePersonEvent;
 import se.gustavkarlsson.officemap.api.event.person.DeletePersonEvent;
 import se.gustavkarlsson.officemap.api.event.person.PersonEvent;
-import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.dao.EventDao;
 import se.gustavkarlsson.officemap.resources.PATCH;
 

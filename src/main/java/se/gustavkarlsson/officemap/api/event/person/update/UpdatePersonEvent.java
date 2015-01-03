@@ -6,8 +6,8 @@ import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.Items;
 import se.gustavkarlsson.officemap.api.event.ProcessEventException;
 import se.gustavkarlsson.officemap.api.event.person.PersonEvent;
-import se.gustavkarlsson.officemap.api.item.person.Person;
-import se.gustavkarlsson.officemap.api.item.person.Person.Builder;
+import se.gustavkarlsson.officemap.api.item.Person;
+import se.gustavkarlsson.officemap.api.item.Person.Builder;
 
 import com.google.common.base.Optional;
 

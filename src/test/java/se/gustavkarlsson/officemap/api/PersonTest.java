@@ -9,7 +9,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.gustavkarlsson.officemap.api.item.person.Person;
+import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.test.TestPersonBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

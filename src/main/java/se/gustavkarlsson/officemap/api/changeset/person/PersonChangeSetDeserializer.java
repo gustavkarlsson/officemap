@@ -1,9 +1,9 @@
 package se.gustavkarlsson.officemap.api.changeset.person;
 
-import se.gustavkarlsson.officemap.api.Location;
-import se.gustavkarlsson.officemap.api.Sha1;
 import se.gustavkarlsson.officemap.api.changeset.ChangeSetDeserializer;
 import se.gustavkarlsson.officemap.api.changeset.ValueMappingException;
+import se.gustavkarlsson.officemap.api.item.Location;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 import se.gustavkarlsson.officemap.util.Value;
 
 import com.fasterxml.jackson.databind.JsonNode;
