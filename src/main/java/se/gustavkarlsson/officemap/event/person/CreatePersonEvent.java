@@ -5,10 +5,11 @@ import javax.persistence.Table;
 
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Person;
+import se.gustavkarlsson.officemap.event.ItemEvent;
 
 @Entity
 @Table(name = CreatePersonEvent.TYPE)
-public final class CreatePersonEvent extends PersonEvent {
+public final class CreatePersonEvent extends ItemEvent {
 	public static final String TYPE = "CreatePersonEvent";
 
 	// Required by Hibernate

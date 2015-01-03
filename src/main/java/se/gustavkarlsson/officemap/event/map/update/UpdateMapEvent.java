@@ -6,17 +6,17 @@ import se.gustavkarlsson.officemap.Items;
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Map;
 import se.gustavkarlsson.officemap.api.item.Map.MapBuilder;
+import se.gustavkarlsson.officemap.event.ItemEvent;
 import se.gustavkarlsson.officemap.event.ProcessEventException;
-import se.gustavkarlsson.officemap.event.map.MapEvent;
 
 import com.google.common.base.Optional;
 
-abstract class UpdateMapEvent extends MapEvent {
-
+abstract class UpdateMapEvent extends ItemEvent {
+	
 	public UpdateMapEvent(final long timestamp, final int ref) {
 		super(timestamp, ref);
 	}
-
+	
 	@Override
 	public void process(final State state) throws ProcessEventException {
 		checkNotNull(state);
@@ -30,7 +30,7 @@ abstract class UpdateMapEvent extends MapEvent {
 			throw new ProcessEventException(e);
 		}
 	}
-	
-	protected abstract Map updateProperty(MapBuilder builder);
 
+	protected abstract Map updateProperty(MapBuilder builder);
+	
 }

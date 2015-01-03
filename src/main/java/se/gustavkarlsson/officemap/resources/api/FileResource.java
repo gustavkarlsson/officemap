@@ -24,15 +24,16 @@ import com.google.common.base.Optional;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
+// TODO investigate if producing application/json is a good idea
 @Path("/file")
 public final class FileResource {
-
+	
 	private final FileHandler fileHandler;
-
+	
 	public FileResource(final FileHandler fileHandler) {
 		this.fileHandler = fileHandler;
 	}
-	
+
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.TEXT_PLAIN)
@@ -47,9 +48,9 @@ public final class FileResource {
 			e.printStackTrace();
 			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
 		}
-		
+
 	}
-	
+
 	@Path("/{sha1}")
 	@GET
 	@UnitOfWork
@@ -60,12 +61,12 @@ public final class FileResource {
 		} catch (final IllegalArgumentException e) {
 			throw new WebApplicationException(Status.BAD_REQUEST);
 		}
-
+		
 		final Optional<File> possibleFile = fileHandler.getFile(sha1);
 		if (!possibleFile.isPresent()) {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
-
+		
 		final String mimeType = fileHandler.getMimeType(possibleFile.get());
 		return Response.ok(possibleFile).type(mimeType).build();
 	}

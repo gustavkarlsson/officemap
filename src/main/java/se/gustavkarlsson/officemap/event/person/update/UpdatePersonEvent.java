@@ -6,12 +6,12 @@ import se.gustavkarlsson.officemap.Items;
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
+import se.gustavkarlsson.officemap.event.ItemEvent;
 import se.gustavkarlsson.officemap.event.ProcessEventException;
-import se.gustavkarlsson.officemap.event.person.PersonEvent;
 
 import com.google.common.base.Optional;
 
-abstract class UpdatePersonEvent extends PersonEvent {
+abstract class UpdatePersonEvent extends ItemEvent {
 
 	public UpdatePersonEvent(final long timestamp, final int ref) {
 		super(timestamp, ref);

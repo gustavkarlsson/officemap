@@ -4,10 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import se.gustavkarlsson.officemap.State;
+import se.gustavkarlsson.officemap.event.ItemEvent;
 
 @Entity
 @Table(name = DeleteMapEvent.TYPE)
-public final class DeleteMapEvent extends MapEvent {
+public final class DeleteMapEvent extends ItemEvent {
 	public static final String TYPE = "DeleteMapEvent";
 
 	// Required by Hibernate

@@ -16,7 +16,7 @@ public class Items<T> {
 	
 	public void create(final int ref, final T item) {
 		checkNotNull(item);
-		checkState(items.get(ref) != null, "An Item with ref " + ref + " already exists");
+		checkState(items.get(ref) == null, "An Item with ref " + ref + " already exists");
 		items.put(ref, item);
 		ensureHighestRef(ref);
 	}
@@ -37,7 +37,7 @@ public class Items<T> {
 	}
 
 	private void checkItemExists(final int ref) {
-		checkState(items.get(ref) == null, "No Item with ref " + ref + " exists");
+		checkState(items.get(ref) != null, "No Item with ref " + ref + " exists");
 	}
 	
 	public Optional<T> get(final int ref) {

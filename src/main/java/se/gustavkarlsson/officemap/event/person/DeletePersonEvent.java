@@ -4,10 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import se.gustavkarlsson.officemap.State;
+import se.gustavkarlsson.officemap.event.ItemEvent;
+import se.gustavkarlsson.officemap.event.ProcessEventException;
 
 @Entity
 @Table(name = DeletePersonEvent.TYPE)
-public final class DeletePersonEvent extends PersonEvent {
+public final class DeletePersonEvent extends ItemEvent {
 	public static final String TYPE = "DeletePersonEvent";
 
 	// Required by Hibernate
@@ -20,8 +22,12 @@ public final class DeletePersonEvent extends PersonEvent {
 	}
 
 	@Override
-	public void process(final State state) {
-		state.getPersons().delete(ref);
+	public void process(final State state) throws ProcessEventException {
+		try {
+			state.getPersons().delete(ref);
+		} catch (final Exception e) {
+			throw new ProcessEventException(e);
+		}
 	}
 
 	@Override
