@@ -26,15 +26,14 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/file")
 public final class FileResource {
-	
+
 	private final FileHandler fileHandler;
-	
+
 	public FileResource(final FileHandler fileHandler) {
 		this.fileHandler = fileHandler;
 	}
-
+	
 	@POST
-	@Path("/")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.TEXT_PLAIN)
 	@UnitOfWork
@@ -48,9 +47,9 @@ public final class FileResource {
 			e.printStackTrace();
 			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
 		}
-
+		
 	}
-
+	
 	@Path("/{sha1}")
 	@GET
 	@UnitOfWork
@@ -61,12 +60,12 @@ public final class FileResource {
 		} catch (final IllegalArgumentException e) {
 			throw new WebApplicationException(Status.BAD_REQUEST);
 		}
-		
+
 		final Optional<File> possibleFile = fileHandler.getFile(sha1);
 		if (!possibleFile.isPresent()) {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
-		
+
 		final String mimeType = fileHandler.getMimeType(possibleFile.get());
 		return Response.ok(possibleFile).type(mimeType).build();
 	}

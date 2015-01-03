@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import se.gustavkarlsson.officemap.api.item.Map;
-import se.gustavkarlsson.officemap.api.item.Map.Builder;
+import se.gustavkarlsson.officemap.api.item.Map.MapBuilder;
 
 @Entity
 @Table(name = UpdateMapNameEvent.TYPE)
@@ -33,7 +33,7 @@ public final class UpdateMapNameEvent extends UpdateMapEvent {
 	}
 
 	@Override
-	protected Map updateProperty(final Builder builder) {
+	protected Map updateProperty(final MapBuilder builder) {
 		return builder.withName(name).build();
 	}
 

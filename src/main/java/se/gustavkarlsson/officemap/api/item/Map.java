@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
-public class Map {
+public class Map implements Buildable<Map> {
 
 	@NotBlank
 	private final String name;
@@ -56,39 +56,41 @@ public class Map {
 		return new EqualsBuilder().append(name, rhs.name).append(image, rhs.image).isEquals();
 	}
 	
-	public Builder toBuilder() {
+	@Override
+	public MapBuilder toBuilder() {
 		return builder().with(name, image);
 	}
 	
-	public static Builder builder() {
-		return new Builder();
+	public static MapBuilder builder() {
+		return new MapBuilder();
 	}
 	
-	public static class Builder {
+	public static class MapBuilder implements Builder<Map> {
 		
 		private String name;
 		
 		private Sha1 image;
 		
-		protected Builder() {
+		protected MapBuilder() {
 		}
 		
+		@Override
 		public Map build() {
 			return new Map(name, image);
 		}
 		
-		public Builder with(final String name, final Sha1 image) {
+		public MapBuilder with(final String name, final Sha1 image) {
 			this.name = name;
 			this.image = image;
 			return this;
 		}
 		
-		public Builder withName(final String name) {
+		public MapBuilder withName(final String name) {
 			this.name = name;
 			return this;
 		}
 		
-		public Builder withImage(final Sha1 image) {
+		public MapBuilder withImage(final Sha1 image) {
 			this.image = image;
 			return this;
 		}

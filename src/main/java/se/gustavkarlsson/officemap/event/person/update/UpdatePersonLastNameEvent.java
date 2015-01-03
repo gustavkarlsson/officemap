@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import se.gustavkarlsson.officemap.api.item.Person;
-import se.gustavkarlsson.officemap.api.item.Person.Builder;
+import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
 
 @Entity
 @Table(name = UpdatePersonLastNameEvent.TYPE)
@@ -33,7 +33,7 @@ public final class UpdatePersonLastNameEvent extends UpdatePersonEvent {
 	}
 	
 	@Override
-	protected Person updateProperty(final Builder builder) {
+	protected Person updateProperty(final PersonBuilder builder) {
 		return builder.withLastName(lastName).build();
 	}
 

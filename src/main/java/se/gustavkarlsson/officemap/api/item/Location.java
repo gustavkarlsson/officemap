@@ -9,56 +9,56 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
 @Embeddable
-public final class Location {
-	
+public final class Location implements Buildable<Location> {
+
 	@Column(name = "mapRef")
 	private final int mapRef;
-	
+
 	@Column(name = "latitude")
 	private final double latitude;
-	
+
 	@Column(name = "longitude")
 	private final double longitude;
-	
+
 	// Required by Hibernate
 	private Location() {
 		this.mapRef = 0;
 		this.latitude = 0;
 		this.longitude = 0;
 	}
-	
+
 	private Location(final int mapRef, final double latitude, final double longitude) {
 		this.mapRef = mapRef;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
-	
+
 	@JsonProperty("mapRef")
 	public final int getMapRef() {
 		return mapRef;
 	}
-	
+
 	@JsonProperty("latitude")
 	public final double getLatitude() {
 		return latitude;
 	}
-	
+
 	@JsonProperty("longitude")
 	public final double getLongitude() {
 		return longitude;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("mapRef", mapRef).add("latitude", latitude).add("longitude", longitude)
 				.toString();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(mapRef, latitude, longitude);
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == null) {
@@ -74,39 +74,45 @@ public final class Location {
 		return new EqualsBuilder().append(mapRef, rhs.mapRef).append(latitude, rhs.latitude)
 				.append(longitude, rhs.longitude).isEquals();
 	}
-	
-	public static Builder builder() {
-		return new Builder();
+
+	@Override
+	public LocationBuilder toBuilder() {
+		return builder().with(mapRef, latitude, longitude);
 	}
-	
-	public static class Builder {
-		
+
+	public static LocationBuilder builder() {
+		return new LocationBuilder();
+	}
+
+	public static class LocationBuilder implements Builder<Location> {
+
 		private Integer mapRef;
-		
+
 		private Double latitude;
-		
+
 		private Double longitude;
-		
-		protected Builder() {
+
+		protected LocationBuilder() {
 		}
-		
+
+		@Override
 		public Location build() {
 			return new Location(mapRef, latitude, longitude);
 		}
-		
-		public Builder with(final Integer mapRef, final Double latitude, final Double longitude) {
+
+		public LocationBuilder with(final Integer mapRef, final Double latitude, final Double longitude) {
 			this.mapRef = mapRef;
 			this.latitude = latitude;
 			this.longitude = longitude;
 			return this;
 		}
-		
-		public Builder withMapRef(final Integer mapRef) {
+
+		public LocationBuilder withMapRef(final Integer mapRef) {
 			this.mapRef = mapRef;
 			return this;
 		}
-		
-		public Builder withCoordinates(final Double latitude, final Double longitude) {
+
+		public LocationBuilder withCoordinates(final Double latitude, final Double longitude) {
 			this.latitude = latitude;
 			this.longitude = longitude;
 			return this;

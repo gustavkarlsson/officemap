@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import se.gustavkarlsson.officemap.api.item.Map;
-import se.gustavkarlsson.officemap.api.item.Map.Builder;
+import se.gustavkarlsson.officemap.api.item.Map.MapBuilder;
 import se.gustavkarlsson.officemap.api.item.Sha1;
 
 @Entity
@@ -38,7 +38,7 @@ public final class UpdateMapImageEvent extends UpdateMapEvent {
 	}
 	
 	@Override
-	protected Map updateProperty(final Builder builder) {
+	protected Map updateProperty(final MapBuilder builder) {
 		return builder.withImage(image).build();
 	}
 	

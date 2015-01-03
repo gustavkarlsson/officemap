@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.Sha1;
-import se.gustavkarlsson.officemap.api.item.Person.Builder;
+import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
 
 @Entity
 @Table(name = UpdatePersonPortraitEvent.TYPE)
@@ -36,7 +36,7 @@ public final class UpdatePersonPortraitEvent extends UpdatePersonEvent {
 	}
 
 	@Override
-	protected Person updateProperty(final Builder builder) {
+	protected Person updateProperty(final PersonBuilder builder) {
 		return builder.withPortrait(portrait).build();
 	}
 

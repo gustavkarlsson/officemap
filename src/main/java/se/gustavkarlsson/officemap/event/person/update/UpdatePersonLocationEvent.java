@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Location;
 import se.gustavkarlsson.officemap.api.item.Person;
-import se.gustavkarlsson.officemap.api.item.Person.Builder;
+import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
 import se.gustavkarlsson.officemap.event.ProcessEventException;
 
 @Entity
@@ -57,7 +57,7 @@ public final class UpdatePersonLocationEvent extends UpdatePersonEvent {
 	}
 	
 	@Override
-	protected Person updateProperty(final Builder builder) {
+	protected Person updateProperty(final PersonBuilder builder) {
 		return builder.withLocation(location).build();
 	}
 
