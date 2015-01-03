@@ -2,22 +2,24 @@ package se.gustavkarlsson.officemap.api.item.map;
 
 import java.io.IOException;
 
-import se.gustavkarlsson.officemap.api.item.ItemSerializer;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-class MapSerializer extends ItemSerializer<Map> {
-	
+class MapSerializer extends StdSerializer<Map> {
+
 	MapSerializer() {
 		super(Map.class);
 	}
-	
+
 	@Override
-	protected void writeLeafFields(final Map value, final JsonGenerator jgen) throws IOException,
-			JsonGenerationException {
+	public void serialize(final Map value, final JsonGenerator jgen, final SerializerProvider provider)
+			throws IOException, JsonGenerationException {
+		jgen.writeStartObject();
 		jgen.writeStringField("name", value.getName());
 		jgen.writeStringField("image", value.getMap().getHex());
+		jgen.writeEndObject();
 	}
-
+	
 }

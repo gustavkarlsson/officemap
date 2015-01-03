@@ -3,5 +3,10 @@
     "firstName": "John",
     "lastName": "Doe",
     "email": "john.doe@company.com",
-    "portrait": "cf23df2207d99a74fbe169e3eba035e633b65d94"
+    "portrait": "cf23df2207d99a74fbe169e3eba035e633b65d94",
+    "location": {
+        "mapRef": 2,
+        "latitude": 3.4,
+        "longitude": 1.05
+    }
 }

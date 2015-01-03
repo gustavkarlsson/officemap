@@ -34,20 +34,8 @@ public class MapTest {
 	}
 	
 	@Test
-	public void deserializesFromJSON() throws Exception {
-		final Map deserialized = mapper.readValue(fixture, Map.class);
-		assertThat(deserialized).isEqualTo(map);
-	}
-	
-	@Test
 	public void validMapValidates() throws Exception {
 		assertThat(map).isValid();
-	}
-	
-	@Test
-	public void invalidId() throws Exception {
-		assertInvalidId(-1l);
-		assertInvalidId(Long.MIN_VALUE);
 	}
 	
 	@Test
@@ -59,12 +47,7 @@ public class MapTest {
 	
 	@Test
 	public void equalsContract() throws Exception {
-		EqualsVerifier.forClass(Map.class).usingGetClass().allFieldsShouldBeUsedExcept("id").verify();
-	}
-	
-	private void assertInvalidId(final Long id) {
-		final Map invalidMap = map.toBuilder().withId(id).build();
-		assertThatMapHasInvalid(invalidMap, "id");
+		EqualsVerifier.forClass(Map.class).usingGetClass().allFieldsShouldBeUsed().verify();
 	}
 	
 	private void assertInvalidName(final String username) {

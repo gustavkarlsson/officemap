@@ -5,6 +5,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.codec.DecoderException;
@@ -13,24 +15,31 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.google.common.base.Objects;
 
+@Embeddable
 public final class Sha1 {
-	
+
 	private static final int SHA1_BYTE_SIZE = 20;
 
 	@NotNull
+	@Column(name = "value")
 	private final byte[] value;
+
+	// Required by Hibernate
+	private Sha1() {
+		value = null;
+	}
 
 	private Sha1(final byte[] sha1) {
 		checkNotNull(sha1);
 		checkArgument(sha1.length == SHA1_BYTE_SIZE, "sha1 is not 20 bytes");
 		this.value = Arrays.copyOf(sha1, sha1.length);
 	}
-	
-	public final byte[] get() {
+
+	public final byte[] getBytes() {
 		final byte[] copy = Arrays.copyOf(value, value.length);
 		return copy;
 	}
-	
+
 	public final String getHex() {
 		final String encoded = Hex.encodeHexString(value);
 		return encoded;
@@ -60,7 +69,7 @@ public final class Sha1 {
 		final Sha1 rhs = (Sha1) obj;
 		return new EqualsBuilder().append(value, rhs.value).isEquals();
 	}
-	
+
 	public static Builder builder() {
 		return new Builder();
 	}
@@ -68,7 +77,7 @@ public final class Sha1 {
 	public static class Builder {
 
 		private byte[] sha1;
-		
+
 		protected Builder() {
 		}
 

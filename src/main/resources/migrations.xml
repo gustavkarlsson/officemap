@@ -15,18 +15,189 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+		
+		<!-- Event -->
 
 		<createTable tableName="Event">
 			<column name="id" type="bigint">
 				<constraints primaryKey="true" />
 			</column>
-			<column name="type" type="varchar(64)">
-				<constraints nullable="false" />
-			</column>
 			<column name="timestamp" type="bigint">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+		
+		<!-- PersonEvent -->
+
+		<createTable tableName="PersonEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="ref" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="PersonEvent_inherits_Event"
+			baseTableName="PersonEvent" baseColumnNames="id" referencedTableName="Event"
+			referencedColumnNames="id" />
+
+		<createTable tableName="CreatePersonEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="CreatePersonEvent_inherits_PersonEvent"
+			baseTableName="CreatePersonEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+
+		<createTable tableName="DeletePersonEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="DeletePersonEvent_inherits_PersonEvent"
+			baseTableName="DeletePersonEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+
+		<createTable tableName="SetPersonEmailEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="email" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="SetPersonEmailEvent_inherits_PersonEvent"
+			baseTableName="SetPersonEmailEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+
+		<createTable tableName="SetPersonFirstNameEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="firstName" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="SetPersonFirstNameEvent_inherits_PersonEvent"
+			baseTableName="SetPersonFirstNameEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+
+		<createTable tableName="SetPersonLastNameEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="lastName" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="SetPersonLastNameEvent_inherits_PersonEvent"
+			baseTableName="SetPersonLastNameEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+
+		<createTable tableName="SetPersonPortraitEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="portrait" type="binary(20)"></column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="SetPersonPortraitEvent_inherits_PersonEvent"
+			baseTableName="SetPersonPortraitEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+
+		<createTable tableName="SetPersonUsernameEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="username" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="SetPersonUsernameEvent_inherits_PersonEvent"
+			baseTableName="SetPersonUsernameEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+
+		<createTable tableName="SetPersonLocationEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="mapRef" type="int"></column>
+			<column name="latitude" type="double"></column>
+			<column name="longitude" type="double"></column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="SetPersonLocationEvent_inherits_PersonEvent"
+			baseTableName="SetPersonLocationEvent" baseColumnNames="id"
+			referencedTableName="PersonEvent" referencedColumnNames="id" />
+		
+		<!-- MapEvent -->
+
+		<createTable tableName="MapEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="ref" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="MapEvent_inherits_Event"
+			baseTableName="MapEvent" baseColumnNames="id" referencedTableName="Event"
+			referencedColumnNames="id" />
+
+		<createTable tableName="CreateMapEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="CreateMapEvent_inherits_MapEvent"
+			baseTableName="CreateMapEvent" baseColumnNames="id"
+			referencedTableName="MapEvent" referencedColumnNames="id" />
+
+		<createTable tableName="DeleteMapEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="DeleteMapEvent_inherits_MapEvent"
+			baseTableName="DeleteMapEvent" baseColumnNames="id"
+			referencedTableName="MapEvent" referencedColumnNames="id" />
+
+		<createTable tableName="UpdateMapNameEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="UpdateMapNameEvent_inherits_MapEvent"
+			baseTableName="UpdateMapNameEvent" baseColumnNames="id"
+			referencedTableName="MapEvent" referencedColumnNames="id" />
+
+		<createTable tableName="UpdateMapImageEvent">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="image" type="binary(20)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="UpdateMapImageEvent_inherits_MapEvent"
+			baseTableName="UpdateMapImageEvent" baseColumnNames="id"
+			referencedTableName="MapEvent" referencedColumnNames="id" />
 
 	</changeSet>
 </databaseChangeLog>
