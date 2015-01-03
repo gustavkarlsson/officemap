@@ -25,28 +25,27 @@ import javax.ws.rs.core.UriBuilder;
 
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.changeset.person.PersonChangeSet;
-import se.gustavkarlsson.officemap.api.event.Event;
-import se.gustavkarlsson.officemap.api.event.ProcessEventException;
-import se.gustavkarlsson.officemap.api.event.person.CreatePersonEvent;
-import se.gustavkarlsson.officemap.api.event.person.DeletePersonEvent;
-import se.gustavkarlsson.officemap.api.event.person.PersonEvent;
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.dao.EventDao;
+import se.gustavkarlsson.officemap.event.Event;
+import se.gustavkarlsson.officemap.event.ProcessEventException;
+import se.gustavkarlsson.officemap.event.person.CreatePersonEvent;
+import se.gustavkarlsson.officemap.event.person.DeletePersonEvent;
 import se.gustavkarlsson.officemap.resources.PATCH;
 
 import com.google.common.base.Optional;
 
 @Path("/person")
 public final class PersonResource {
-
+	
 	private final State state;
 	private final EventDao dao;
-
+	
 	public PersonResource(final State state, final EventDao dao) {
 		this.state = state;
 		this.dao = dao;
 	}
-
+	
 	@Path("/{ref}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -58,7 +57,7 @@ public final class PersonResource {
 		}
 		return person.get();
 	}
-
+	
 	@Path("/")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -67,7 +66,7 @@ public final class PersonResource {
 		final Map<Integer, Person> allPersons = state.getPersons().getAll();
 		return allPersons;
 	}
-
+	
 	@Path("/")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -75,22 +74,22 @@ public final class PersonResource {
 	public synchronized Response create(@Valid final PersonChangeSet changes) {
 		final long timestamp = currentTimeMillis();
 		final int ref = state.getPersons().getNextRef();
-
+		
 		final List<Event> events = new ArrayList<>();
 		events.add(new CreatePersonEvent(timestamp, ref));
 		events.addAll(changes.generateEvents(timestamp, ref));
-		
+
 		try {
 			storeAndProcessEvents(events);
 		} catch (final ProcessEventException e) {
 			throw new WebApplicationException(e, Status.CONFLICT);
 		}
-
+		
 		final URI uri = UriBuilder.fromResource(this.getClass()).build(ref);
 		final Response response = Response.created(uri).build();
 		return response;
 	}
-	
+
 	@Path("/{ref}")
 	@DELETE
 	@UnitOfWork
@@ -103,13 +102,13 @@ public final class PersonResource {
 		}
 		return Response.ok().build();
 	}
-
+	
 	@Path("/{ref}")
 	@PATCH
 	@Consumes(MediaType.APPLICATION_JSON)
 	@UnitOfWork
 	public synchronized Response update(@PathParam("ref") final IntParam ref, @Valid final PersonChangeSet changes) {
-		final List<PersonEvent> events = changes.generateEvents(currentTimeMillis(), ref.get());
+		final List<Event> events = changes.generateEvents(currentTimeMillis(), ref.get());
 		try {
 			storeAndProcessEvents(events);
 		} catch (final ProcessEventException e) {
@@ -117,13 +116,13 @@ public final class PersonResource {
 		}
 		return Response.ok().build();
 	}
-
+	
 	private void storeAndProcessEvents(final List<? extends Event> events) throws ProcessEventException {
 		for (final Event event : events) {
 			storeAndProcessEvent(event);
 		}
 	}
-
+	
 	private void storeAndProcessEvent(final Event event) throws ProcessEventException {
 		event.process(state);
 		dao.store(event);

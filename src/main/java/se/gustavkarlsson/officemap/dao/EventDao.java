@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.SessionFactory;
 
-import se.gustavkarlsson.officemap.api.event.Event;
+import se.gustavkarlsson.officemap.event.Event;
 
 public class EventDao extends AbstractDAO<Event> {
 

@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.event;
+package se.gustavkarlsson.officemap.event;
 
 @SuppressWarnings("serial")
 public class ProcessEventException extends Exception {

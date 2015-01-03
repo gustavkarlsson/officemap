@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.event.person.update;
+package se.gustavkarlsson.officemap.event.person.update;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -11,10 +11,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import se.gustavkarlsson.officemap.State;
-import se.gustavkarlsson.officemap.api.event.ProcessEventException;
 import se.gustavkarlsson.officemap.api.item.Location;
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.Person.Builder;
+import se.gustavkarlsson.officemap.event.ProcessEventException;
 
 @Entity
 @Table(name = UpdatePersonLocationEvent.TYPE)

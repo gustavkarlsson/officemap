@@ -1,22 +1,22 @@
-package se.gustavkarlsson.officemap.api.event.person.update;
+package se.gustavkarlsson.officemap.event.person.update;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import se.gustavkarlsson.officemap.Items;
 import se.gustavkarlsson.officemap.State;
-import se.gustavkarlsson.officemap.api.Items;
-import se.gustavkarlsson.officemap.api.event.ProcessEventException;
-import se.gustavkarlsson.officemap.api.event.person.PersonEvent;
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.Person.Builder;
+import se.gustavkarlsson.officemap.event.ProcessEventException;
+import se.gustavkarlsson.officemap.event.person.PersonEvent;
 
 import com.google.common.base.Optional;
 
-public abstract class UpdatePersonEvent extends PersonEvent {
-	
+abstract class UpdatePersonEvent extends PersonEvent {
+
 	public UpdatePersonEvent(final long timestamp, final int ref) {
 		super(timestamp, ref);
 	}
-	
+
 	@Override
 	public void process(final State state) throws ProcessEventException {
 		checkNotNull(state);
@@ -30,7 +30,7 @@ public abstract class UpdatePersonEvent extends PersonEvent {
 			throw new ProcessEventException(e);
 		}
 	}
-
-	protected abstract Person updateProperty(Builder builder);
 	
+	protected abstract Person updateProperty(Builder builder);
+
 }

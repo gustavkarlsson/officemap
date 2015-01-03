@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.event;
+package se.gustavkarlsson.officemap.event;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

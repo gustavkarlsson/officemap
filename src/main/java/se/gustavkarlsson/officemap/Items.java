@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api;
+package se.gustavkarlsson.officemap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
