@@ -3,7 +3,6 @@ package se.gustavkarlsson.officemap.event.person.update;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
@@ -13,7 +12,6 @@ import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
 public final class UpdatePersonFirstNameEvent extends UpdatePersonEvent {
 	public static final String TYPE = "UpdatePersonFirstNameEvent";
 	
-	@NotNull
 	@Column(name = "firstName", nullable = false)
 	private final String firstName;
 	

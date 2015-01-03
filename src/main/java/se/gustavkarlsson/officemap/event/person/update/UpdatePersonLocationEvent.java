@@ -1,6 +1,7 @@
 package se.gustavkarlsson.officemap.event.person.update;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -8,20 +9,17 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Location;
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
-import se.gustavkarlsson.officemap.event.ProcessEventException;
 
 @Entity
 @Table(name = UpdatePersonLocationEvent.TYPE)
 public final class UpdatePersonLocationEvent extends UpdatePersonEvent {
 	public static final String TYPE = "UpdatePersonLocationEvent";
 
-	@NotNull
 	@Embedded
 	@AttributeOverrides({ @AttributeOverride(name = "mapRef", column = @Column(name = "mapRef")),
 			@AttributeOverride(name = "latitude", column = @Column(name = "latitude")),
@@ -42,18 +40,14 @@ public final class UpdatePersonLocationEvent extends UpdatePersonEvent {
 	public final Location getLocation() {
 		return location;
 	}
-	
-	@Override
-	public void process(final State state) throws ProcessEventException {
-		checkNotNull(state);
-		checkLocationExists(state);
-		super.process(state);
-	}
 
-	private void checkLocationExists(final State state) throws ProcessEventException {
-		if (location != null && !state.getMaps().exists(location.getMapRef())) {
-			throw new ProcessEventException("No Map with ref: " + location.getMapRef() + " exists");
-		}
+	@Override
+	public void process(final State state) {
+		checkNotNull(state);
+		// TODO better error handling than checkState
+		checkState(location != null && !state.getMaps().exists(location.getMapRef()),
+				"No Map with ref: " + location.getMapRef() + " exists");
+		super.process(state);
 	}
 	
 	@Override

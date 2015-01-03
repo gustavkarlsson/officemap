@@ -19,32 +19,32 @@ import se.gustavkarlsson.officemap.State;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Event {
 	public static final String TYPE = "Event";
-
+	
 	@Range(min = 0)
 	@Id
 	@Column(name = "id", nullable = false)
 	@GenericGenerator(name = "idgen", strategy = "increment")
 	@GeneratedValue(generator = "idgen")
 	protected final Long id;
-
+	
 	@Range(min = 1)
 	@NotNull
 	@Column(name = "timestamp", nullable = false)
 	protected final long timestamp;
-
+	
 	protected Event(final long timestamp) {
 		this.id = null;
 		this.timestamp = timestamp;
 	}
-
+	
 	public final Long getId() {
 		return id;
 	}
-
+	
 	public final long getTimestamp() {
 		return timestamp;
 	}
-	
-	public abstract void process(State state) throws ProcessEventException;
 
+	public abstract void process(State state);
+	
 }

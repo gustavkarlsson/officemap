@@ -1,15 +1,11 @@
 package se.gustavkarlsson.officemap.event.map.update;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import se.gustavkarlsson.officemap.Items;
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Map;
 import se.gustavkarlsson.officemap.api.item.Map.MapBuilder;
 import se.gustavkarlsson.officemap.event.ItemEvent;
-import se.gustavkarlsson.officemap.event.ProcessEventException;
-
-import com.google.common.base.Optional;
 
 abstract class UpdateMapEvent extends ItemEvent {
 	
@@ -18,17 +14,12 @@ abstract class UpdateMapEvent extends ItemEvent {
 	}
 	
 	@Override
-	public void process(final State state) throws ProcessEventException {
+	public void process(final State state) {
 		checkNotNull(state);
-		try {
-			final Items<Map> maps = state.getMaps();
-			final Optional<Map> map = maps.get(ref);
-			checkState(map.isPresent(), "No Map with ref " + ref + " exists");
-			final Map updatedMap = updateProperty(map.get().toBuilder());
-			maps.replace(ref, updatedMap);
-		} catch (final Exception e) {
-			throw new ProcessEventException(e);
-		}
+		final Items<Map> maps = state.getMaps();
+		final Map map = maps.get(ref);
+		final Map updatedMap = updateProperty(map.toBuilder());
+		maps.replace(ref, updatedMap);
 	}
 
 	protected abstract Map updateProperty(MapBuilder builder);

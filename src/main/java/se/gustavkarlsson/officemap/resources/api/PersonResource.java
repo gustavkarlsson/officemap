@@ -24,17 +24,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import se.gustavkarlsson.officemap.ItemNotFoundException;
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.changeset.person.PersonChangeSet;
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.dao.EventDao;
 import se.gustavkarlsson.officemap.event.Event;
-import se.gustavkarlsson.officemap.event.ProcessEventException;
 import se.gustavkarlsson.officemap.event.person.CreatePersonEvent;
 import se.gustavkarlsson.officemap.event.person.DeletePersonEvent;
 import se.gustavkarlsson.officemap.resources.PATCH;
-
-import com.google.common.base.Optional;
 
 // TODO better error handling (give good feedback)
 @Path("/person")
@@ -54,11 +52,11 @@ public final class PersonResource {
 	@GET
 	@UnitOfWork
 	public synchronized Person read(@PathParam("ref") final IntParam ref) {
-		final Optional<Person> person = state.getPersons().get(ref.get());
-		if (!person.isPresent()) {
-			throw new WebApplicationException(Status.NOT_FOUND);
+		try {
+			return state.getPersons().get(ref.get());
+		} catch (final ItemNotFoundException e) {
+			throw new WebApplicationException(e, Status.NOT_FOUND);
 		}
-		return person.get();
 	}
 	
 	@GET
@@ -77,11 +75,8 @@ public final class PersonResource {
 		events.add(new CreatePersonEvent(timestamp, ref));
 		events.addAll(changes.generateEvents(timestamp, ref));
 
-		try {
-			storeAndProcessEvents(events);
-		} catch (final ProcessEventException e) {
-			throw new WebApplicationException(e, Status.CONFLICT);
-		}
+		storeAndProcessEvents(events);
+		// FIXME Validate person
 		
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
 		final Response response = Response.created(uri).build();
@@ -99,8 +94,8 @@ public final class PersonResource {
 		final Event event = new DeletePersonEvent(currentTimeMillis(), ref.get());
 		try {
 			storeAndProcessEvent(event);
-		} catch (final ProcessEventException e) {
-			throw new WebApplicationException(e, Status.CONFLICT);
+		} catch (final ItemNotFoundException e) {
+			throw new WebApplicationException(e, Status.NOT_FOUND);
 		}
 		return Response.ok().build();
 	}
@@ -112,19 +107,20 @@ public final class PersonResource {
 		final List<Event> events = changes.generateEvents(currentTimeMillis(), ref.get());
 		try {
 			storeAndProcessEvents(events);
-		} catch (final ProcessEventException e) {
-			throw new WebApplicationException(e, Status.CONFLICT);
+			// FIXME Validate person
+		} catch (final ItemNotFoundException e) {
+			throw new WebApplicationException(e, Status.NOT_FOUND);
 		}
 		return Response.ok().build();
 	}
 	
-	private void storeAndProcessEvents(final List<? extends Event> events) throws ProcessEventException {
+	private void storeAndProcessEvents(final List<? extends Event> events) {
 		for (final Event event : events) {
 			storeAndProcessEvent(event);
 		}
 	}
 	
-	private void storeAndProcessEvent(final Event event) throws ProcessEventException {
+	private void storeAndProcessEvent(final Event event) {
 		event.process(state);
 		dao.store(event);
 	}
