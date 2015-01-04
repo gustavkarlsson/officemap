@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import se.gustavkarlsson.officemap.api.item.Map;
+import se.gustavkarlsson.officemap.api.item.Sha1;
 import se.gustavkarlsson.officemap.test.TestMapBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +35,12 @@ public class MapTest {
 	}
 	
 	@Test
+	public void deserializesFromJSON() throws Exception {
+		final Map deserialized = mapper.readValue(fixture, Map.class);
+		assertThat(deserialized).isEqualTo(map);
+	}
+	
+	@Test
 	public void validMapValidates() throws Exception {
 		assertThat(map).isValid();
 	}
@@ -46,6 +53,11 @@ public class MapTest {
 	}
 	
 	@Test
+	public void nullImageInvalid() throws Exception {
+		assertInvalidImage(null);
+	}
+	
+	@Test
 	public void equalsContract() throws Exception {
 		EqualsVerifier.forClass(Map.class).usingGetClass().allFieldsShouldBeUsed().verify();
 	}
@@ -53,6 +65,11 @@ public class MapTest {
 	private void assertInvalidName(final String username) {
 		final Map invalidMap = map.toBuilder().withName(username).build();
 		assertThatMapHasInvalid(invalidMap, "name");
+	}
+	
+	private void assertInvalidImage(final Sha1 image) {
+		final Map invalidMap = map.toBuilder().withImage(image).build();
+		assertThatMapHasInvalid(invalidMap, "image");
 	}
 	
 	private void assertThatMapHasInvalid(final Map map, final String property) {

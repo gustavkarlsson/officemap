@@ -34,6 +34,12 @@ public class PersonTest {
 	}
 	
 	@Test
+	public void deserializesFromJSON() throws Exception {
+		final Person deserialized = mapper.readValue(fixture, Person.class);
+		assertThat(deserialized).isEqualTo(person);
+	}
+	
+	@Test
 	public void validPersonValidates() throws Exception {
 		assertThat(person).isValid();
 	}
@@ -69,6 +75,16 @@ public class PersonTest {
 		assertInvalidEmail("apa @kaka.com");
 		assertInvalidEmail("apa@ kaka.com");
 		assertInvalidEmail("apa.kaka");
+	}
+	
+	@Test
+	public void nullPortraitValid() throws Exception {
+		assertThat(TestPersonBuilder.withTestParameters().withPortrait(null)).isValid();
+	}
+	
+	@Test
+	public void nullLocationValid() throws Exception {
+		assertThat(TestPersonBuilder.withTestParameters().withLocation(null)).isValid();
 	}
 	
 	@Test
