@@ -57,7 +57,7 @@ public final class FileResource {
 	public Response send(@PathParam("sha1") final String sha1Hex) throws Exception {
 		final Sha1 sha1;
 		try {
-			sha1 = Sha1.builder().withSha1(sha1Hex).build();
+			sha1 = Sha1.builder().withHex(sha1Hex).build();
 		} catch (final IllegalArgumentException e) {
 			throw new WebApplicationException(Status.BAD_REQUEST);
 		}

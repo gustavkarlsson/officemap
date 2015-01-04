@@ -10,16 +10,15 @@ public class ValueMappingException extends JsonMappingException {
 			final String cause) {
 		super(createMessageString(nodePath, node, parameterClass) + createCauseString(cause));
 	}
-	
+
 	public ValueMappingException(final String nodePath, final JsonNode node, final String parameterClass) {
 		this(nodePath, node, parameterClass, null);
 	}
-	
+
 	private static String createMessageString(final String nodePath, final JsonNode node, final String parameterClass) {
-		return "Node at \"" + nodePath + "\" with value " + node + " could not be mapped to Value<" + parameterClass
-				+ ">";
+		return nodePath + "\" with value " + node + " could not be mapped to Value<" + parameterClass + ">";
 	}
-	
+
 	private static String createCauseString(final String cause) {
 		if (cause == null) {
 			return "";

@@ -16,7 +16,7 @@ public class Sha1Param extends AbstractParam<Sha1> {
 	
 	@Override
 	protected Sha1 parse(final String input) throws Exception {
-		return Sha1.builder().withSha1(input).build();
+		return Sha1.builder().withHex(input).build();
 	}
 
 }

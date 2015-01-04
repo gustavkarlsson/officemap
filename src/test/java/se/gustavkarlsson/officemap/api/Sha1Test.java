@@ -14,9 +14,9 @@ public class Sha1Test {
 	public void validSha1Validates() throws Exception {
 		assertThat(
 				Sha1.builder()
-						.withSha1(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 })
+						.withBytes(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 })
 						.build()).isValid();
-		assertThat(Sha1.builder().withSha1("cf23df2207d99a74fbe169e3eba035e633b65d94").build()).isValid();
+		assertThat(Sha1.builder().withHex("cf23df2207d99a74fbe169e3eba035e633b65d94").build()).isValid();
 	}
 
 	@Test
@@ -38,13 +38,13 @@ public class Sha1Test {
 	@Test(expected = NullPointerException.class)
 	public void nullSha1Fails() throws Exception {
 		final byte[] nullValue = null;
-		Sha1.builder().withSha1(nullValue).build();
+		Sha1.builder().withBytes(nullValue).build();
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void nullSha1HexFails() throws Exception {
 		final String nullValue = null;
-		Sha1.builder().withSha1(nullValue).build();
+		Sha1.builder().withHex(nullValue).build();
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class Sha1Test {
 
 	private void assertIllegalArgumentExceptionForBytes(final byte[] bytes) {
 		try {
-			Sha1.builder().withSha1(bytes).build();
+			Sha1.builder().withBytes(bytes).build();
 			fail("Expected IllegalArgumentException");
 		} catch (final IllegalArgumentException e) {
 		}
@@ -62,7 +62,7 @@ public class Sha1Test {
 
 	private void assertIllegalArgumentExceptionForText(final String text) {
 		try {
-			Sha1.builder().withSha1(text).build();
+			Sha1.builder().withHex(text).build();
 			fail("Expected IllegalArgumentException");
 		} catch (final IllegalArgumentException e) {
 		}

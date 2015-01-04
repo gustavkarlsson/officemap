@@ -43,7 +43,7 @@ public class FileHandler {
 			final String tempFileLocation = tempDirectory + "/" + tempFileName;
 			final File tempFile = new File(tempFileLocation);
 			final byte[] sha1 = transferData(inputStream, tempFile);
-			final Sha1 fileEntry = Sha1.builder().withSha1(sha1).build();
+			final Sha1 fileEntry = Sha1.builder().withBytes(sha1).build();
 			
 			if (sha1 != null) {
 				final File targetFile = new File(dataDirectory + "/" + fileEntry.getHex());

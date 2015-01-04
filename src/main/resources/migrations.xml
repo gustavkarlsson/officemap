@@ -48,6 +48,26 @@
 			<column name="id" type="bigint">
 				<constraints primaryKey="true" />
 			</column>
+			<column name="username" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="firstName" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="lastName" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="email" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="portrait" type="binary(20)">
+			</column>
+			<column name="mapRef" type="int">
+			</column>
+			<column name="latitude" type="double">
+			</column>
+			<column name="longitude" type="double">
+			</column>
 		</createTable>
 
 		<addForeignKeyConstraint constraintName="CreatePersonEvent_inherits_ItemEvent"
@@ -102,7 +122,8 @@
 			</column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="UpdatePersonLastNameEvent_inherits_ItemEvent"
+		<addForeignKeyConstraint
+			constraintName="UpdatePersonLastNameEvent_inherits_ItemEvent"
 			baseTableName="UpdatePersonLastNameEvent" baseColumnNames="id"
 			referencedTableName="ItemEvent" referencedColumnNames="id" />
 
@@ -113,7 +134,8 @@
 			<column name="portrait" type="binary(20)"></column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="UpdatePersonPortraitEvent_inherits_ItemEvent"
+		<addForeignKeyConstraint
+			constraintName="UpdatePersonPortraitEvent_inherits_ItemEvent"
 			baseTableName="UpdatePersonPortraitEvent" baseColumnNames="id"
 			referencedTableName="ItemEvent" referencedColumnNames="id" />
 
@@ -126,7 +148,8 @@
 			</column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="UpdatePersonUsernameEvent_inherits_ItemEvent"
+		<addForeignKeyConstraint
+			constraintName="UpdatePersonUsernameEvent_inherits_ItemEvent"
 			baseTableName="UpdatePersonUsernameEvent" baseColumnNames="id"
 			referencedTableName="ItemEvent" referencedColumnNames="id" />
 
@@ -139,7 +162,8 @@
 			<column name="longitude" type="double"></column>
 		</createTable>
 
-		<addForeignKeyConstraint constraintName="UpdatePersonLocationEvent_inherits_ItemEvent"
+		<addForeignKeyConstraint
+			constraintName="UpdatePersonLocationEvent_inherits_ItemEvent"
 			baseTableName="UpdatePersonLocationEvent" baseColumnNames="id"
 			referencedTableName="ItemEvent" referencedColumnNames="id" />
 
