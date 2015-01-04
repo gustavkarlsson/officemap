@@ -35,10 +35,10 @@ import se.gustavkarlsson.officemap.resources.PATCH;
 import com.sun.jersey.api.ConflictException;
 import com.sun.jersey.api.NotFoundException;
 
-@Path("/person")
+@Path("/persons")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public final class PersonResource {
+public final class PersonResource extends Resource {
 
 	private final State state;
 	private final EventDao dao;
@@ -70,14 +70,9 @@ public final class PersonResource {
 		final Event event = new CreatePersonEvent(currentTimeMillis(), ref, person);
 		processEvent(event);
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
-		final Response response = Response.created(uri).build();
-		return response;
+		return Response.created(uri).build();
 	}
 
-	private URI getCreatedResourceUri(final UriInfo uriInfo, final String path) {
-		return uriInfo.getAbsolutePathBuilder().path(path).build();
-	}
-	
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
