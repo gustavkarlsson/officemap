@@ -6,7 +6,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import se.gustavkarlsson.officemap.MapRefNotFoundException;
 import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Location;
 import se.gustavkarlsson.officemap.api.item.Person;
