@@ -1,9 +1,9 @@
-package se.gustavkarlsson.officemap.api.changeset;
+package se.gustavkarlsson.officemap.api.changesets;
 
 import java.io.IOException;
 
-import se.gustavkarlsson.officemap.api.item.Location;
-import se.gustavkarlsson.officemap.api.item.Sha1;
+import se.gustavkarlsson.officemap.api.items.Location;
+import se.gustavkarlsson.officemap.api.items.Sha1;
 import se.gustavkarlsson.officemap.util.Value;
 
 import com.fasterxml.jackson.core.JsonParser;

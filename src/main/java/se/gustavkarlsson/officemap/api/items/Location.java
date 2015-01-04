@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.item;
+package se.gustavkarlsson.officemap.api.items;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

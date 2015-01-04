@@ -7,8 +7,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 
-import se.gustavkarlsson.officemap.api.item.Person;
-import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
+import se.gustavkarlsson.officemap.api.items.Person;
+import se.gustavkarlsson.officemap.api.items.Person.PersonBuilder;
 
 @Entity
 @Table(name = UpdatePersonEmailEvent.TYPE)

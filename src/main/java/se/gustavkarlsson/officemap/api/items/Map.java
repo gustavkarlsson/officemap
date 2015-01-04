@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.item;
+package se.gustavkarlsson.officemap.api.items;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

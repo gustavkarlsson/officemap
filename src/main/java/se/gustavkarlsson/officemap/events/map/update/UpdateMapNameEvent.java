@@ -6,8 +6,8 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import se.gustavkarlsson.officemap.api.item.Map;
-import se.gustavkarlsson.officemap.api.item.Map.MapBuilder;
+import se.gustavkarlsson.officemap.api.items.Map;
+import se.gustavkarlsson.officemap.api.items.Map.MapBuilder;
 
 @Entity
 @Table(name = UpdateMapNameEvent.TYPE)

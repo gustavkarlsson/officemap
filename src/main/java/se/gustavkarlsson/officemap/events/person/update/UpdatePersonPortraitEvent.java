@@ -7,9 +7,9 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import se.gustavkarlsson.officemap.api.item.Person;
-import se.gustavkarlsson.officemap.api.item.Sha1;
-import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
+import se.gustavkarlsson.officemap.api.items.Person;
+import se.gustavkarlsson.officemap.api.items.Sha1;
+import se.gustavkarlsson.officemap.api.items.Person.PersonBuilder;
 
 @Entity
 @Table(name = UpdatePersonPortraitEvent.TYPE)

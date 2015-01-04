@@ -1,16 +1,16 @@
-package se.gustavkarlsson.officemap.api.changeset.person;
+package se.gustavkarlsson.officemap.api.changesets.person;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import se.gustavkarlsson.officemap.api.changeset.ChangeSet;
-import se.gustavkarlsson.officemap.api.changeset.ChangeSetDeserializer;
-import se.gustavkarlsson.officemap.api.changeset.ValueMappingException;
-import se.gustavkarlsson.officemap.api.changeset.person.PersonChangeSet.PersonChangeSetDeserializer;
-import se.gustavkarlsson.officemap.api.item.Location;
-import se.gustavkarlsson.officemap.api.item.Sha1;
+import se.gustavkarlsson.officemap.api.changesets.ChangeSet;
+import se.gustavkarlsson.officemap.api.changesets.ChangeSetDeserializer;
+import se.gustavkarlsson.officemap.api.changesets.ValueMappingException;
+import se.gustavkarlsson.officemap.api.changesets.person.PersonChangeSet.PersonChangeSetDeserializer;
+import se.gustavkarlsson.officemap.api.items.Location;
+import se.gustavkarlsson.officemap.api.items.Sha1;
 import se.gustavkarlsson.officemap.events.Event;
 import se.gustavkarlsson.officemap.events.person.update.UpdatePersonEmailEvent;
 import se.gustavkarlsson.officemap.events.person.update.UpdatePersonFirstNameEvent;

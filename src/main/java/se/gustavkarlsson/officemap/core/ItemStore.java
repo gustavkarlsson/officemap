@@ -6,7 +6,7 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Items<T> {
+public class ItemStore<T> {
 
 	private int refCount = 0;
 

@@ -21,8 +21,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import se.gustavkarlsson.officemap.api.changeset.map.MapChangeSet;
-import se.gustavkarlsson.officemap.api.item.Map;
+import se.gustavkarlsson.officemap.api.changesets.map.MapChangeSet;
+import se.gustavkarlsson.officemap.api.items.Map;
 import se.gustavkarlsson.officemap.core.ItemNotFoundException;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;

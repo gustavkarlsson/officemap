@@ -6,8 +6,8 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import se.gustavkarlsson.officemap.api.item.Person;
-import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
+import se.gustavkarlsson.officemap.api.items.Person;
+import se.gustavkarlsson.officemap.api.items.Person.PersonBuilder;
 
 @Entity
 @Table(name = UpdatePersonUsernameEvent.TYPE)

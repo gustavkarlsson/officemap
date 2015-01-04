@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.changeset;
+package se.gustavkarlsson.officemap.api.changesets;
 
 import java.util.List;
 

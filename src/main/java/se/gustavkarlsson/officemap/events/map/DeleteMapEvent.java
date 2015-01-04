@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import se.gustavkarlsson.officemap.api.item.Location;
-import se.gustavkarlsson.officemap.api.item.Person;
+import se.gustavkarlsson.officemap.api.items.Location;
+import se.gustavkarlsson.officemap.api.items.Person;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.events.ItemEvent;
 

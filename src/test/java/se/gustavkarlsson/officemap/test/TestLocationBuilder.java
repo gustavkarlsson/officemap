@@ -1,6 +1,6 @@
 package se.gustavkarlsson.officemap.test;
 
-import se.gustavkarlsson.officemap.api.item.Location.LocationBuilder;
+import se.gustavkarlsson.officemap.api.items.Location.LocationBuilder;
 
 public class TestLocationBuilder extends LocationBuilder {
 	

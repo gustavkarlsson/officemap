@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import se.gustavkarlsson.officemap.api.item.Map;
+import se.gustavkarlsson.officemap.api.items.Map;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.events.ItemEvent;
 

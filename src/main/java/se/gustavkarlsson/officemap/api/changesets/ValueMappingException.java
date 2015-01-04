@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.changeset;
+package se.gustavkarlsson.officemap.api.changesets;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -1,8 +1,8 @@
 package se.gustavkarlsson.officemap.events.person.update;
 
-import se.gustavkarlsson.officemap.api.item.Person;
-import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
-import se.gustavkarlsson.officemap.core.Items;
+import se.gustavkarlsson.officemap.api.items.Person;
+import se.gustavkarlsson.officemap.api.items.Person.PersonBuilder;
+import se.gustavkarlsson.officemap.core.ItemStore;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.events.ItemEvent;
 
@@ -14,7 +14,7 @@ abstract class UpdatePersonEvent extends ItemEvent {
 	
 	@Override
 	public void process(final State state) {
-		final Items<Person> persons = state.getPersons();
+		final ItemStore<Person> persons = state.getPersons();
 		final Person person = persons.get(ref);
 		final Person updatedPerson = updateProperty(person.toBuilder());
 		persons.replace(ref, updatedPerson);

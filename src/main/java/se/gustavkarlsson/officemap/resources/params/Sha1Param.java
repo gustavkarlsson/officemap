@@ -1,7 +1,7 @@
 package se.gustavkarlsson.officemap.resources.params;
 
 import io.dropwizard.jersey.params.AbstractParam;
-import se.gustavkarlsson.officemap.api.item.Sha1;
+import se.gustavkarlsson.officemap.api.items.Sha1;
 
 public class Sha1Param extends AbstractParam<Sha1> {
 

@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api.item;
+package se.gustavkarlsson.officemap.api.items;
 
 public interface Buildable<T> {
 

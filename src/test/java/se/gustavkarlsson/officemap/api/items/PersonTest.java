@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.api;
+package se.gustavkarlsson.officemap.api.items;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -9,7 +9,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.gustavkarlsson.officemap.api.item.Person;
+import se.gustavkarlsson.officemap.api.items.Person;
 import se.gustavkarlsson.officemap.test.TestPersonBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

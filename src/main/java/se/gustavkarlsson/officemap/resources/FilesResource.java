@@ -21,7 +21,7 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.gustavkarlsson.officemap.api.item.Sha1;
+import se.gustavkarlsson.officemap.api.items.Sha1;
 import se.gustavkarlsson.officemap.util.FileHandler;
 
 import com.google.common.base.Optional;

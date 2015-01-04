@@ -2,7 +2,7 @@ package se.gustavkarlsson.officemap.resources;
 
 import java.util.List;
 
-import se.gustavkarlsson.officemap.core.Items;
+import se.gustavkarlsson.officemap.core.ItemStore;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
 import se.gustavkarlsson.officemap.events.Event;
@@ -12,9 +12,9 @@ public class ItemsResource<T> extends Resource {
 	private final State state;
 	private final EventDao dao;
 
-	protected final Items<T> items;
+	protected final ItemStore<T> items;
 
-	public ItemsResource(final State state, final EventDao dao, final Items<T> items) {
+	public ItemsResource(final State state, final EventDao dao, final ItemStore<T> items) {
 		this.state = state;
 		this.dao = dao;
 		this.items = items;
