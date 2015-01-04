@@ -1,14 +1,14 @@
-package se.gustavkarlsson.officemap.event.map;
+package se.gustavkarlsson.officemap.events.map;
 
 import java.util.Map.Entry;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Location;
 import se.gustavkarlsson.officemap.api.item.Person;
-import se.gustavkarlsson.officemap.event.ItemEvent;
+import se.gustavkarlsson.officemap.core.State;
+import se.gustavkarlsson.officemap.events.ItemEvent;
 
 @Entity
 @Table(name = DeleteMapEvent.TYPE)

@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.event.person.update;
+package se.gustavkarlsson.officemap.events.person.update;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

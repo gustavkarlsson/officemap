@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.event.person.update;
+package se.gustavkarlsson.officemap.events.person.update;
 
 @SuppressWarnings("serial")
 public class MapRefNotFoundException extends RuntimeException {

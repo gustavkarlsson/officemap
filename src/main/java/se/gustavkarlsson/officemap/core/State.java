@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap;
+package se.gustavkarlsson.officemap.core;
 
 import se.gustavkarlsson.officemap.api.item.Map;
 import se.gustavkarlsson.officemap.api.item.Person;

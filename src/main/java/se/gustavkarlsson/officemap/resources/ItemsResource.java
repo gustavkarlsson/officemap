@@ -1,11 +1,11 @@
-package se.gustavkarlsson.officemap.resources.api;
+package se.gustavkarlsson.officemap.resources;
 
 import java.util.List;
 
-import se.gustavkarlsson.officemap.Items;
-import se.gustavkarlsson.officemap.State;
+import se.gustavkarlsson.officemap.core.Items;
+import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
-import se.gustavkarlsson.officemap.event.Event;
+import se.gustavkarlsson.officemap.events.Event;
 
 public class ItemsResource<T> extends Resource {
 

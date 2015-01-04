@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.resources.api;
+package se.gustavkarlsson.officemap.resources;
 
 import java.net.URI;
 

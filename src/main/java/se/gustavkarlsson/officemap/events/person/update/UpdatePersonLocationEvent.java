@@ -1,13 +1,13 @@
-package se.gustavkarlsson.officemap.event.person.update;
+package se.gustavkarlsson.officemap.events.person.update;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Location;
 import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.api.item.Person.PersonBuilder;
+import se.gustavkarlsson.officemap.core.State;
 
 @Entity
 @Table(name = UpdatePersonLocationEvent.TYPE)

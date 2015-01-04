@@ -1,10 +1,10 @@
-package se.gustavkarlsson.officemap.event.map.update;
+package se.gustavkarlsson.officemap.events.map.update;
 
-import se.gustavkarlsson.officemap.Items;
-import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Map;
 import se.gustavkarlsson.officemap.api.item.Map.MapBuilder;
-import se.gustavkarlsson.officemap.event.ItemEvent;
+import se.gustavkarlsson.officemap.core.Items;
+import se.gustavkarlsson.officemap.core.State;
+import se.gustavkarlsson.officemap.events.ItemEvent;
 
 abstract class UpdateMapEvent extends ItemEvent {
 

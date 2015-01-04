@@ -10,9 +10,9 @@ import se.gustavkarlsson.officemap.api.changeset.ChangeSetDeserializer;
 import se.gustavkarlsson.officemap.api.changeset.ValueMappingException;
 import se.gustavkarlsson.officemap.api.changeset.map.MapChangeSet.MapChangeSetDeserializer;
 import se.gustavkarlsson.officemap.api.item.Sha1;
-import se.gustavkarlsson.officemap.event.Event;
-import se.gustavkarlsson.officemap.event.map.update.UpdateMapImageEvent;
-import se.gustavkarlsson.officemap.event.map.update.UpdateMapNameEvent;
+import se.gustavkarlsson.officemap.events.Event;
+import se.gustavkarlsson.officemap.events.map.update.UpdateMapImageEvent;
+import se.gustavkarlsson.officemap.events.map.update.UpdateMapNameEvent;
 import se.gustavkarlsson.officemap.util.Value;
 
 import com.fasterxml.jackson.databind.JsonNode;

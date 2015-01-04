@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap;
+package se.gustavkarlsson.officemap.core;
 
 @SuppressWarnings("serial")
 public class ItemNotFoundException extends RuntimeException {

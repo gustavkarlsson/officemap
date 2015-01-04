@@ -1,7 +1,8 @@
-package se.gustavkarlsson.officemap.resources.api;
+package se.gustavkarlsson.officemap.resources;
 
 import static java.lang.System.currentTimeMillis;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.params.IntParam;
 
 import java.net.URI;
@@ -21,16 +22,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import se.gustavkarlsson.officemap.ItemNotFoundException;
-import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.changeset.person.PersonChangeSet;
 import se.gustavkarlsson.officemap.api.item.Person;
+import se.gustavkarlsson.officemap.core.ItemNotFoundException;
+import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
-import se.gustavkarlsson.officemap.event.Event;
-import se.gustavkarlsson.officemap.event.person.CreatePersonEvent;
-import se.gustavkarlsson.officemap.event.person.DeletePersonEvent;
-import se.gustavkarlsson.officemap.event.person.update.MapRefNotFoundException;
-import se.gustavkarlsson.officemap.resources.PATCH;
+import se.gustavkarlsson.officemap.events.Event;
+import se.gustavkarlsson.officemap.events.person.CreatePersonEvent;
+import se.gustavkarlsson.officemap.events.person.DeletePersonEvent;
+import se.gustavkarlsson.officemap.events.person.update.MapRefNotFoundException;
 
 import com.sun.jersey.api.ConflictException;
 import com.sun.jersey.api.NotFoundException;

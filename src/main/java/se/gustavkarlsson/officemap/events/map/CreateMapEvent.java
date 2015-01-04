@@ -1,13 +1,13 @@
-package se.gustavkarlsson.officemap.event.map;
+package se.gustavkarlsson.officemap.events.map;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.item.Map;
-import se.gustavkarlsson.officemap.event.ItemEvent;
+import se.gustavkarlsson.officemap.core.State;
+import se.gustavkarlsson.officemap.events.ItemEvent;
 
 @Entity
 @Table(name = CreateMapEvent.TYPE)

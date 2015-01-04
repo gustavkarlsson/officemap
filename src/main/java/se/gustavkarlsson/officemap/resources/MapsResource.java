@@ -1,7 +1,8 @@
-package se.gustavkarlsson.officemap.resources.api;
+package se.gustavkarlsson.officemap.resources;
 
 import static java.lang.System.currentTimeMillis;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.params.IntParam;
 
 import java.net.URI;
@@ -20,15 +21,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import se.gustavkarlsson.officemap.ItemNotFoundException;
-import se.gustavkarlsson.officemap.State;
 import se.gustavkarlsson.officemap.api.changeset.map.MapChangeSet;
 import se.gustavkarlsson.officemap.api.item.Map;
+import se.gustavkarlsson.officemap.core.ItemNotFoundException;
+import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
-import se.gustavkarlsson.officemap.event.Event;
-import se.gustavkarlsson.officemap.event.map.CreateMapEvent;
-import se.gustavkarlsson.officemap.event.map.DeleteMapEvent;
-import se.gustavkarlsson.officemap.resources.PATCH;
+import se.gustavkarlsson.officemap.events.Event;
+import se.gustavkarlsson.officemap.events.map.CreateMapEvent;
+import se.gustavkarlsson.officemap.events.map.DeleteMapEvent;
 
 import com.sun.jersey.api.NotFoundException;
 
@@ -36,11 +36,11 @@ import com.sun.jersey.api.NotFoundException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public final class MapsResource extends ItemsResource<Map> {
-
+	
 	public MapsResource(final State state, final EventDao dao) {
 		super(state, dao, state.getMaps());
 	}
-	
+
 	@GET
 	@Path("/{ref}")
 	public synchronized Map read(@PathParam("ref") final IntParam ref) {
@@ -50,12 +50,12 @@ public final class MapsResource extends ItemsResource<Map> {
 			throw new NotFoundException();
 		}
 	}
-
+	
 	@GET
 	public synchronized java.util.Map<Integer, Map> readAll() {
 		return items.getAll();
 	}
-
+	
 	@POST
 	@UnitOfWork
 	public synchronized Response create(@Valid final Map map, @Context final UriInfo uriInfo) {
@@ -65,7 +65,7 @@ public final class MapsResource extends ItemsResource<Map> {
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
 		return Response.created(uri).build();
 	}
-
+	
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
@@ -78,7 +78,7 @@ public final class MapsResource extends ItemsResource<Map> {
 		}
 		return Response.ok().build();
 	}
-	
+
 	@DELETE
 	@Path("/{ref}")
 	@UnitOfWork

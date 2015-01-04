@@ -1,10 +1,10 @@
-package se.gustavkarlsson.officemap.event.person;
+package se.gustavkarlsson.officemap.events.person;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import se.gustavkarlsson.officemap.State;
-import se.gustavkarlsson.officemap.event.ItemEvent;
+import se.gustavkarlsson.officemap.core.State;
+import se.gustavkarlsson.officemap.events.ItemEvent;
 
 @Entity
 @Table(name = DeletePersonEvent.TYPE)

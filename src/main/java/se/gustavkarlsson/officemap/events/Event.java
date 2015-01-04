@@ -1,4 +1,4 @@
-package se.gustavkarlsson.officemap.event;
+package se.gustavkarlsson.officemap.events;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Range;
 
-import se.gustavkarlsson.officemap.State;
+import se.gustavkarlsson.officemap.core.State;
 
 @Entity
 @Table(name = Event.TYPE)
