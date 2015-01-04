@@ -12,6 +12,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.tika.Tika;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import se.gustavkarlsson.officemap.api.item.Sha1;
 
@@ -19,7 +21,8 @@ import com.google.common.base.Optional;
 import com.google.common.net.MediaType;
 
 public class FileHandler {
-
+	private static final Logger logger = LoggerFactory.getLogger(FileHandler.class);
+	
 	private static final int BUFFER_SIZE = 1024;
 	private static final int NO_BYTES_READ = -1;
 	private static final int FILENAME_ATTEMPTS = 1000;
@@ -35,24 +38,42 @@ public class FileHandler {
 		checkNotNull(tempDirectory);
 		this.dataDirectory = dataDirectory;
 		this.tempDirectory = tempDirectory;
+		logger.debug("dataDirectory: " + dataDirectory);
+		logger.debug("tempDirectory: " + tempDirectory);
 	}
 
-	public Sha1 saveFile(final InputStream inputStream) throws IOException {
-		for (int i = 0; i < FILENAME_ATTEMPTS; i++) {
-			final File tempFile = getTempFile(i);
-			if (tempFile.exists()) {
-				continue;
+	public Sha1 saveFile(final InputStream inputStream) {
+		logger.debug("Saving file");
+		try {
+			for (int i = 0; i < FILENAME_ATTEMPTS; i++) {
+				logger.debug("Attempt " + (i + 1));
+				final File tempFile = getTempFile(i);
+				logger.debug("Temp file: " + tempFile.getAbsolutePath());
+				if (tempFile.exists()) {
+					logger.debug("Temp file already exists");
+					continue;
+				}
+
+				logger.debug("Transferring...");
+				final byte[] fileSha1Bytes = transferData(inputStream, tempFile);
+				final Sha1 fileSha1 = Sha1.builder().withBytes(fileSha1Bytes).build();
+				final File targetFile = new File(dataDirectory + "/" + fileSha1.getHex());
+				logger.debug("Target file: " + targetFile.getAbsolutePath());
+				if (!targetFile.exists()) {
+					logger.debug("Target file does not exists");
+					logger.debug("Moving...");
+					Files.move(tempFile.toPath(), targetFile.toPath());
+				} else {
+					logger.debug("Target file already exists");
+				}
+				logger.debug("Saved file as " + targetFile.getName());
+				return fileSha1;
 			}
-			
-			final byte[] fileSha1Bytes = transferData(inputStream, tempFile);
-			final Sha1 fileSha1 = Sha1.builder().withBytes(fileSha1Bytes).build();
-			final File targetFile = new File(dataDirectory + "/" + fileSha1.getHex());
-			if (!targetFile.exists()) {
-				Files.move(tempFile.toPath(), targetFile.toPath());
-			}
-			return fileSha1;
+			throw new IOException("Gave up trying to create temporary file in " + tempDirectory + " after "
+					+ FILENAME_ATTEMPTS + " attempts");
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
 		}
-		throw new IOException("Could not create temporary file in " + tempDirectory);
 	}
 
 	private File getTempFile(final int i) {
@@ -75,34 +96,36 @@ public class FileHandler {
 			final byte[] sha1 = sha1Digest.digest();
 			return sha1;
 		} catch (final NoSuchAlgorithmException e) {
-			// TODO log fatal
-			e.printStackTrace();
+			logger.error("Could not digest file data", e);
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public Optional<File> getFile(final Sha1 sha1) {
-		final String fileLocation = dataDirectory + "/" + sha1.getHex();
+	public Optional<File> getFile(final Sha1 fileSha1) {
+		final String fileLocation = dataDirectory + "/" + fileSha1.getHex();
+		logger.debug("Getting file: " + fileSha1.getHex());
 		final File file = new File(fileLocation);
 		if (!file.exists()) {
+			logger.debug("File does not exist");
 			return Optional.absent();
 		}
 		if (!file.isFile()) {
-			// TODO log warning (not a file)
+			logger.error("Could not get " + file.getAbsolutePath() + ": Not a file");
 			return Optional.absent();
 		}
 		return Optional.of(file);
 	}
 
 	public String getMimeType(final File file) {
+		logger.debug("Determining MIME type of " + file.getAbsolutePath());
 		String mimeType;
 		try {
 			mimeType = tika.detect(file);
-			return mimeType;
 		} catch (final IOException e) {
-			// TODO log warning (could not determine mimetype)
-			e.printStackTrace();
-			return MediaType.OCTET_STREAM.toString();
+			logger.warn("Could not determine MIME type of file: " + file.getAbsolutePath());
+			mimeType = MediaType.OCTET_STREAM.toString();
 		}
+		logger.debug("MIME type is " + mimeType);
+		return mimeType;
 	}
 }

@@ -1,9 +1,13 @@
 package se.gustavkarlsson.officemap.event.map;
 
+import java.util.Map.Entry;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import se.gustavkarlsson.officemap.State;
+import se.gustavkarlsson.officemap.api.item.Location;
+import se.gustavkarlsson.officemap.api.item.Person;
 import se.gustavkarlsson.officemap.event.ItemEvent;
 
 @Entity
@@ -22,7 +26,20 @@ public final class DeleteMapEvent extends ItemEvent {
 
 	@Override
 	public void process(final State state) {
+		for (final Entry<Integer, Person> entry : state.getPersons().getAll().entrySet()) {
+			final int personRef = entry.getKey();
+			final Person person = entry.getValue();
+			if (isOnMap(person)) {
+				final Person newPerson = person.toBuilder().withLocation(null).build();
+				state.getPersons().replace(personRef, newPerson);
+			}
+		}
 		state.getMaps().delete(ref);
+	}
+
+	protected boolean isOnMap(final Person person) {
+		final Location location = person.getLocation();
+		return location != null && location.getMapRef() == ref;
 	}
 	
 	@Override

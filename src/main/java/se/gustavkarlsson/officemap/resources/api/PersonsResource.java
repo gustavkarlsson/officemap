@@ -38,41 +38,41 @@ import com.sun.jersey.api.NotFoundException;
 @Path("/persons")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public final class PersonResource extends Resource {
-
-	private final State state;
-	private final EventDao dao;
-
-	public PersonResource(final State state, final EventDao dao) {
-		this.state = state;
-		this.dao = dao;
-	}
+public final class PersonsResource extends ItemsResource<Person> {
 	
+	public PersonsResource(final State state, final EventDao dao) {
+		super(state, dao, state.getPersons());
+	}
+
 	@GET
 	@Path("/{ref}")
 	public synchronized Person read(@PathParam("ref") final IntParam ref) {
 		try {
-			return state.getPersons().get(ref.get());
+			return items.get(ref.get());
 		} catch (final ItemNotFoundException e) {
 			throw new NotFoundException();
 		}
 	}
-
+	
 	@GET
 	public synchronized Map<Integer, Person> readAll() {
-		return state.getPersons().getAll();
+		return items.getAll();
 	}
-
+	
 	@POST
 	@UnitOfWork
 	public synchronized Response create(@Valid final Person person, @Context final UriInfo uriInfo) {
-		final int ref = state.getPersons().getNextRef();
+		final int ref = items.getNextRef();
 		final Event event = new CreatePersonEvent(currentTimeMillis(), ref, person);
-		processEvent(event);
+		try {
+			processEvent(event);
+		} catch (final MapRefNotFoundException e) {
+			throw new ConflictException(e.getMessage());
+		}
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
 		return Response.created(uri).build();
 	}
-
+	
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
@@ -87,7 +87,7 @@ public final class PersonResource extends Resource {
 		}
 		return Response.ok().build();
 	}
-	
+
 	@DELETE
 	@Path("/{ref}")
 	@UnitOfWork
@@ -99,31 +99,5 @@ public final class PersonResource extends Resource {
 			throw new NotFoundException();
 		}
 		return Response.ok().build();
-	}
-
-	private void processEvents(final List<? extends Event> events) {
-		state.getPersons().backup();
-		try {
-			for (final Event event : events) {
-				event.process(state);
-				dao.store(event);
-			}
-			dao.flush();
-		} catch (final Exception e) {
-			state.getPersons().restore();
-			throw e;
-		}
-	}
-
-	private void processEvent(final Event event) {
-		state.getPersons().backup();
-		try {
-			event.process(state);
-			dao.store(event);
-			dao.flush();
-		} catch (final Exception e) {
-			state.getPersons().restore();
-			throw e;
-		}
 	}
 }

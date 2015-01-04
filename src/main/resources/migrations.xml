@@ -173,6 +173,12 @@
 			<column name="id" type="bigint">
 				<constraints primaryKey="true" />
 			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="image" type="binary(20)">
+				<constraints nullable="false" />
+			</column>
 		</createTable>
 
 		<addForeignKeyConstraint constraintName="CreateMapEvent_inherits_ItemEvent"
