@@ -9,44 +9,43 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.gustavkarlsson.officemap.api.items.Location;
 import se.gustavkarlsson.officemap.test.TestLocationBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LocationTest {
-
+	
 	private static final ObjectMapper mapper = Jackson.newObjectMapper();
-	
-	private static final Location Location = TestLocationBuilder.withTestParameters().build();
 
-	private static String fixture;
+	private static final Location Location = TestLocationBuilder.withTestParameters().build();
 	
+	private static String fixture;
+
 	@BeforeClass
 	public static void setUp() throws Exception {
-		fixture = fixture("fixtures/Location.json");
+		fixture = fixture("fixtures/location.json");
 	}
-
+	
 	@Test
 	public void serializesToJSON() throws Exception {
 		final String serialized = mapper.writeValueAsString(Location);
 		assertEquals(fixture, serialized, true);
 	}
-
+	
 	@Test
 	public void deserializesFromJSON() throws Exception {
 		final Location deserialized = mapper.readValue(fixture, Location.class);
 		assertThat(deserialized).isEqualTo(Location);
 	}
-	
+
 	@Test
 	public void validLocationValidates() throws Exception {
 		assertThat(Location).isValid();
 	}
-	
+
 	@Test
 	public void equalsContract() throws Exception {
 		EqualsVerifier.forClass(Location.class).usingGetClass().allFieldsShouldBeUsed().verify();
 	}
-	
+
 }
