@@ -15,7 +15,7 @@
 		return {
 			getArea: function (ref) {
 				var deferred = $q.defer();
-				$http.get("api/areas/" + ref)
+				$http.get("api/maps/" + ref)
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})
@@ -27,7 +27,7 @@
 			},
 			getAreas: function () {
 				var deferred = $q.defer();
-				$http.get("api/areas")
+				$http.get("api/maps")
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})
@@ -153,13 +153,13 @@
 		});
 		
 		// Get dimensions of map and add map layer
-		ImageService.load("api/file/" + area.map).then(
+		ImageService.load("api/files/" + area.image).then(
 			function (img) {
 				getMap().then(function (map) {
 					var bounds, maxBounds;
 					bounds = getImageBounds(img);
 					maxBounds = offsetBounds(bounds, 200);
-					L.imageOverlay("api/file/" + area.map, bounds).addTo(map).bringToFront();
+					L.imageOverlay("api/files/" + area.image, bounds).addTo(map).bringToFront();
 					map.setMaxBounds(maxBounds);
 				});
 			},
@@ -175,7 +175,7 @@
 
 	app.config(function ($routeProvider) {
 		$routeProvider
-			.when("/areas/:ref", {
+			.when("/maps/:ref", {
 				templateUrl: "partials/area.html",
 				controller: "MapController",
 				resolve: {
