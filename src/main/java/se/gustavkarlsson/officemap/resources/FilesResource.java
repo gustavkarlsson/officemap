@@ -2,7 +2,6 @@ package se.gustavkarlsson.officemap.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -16,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
@@ -24,33 +24,33 @@ import org.slf4j.LoggerFactory;
 import se.gustavkarlsson.officemap.api.items.Sha1;
 import se.gustavkarlsson.officemap.util.FileHandler;
 
-import com.google.common.base.Optional;
-import com.sun.jersey.api.NotFoundException;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/files")
 public final class FilesResource extends Resource {
 	private static final Logger logger = LoggerFactory.getLogger(FilesResource.class);
-	
-	private final FileHandler fileHandler;
 
+	private final FileHandler fileHandler;
+	
 	public FilesResource(final FileHandler fileHandler) {
 		this.fileHandler = fileHandler;
 	}
-	
+
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@UnitOfWork
 	public Response receive(@FormDataParam("file") final InputStream fileInputStream,
 			@FormDataParam("file") final FormDataContentDisposition contentDispositionHeader,
 			@Context final UriInfo uriInfo) {
-		final Sha1 file = fileHandler.saveFile(fileInputStream);
+		final Sha1 file = fileHandler.writeFile(fileInputStream);
 		final URI uri = getCreatedResourceUri(uriInfo, file.getHex());
 		logger.info("Saved file at " + uri);
 		return Response.created(uri).build();
 	}
-	
+
+	// TODO use streaming output
+	// (http://stackoverflow.com/questions/12012724/jersey-example-of-using-streamingoutput-as-response-entity)
 	@Path("/{sha1}")
 	@GET
 	@UnitOfWork
@@ -61,14 +61,8 @@ public final class FilesResource extends Resource {
 		} catch (final IllegalArgumentException e) {
 			throw new WebApplicationException(Status.BAD_REQUEST);
 		}
-		
-		final Optional<File> possibleFile = fileHandler.getFile(sha1);
-		if (!possibleFile.isPresent()) {
-			throw new NotFoundException();
-		}
-		final File file = possibleFile.get();
-
-		final String mimeType = fileHandler.getMimeType(file);
-		return Response.ok(file).type(mimeType).build();
+		final StreamingOutput stream = fileHandler.readFile(sha1);
+		final String mimeType = fileHandler.getMimeType(sha1);
+		return Response.ok(stream).type(mimeType).build();
 	}
 }

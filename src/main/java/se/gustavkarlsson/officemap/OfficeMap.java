@@ -71,7 +71,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 	public void run(final OfficeMapConfiguration config, final Environment environment) throws Exception {
 		sessionFactory = hibernate.getSessionFactory();
 		dao = new EventDao(sessionFactory);
-		fileHandler = new FileHandler(config.getDataDirectory(), config.getTempDirectory());
+		fileHandler = new FileHandler(config.getDataPath());
 		state = initState(sessionFactory, dao);
 		
 		setupHealthChecks(environment.healthChecks());
