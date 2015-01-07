@@ -10,69 +10,83 @@ import java.nio.file.Files;
 
 import javax.ws.rs.core.StreamingOutput;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import se.gustavkarlsson.officemap.api.items.Sha1;
 
+import com.google.common.base.Optional;
 import com.google.common.io.Resources;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 
 public class FileHandlerTest {
-	
-	private static final String DATA_PATH = "data";
+
+	private static final String DATA_PATH = "data/";
 	private static final String FILE_SHA1 = "ddf7c2558cd58a06075d6506b886e7c6ebc858cc";
-	
+
 	private static final File file = new File(Resources.getResource("file.png").getPath());
-	
-	private FileHandler unixFileHandler;
-	private FileHandler windowsFileHandler;
-	private FileHandler osxFileHandler;
-	
-	@Before
-	public void setUp() throws Exception {
-		unixFileHandler = getFileHandler(Configuration.unix());
-		windowsFileHandler = getFileHandler(Configuration.windows());
-		osxFileHandler = getFileHandler(Configuration.osX());
+
+	@Test
+	public void testSaveOnUnix() throws Exception {
+		assertSaveFile(getUnixFileHandler());
 	}
-	
-	private FileHandler getFileHandler(final Configuration configuration) throws IOException {
+
+	@Test
+	public void testSaveOnWindows() throws Exception {
+		assertSaveFile(getWindowsFileHandler());
+	}
+
+	@Test
+	public void testSaveOnOsx() throws Exception {
+		assertSaveFile(getOsxFileHandler());
+	}
+
+	@Test
+	public void testReadOnUnix() throws Exception {
+		assertReadFile(getUnixFileHandler());
+	}
+
+	@Test
+	public void testReadOnWindows() throws Exception {
+		assertReadFile(getWindowsFileHandler());
+	}
+
+	@Test
+	public void testReadOnOsx() throws Exception {
+		assertReadFile(getOsxFileHandler());
+	}
+
+	// TODO verify stream content
+	private void assertReadFile(final FileHandler fh) throws FileNotFoundException {
+		final Sha1 fileHash = saveFile(fh);
+		final Optional<? extends StreamingOutput> stream = fh.readFile(fileHash);
+		assertThat(stream.isPresent()).isTrue();
+	}
+
+	private static FileHandler getUnixFileHandler() throws IOException {
+		return getFileHandlerForOs(Configuration.unix());
+	}
+
+	private static FileHandler getWindowsFileHandler() throws IOException {
+		return getFileHandlerForOs(Configuration.windows());
+	}
+
+	private static FileHandler getOsxFileHandler() throws IOException {
+		return getFileHandlerForOs(Configuration.osX());
+	}
+
+	private static FileHandler getFileHandlerForOs(final Configuration configuration) throws IOException {
 		return new FileHandler(Files.createDirectory(Jimfs.newFileSystem(configuration).getRootDirectories().iterator()
 				.next().resolve(DATA_PATH)));
 	}
 
-	@Test
-	public void testWriteOnUnix() throws Exception {
-		assertWriteFile(unixFileHandler);
-	}
-
-	@Test
-	public void testWriteOnWindows() throws Exception {
-		assertWriteFile(windowsFileHandler);
-	}
-
-	@Test
-	public void testWriteOnOsx() throws Exception {
-		assertWriteFile(osxFileHandler);
-	}
-
-	// TODO verify stream?
-	@Test
-	public void testGetOnUnix() throws Exception {
-		final FileHandler fh = unixFileHandler;
-		final Sha1 fileHash = writeFile(fh);
-		final StreamingOutput stream = fh.readFile(fileHash);
-		assertThat(stream).isNotNull();
-	}
-	
-	private void assertWriteFile(final FileHandler fh) throws FileNotFoundException {
-		final Sha1 fileHash = writeFile(fh);
+	private static void assertSaveFile(final FileHandler fh) throws FileNotFoundException {
+		final Sha1 fileHash = saveFile(fh);
 		assertThat(fileHash.getHex()).isEqualTo(FILE_SHA1);
 	}
-	
-	private Sha1 writeFile(final FileHandler fh) throws FileNotFoundException {
-		final Sha1 savedFileHash = fh.writeFile(new FileInputStream(file));
+
+	private static Sha1 saveFile(final FileHandler fh) throws FileNotFoundException {
+		final Sha1 savedFileHash = fh.saveFile(new FileInputStream(file));
 		return savedFileHash;
 	}
 }
