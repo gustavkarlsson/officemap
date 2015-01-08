@@ -6,14 +6,14 @@
 	"use strict";
 	var app = angular.module("main", ["ui.bootstrap", "ngRoute", "leaflet-directive"]);
 
-	app.factory("AreaService", function ($http, $q) {
+	app.factory("MapService", function ($http, $q) {
 		
 		// Members
 		var active;
 		
 		// Methods
 		return {
-			getArea: function (ref) {
+			getMap: function (ref) {
 				var deferred = $q.defer();
 				$http.get("api/maps/" + ref)
 					.success(function (data, status) {
@@ -25,9 +25,9 @@
 
 				return deferred.promise;
 			},
-			getAreas: function () {
+			getMaps: function () {
 				var deferred = $q.defer();
-				$http.get("api/maps")
+				$http.get("api/maps/")
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})
@@ -40,8 +40,8 @@
 			getActive: function () {
 				return active;
 			},
-			setActive: function (area) {
-				active = area;
+			setActive: function (ref) {
+				active = ref;
 				return;
 			}
 		};
@@ -71,13 +71,13 @@
 		
 	});
 
-	app.controller("AreasController", function ($scope, $http, AreaService) {
+	app.controller("MapsController", function ($scope, $http, MapService) {
 		
 		// Init
-		var areasPromise = AreaService.getAreas();
-		areasPromise.then(
-			function (areas) {
-				$scope.areas = areas;
+		var mapsPromise = MapService.getMaps();
+		mapsPromise.then(
+			function (maps) {
+				$scope.maps = maps;
 			},
 			function (reason) {
 				alert("Failed: " + reason);
@@ -85,24 +85,24 @@
 		);
 		
 		// Members
-		$scope.areas = [];
+		$scope.maps = [];
 		
 		// Methods
-		$scope.isActive = function (area) {
-			var active = AreaService.getActive();
-			return typeof active === "undefined" ? false : area.reference === active.reference;
+		$scope.isActive = function (ref) {
+			var active = MapService.getActive();
+			return typeof active === "undefined" ? false : ref === active;
 		};
 		
 	});
 
-	app.controller("MapController", function ($scope, AreaService, ImageService, leafletData, area) {
+	app.controller("LeafletController", function ($scope, MapService, ImageService, leafletData, ref, map) {
 		
 		// Variable declarations
-		var getMap, getImageBounds, offsetBounds;
+		var getLeafletMap, getImageBounds, offsetBounds;
 		
 		// Init
-		AreaService.setActive(area);
-		getMap = leafletData.getMap;
+		MapService.setActive(ref);
+		getLeafletMap = leafletData.getMap;
 		
 		// Methods
 		getImageBounds = function (img) {
@@ -113,7 +113,7 @@
 			return [[bounds[0][0] - offset, bounds[0][1] - offset], [bounds[1][0] + offset, bounds[1][1] + offset]];
 		};
 		
-		// Build map
+		// Build Leaflet Map
 		angular.extend($scope, {
 			defaults: {
 				zoomControl: false,
@@ -146,41 +146,40 @@
 		});
 		
 		// Clear layers
-		getMap().then(function (map) {
-			map.eachLayer(function (layer) {
-				map.removeLayer(layer);
+		getLeafletMap().then(function (leafletMap) {
+			leafletMap.eachLayer(function (layer) {
+				leafletMap.removeLayer(layer);
 			});
 		});
 		
 		// Get dimensions of map and add map layer
-		ImageService.load("api/files/" + area.image).then(
+		ImageService.load("api/files/" + map.image).then(
 			function (img) {
-				getMap().then(function (map) {
+				getLeafletMap().then(function (leafletMap) {
 					var bounds, maxBounds;
 					bounds = getImageBounds(img);
 					maxBounds = offsetBounds(bounds, 200);
-					L.imageOverlay("api/files/" + area.image, bounds).addTo(map).bringToFront();
-					map.setMaxBounds(maxBounds);
+					L.imageOverlay("api/files/" + map.image, bounds).addTo(leafletMap).bringToFront();
+					leafletMap.setMaxBounds(maxBounds);
 				});
 			},
 			function (reason) {
 				alert("Failed: " + reason);
 			}
 		);
-		
-		area.persons.forEach(function (personRef) {
-			var map = getMap();
-		});
 	});
 
 	app.config(function ($routeProvider) {
 		$routeProvider
 			.when("/maps/:ref", {
 				templateUrl: "partials/area.html",
-				controller: "MapController",
+				controller: "LeafletController",
 				resolve: {
-					area: function (AreaService, $route) {
-						return AreaService.getArea($route.current.params.ref);
+					ref: function ($route) {
+						return $route.current.params.ref;
+					},
+					map: function (MapService, $route) {
+						return MapService.getMap($route.current.params.ref);
 					}
 				}
 			})
