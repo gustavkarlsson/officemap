@@ -172,7 +172,7 @@
 	app.config(function ($routeProvider) {
 		$routeProvider
 			.when("/maps/:ref", {
-				templateUrl: "partials/area.html",
+				templateUrl: "partials/map.html",
 				controller: "LeafletController",
 				resolve: {
 					ref: function ($route) {
