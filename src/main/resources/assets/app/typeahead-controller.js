@@ -10,15 +10,14 @@
 
 		$scope.selected = undefined;
 
-		$scope.getPersons = function (searchTerm) {
-			// TODO add more effective searching
-			return $http.get("/api/persons").then(function (response) {
+		$scope.search = function (searchTerm) {
+			return $http.post("/api/search", searchTerm).then(function (response) {
 				return response.data;
 			});
 		};
 
 		$scope.onSelect = function ($item, $model, $label) {
-			window.location.href = "#/persons/" + $item.reference;
+			window.location.href = $item.url;
 		};
 	});
 

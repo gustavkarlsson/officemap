@@ -39,7 +39,7 @@ import com.sun.jersey.api.NotFoundException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public final class PersonsResource extends ItemsResource<Person> {
-	
+
 	public PersonsResource(final State state, final EventDao dao) {
 		super(state, dao, state.getPersons());
 	}

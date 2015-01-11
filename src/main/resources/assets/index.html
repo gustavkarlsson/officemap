@@ -35,7 +35,7 @@
 		<div class="form-group">
 			<input type="text" class="form-control input-lg"
 				placeholder="find someone..." ng-model="selected"
-				typeahead="person as person.firstName + ' ' + person.lastName + ' (' + person.username + ')' for person in getPersons($viewValue)"
+				typeahead="result as result.object.firstName + ' ' + result.object.lastName + ' (' + result.object.username + ')' for result in search($viewValue)"
 				typeahead-on-select="onSelect($item, $model, $label)"
 				typeahead-wait-ms="400" typeahead-editable="false">
 		</div>
