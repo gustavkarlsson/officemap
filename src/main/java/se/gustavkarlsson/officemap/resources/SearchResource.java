@@ -60,11 +60,14 @@ public final class SearchResource {
 		return score;
 	}
 
+	// FIXME Use a finer score system. (floats?)
 	private int calculateWordScore(final String term, final String keyword) {
-		if (keyword.equals(term)) {
+		final String keywordLowerCase = keyword.toLowerCase();
+		final String termLowerCase = term.toLowerCase();
+		if (keywordLowerCase.equals(termLowerCase)) {
 			return EQUAL_SCORE;
 		}
-		if (keyword.contains(term)) {
+		if (keywordLowerCase.contains(termLowerCase)) {
 			return SUBSTRING_SCORE;
 		}
 		return NO_SCORE;
