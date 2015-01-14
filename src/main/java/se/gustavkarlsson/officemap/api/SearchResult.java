@@ -10,35 +10,35 @@ public class SearchResult<T> implements Comparable<SearchResult<?>> {
 	private final T object;
 
 	private final String url;
-	
-	private final int score;
 
-	public SearchResult(final T object, final String url, final int score) {
+	private final double score;
+
+	public SearchResult(final T object, final String url, final double score) {
 		this.object = checkNotNull(object);
 		this.url = checkNotNull(url);
 		this.score = score;
 	}
-	
+
 	@JsonProperty("object")
 	public final T getObject() {
 		return object;
 	}
-	
+
 	@JsonProperty("url")
 	public final String getUrl() {
 		return url;
 	}
 
 	@JsonIgnore
-	public final int getScore() {
+	public final double getScore() {
 		return score;
 	}
-	
+
 	@Override
 	public int compareTo(final SearchResult<?> o) {
-		return Integer.compare(score, o.score);
+		return Double.compare(score, o.score);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "SearchResult [object=" + object + ", url=" + url + ", score=" + score + "]";

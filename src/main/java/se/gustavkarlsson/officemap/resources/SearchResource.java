@@ -25,22 +25,19 @@ import com.google.common.collect.Lists;
 @Produces(MediaType.APPLICATION_JSON)
 public final class SearchResource {
 	
-	private static final int NO_SCORE = 0;
-	private static final int SUBSTRING_SCORE = 1;
-	private static final int EQUAL_SCORE = 2;
 	private final State state;
 	
 	public SearchResource(final State state) {
 		this.state = state;
 	}
-
+	
 	@POST
 	public List<SearchResult<Person>> search(final String query, @Context final UriInfo uriInfo) {
 		final List<String> terms = Arrays.asList(query.split(" "));
 		final List<SearchResult<Person>> results = Lists.newArrayList();
 		for (final Entry<Integer, Person> entry : state.getPersons().getAll().entrySet()) {
 			final Person person = entry.getValue();
-			final int score = calculateSearchScore(terms, person.getKeywords());
+			final double score = calculateSearchScore(terms, person.getKeywords());
 			if (score > 0) {
 				final String url = "/persons/" + entry.getKey();
 				results.add(new SearchResult<Person>(person, url, score));
@@ -50,8 +47,8 @@ public final class SearchResource {
 		return results;
 	}
 	
-	private int calculateSearchScore(final Collection<String> terms, final Collection<String> keywords) {
-		int score = 0;
+	private double calculateSearchScore(final Collection<String> terms, final Collection<String> keywords) {
+		double score = 0;
 		for (final String keyword : keywords) {
 			for (final String term : terms) {
 				score += calculateWordScore(term, keyword);
@@ -59,17 +56,20 @@ public final class SearchResource {
 		}
 		return score;
 	}
-
-	// FIXME Use a finer score system. (floats?)
-	private int calculateWordScore(final String term, final String keyword) {
-		final String keywordLowerCase = keyword.toLowerCase();
-		final String termLowerCase = term.toLowerCase();
-		if (keywordLowerCase.equals(termLowerCase)) {
-			return EQUAL_SCORE;
+	
+	// TODO More sophisticated search
+	private double calculateWordScore(final String term, final String keyword) {
+		final String preparedKeyword = keyword.trim().toLowerCase();
+		final String preparedTerm = term.trim().toLowerCase();
+		if (preparedKeyword.equals(preparedTerm)) {
+			return 1.0;
 		}
-		if (keywordLowerCase.contains(termLowerCase)) {
-			return SUBSTRING_SCORE;
+		if (preparedKeyword.contains(preparedTerm)) {
+			if (preparedKeyword.length() == 0) {
+				return 0;
+			}
+			return ((double) preparedTerm.length()) / ((double) preparedKeyword.length());
 		}
-		return NO_SCORE;
+		return 0;
 	}
 }
