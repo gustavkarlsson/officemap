@@ -6,8 +6,13 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("PersonController", function ($scope, person) {
+	app.controller("PersonController", function ($scope, person, PersonService) {
+		$scope.originalPerson = JSON.parse(JSON.stringify(person));
 		$scope.person = person;
+		
+		$scope.save = function () {
+			alert("Save!");
+		};
 	});
 
 }());

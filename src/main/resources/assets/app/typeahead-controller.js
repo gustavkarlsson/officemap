@@ -17,7 +17,7 @@
 		};
 
 		$scope.onSelect = function ($item, $model, $label) {
-			window.location.href = $item.url;
+			window.location.href = "/#" + $item.url;
 		};
 	});
 
