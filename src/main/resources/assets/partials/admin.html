@@ -1,0 +1,24 @@
+<div class="container" style="margin-top: 100px;">
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2">
+			<div class="container-fluid">
+				<div class="row" ng-repeat="(ref, map) in maps">
+					<a ng-href="#/maps/{{ref}}">
+						{{map.name}}
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2">
+			<div class="container-fluid">
+				<div class="row" ng-repeat="(ref, person) in persons">
+					<a ng-href="#/persons/{{ref}}">
+						{{person.firstName + " " + person.lastName}}
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

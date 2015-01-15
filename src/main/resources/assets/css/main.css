@@ -21,12 +21,18 @@ html, body {
 	left: 10px;
 }
 
+#search .input-group {
+	width: 100%;
+}
+
 #areas {
 	position: fixed;
 	top: 10px;
 	right: 10px;
 }
 
-#search .input-group {
-	width: 100%;
+#admin {
+	position: fixed;
+	bottom: 10px;
+	left: 10px;
 }

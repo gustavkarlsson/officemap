@@ -24,6 +24,18 @@
 						return $q.reject(response.data);
 					}
 				);
+			},
+			getPersons: function () {
+				var deferred = $q.defer();
+				$http.get("api/persons/")
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
 			}
 		};
 	});

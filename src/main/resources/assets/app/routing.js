@@ -29,6 +29,18 @@
 					}
 				}
 			})
+			.when("/admin", {
+				templateUrl: "partials/admin.html",
+				controller: "AdminController",
+				resolve: {
+					persons: function (PersonService) {
+						return PersonService.getPersons();
+					},
+					maps: function (MapService) {
+						return MapService.getMaps();
+					}
+				}
+			})
 			.otherwise({
 				redirectTo: "/"
 			});
