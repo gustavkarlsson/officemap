@@ -8,24 +8,27 @@
 
 	app.config(function ($routeProvider) {
 		$routeProvider
+			.when("/", {
+				templateUrl: "partials/map.html",
+				controller: "LeafletController",
+				resolve: {
+					mapRef: function () {
+						return null;
+					},
+					map: function () {
+						return null;
+					}
+				}
+			})
 			.when("/maps/:ref", {
 				templateUrl: "partials/map.html",
 				controller: "LeafletController",
 				resolve: {
-					ref: function ($route) {
+					mapRef: function ($route) {
 						return $route.current.params.ref;
 					},
 					map: function (MapService, $route) {
-						return MapService.getMap($route.current.params.ref);
-					}
-				}
-			})
-			.when("/persons/:ref", {
-				templateUrl: "partials/person.html",
-				controller: "PersonController",
-				resolve: {
-					person: function (PersonService, $route) {
-						return PersonService.getPerson($route.current.params.ref);
+						return MapService.get($route.current.params.ref);
 					}
 				}
 			})
@@ -34,10 +37,19 @@
 				controller: "AdminController",
 				resolve: {
 					persons: function (PersonService) {
-						return PersonService.getPersons();
+						return PersonService.getAll();
 					},
 					maps: function (MapService) {
-						return MapService.getMaps();
+						return MapService.getAll();
+					}
+				}
+			})
+			.when("/admin/persons/:ref", {
+				templateUrl: "partials/person.html",
+				controller: "PersonController",
+				resolve: {
+					person: function (PersonService, $route) {
+						return PersonService.get($route.current.params.ref);
 					}
 				}
 			})

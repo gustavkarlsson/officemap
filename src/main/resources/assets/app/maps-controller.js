@@ -9,7 +9,7 @@
 	app.controller("MapsController", function ($scope, $http, MapService) {
 		
 		// Init
-		var mapsPromise = MapService.getMaps();
+		var mapsPromise = MapService.getAll();
 		mapsPromise.then(
 			function (maps) {
 				$scope.maps = maps;
@@ -25,7 +25,7 @@
 		// Methods
 		$scope.isActive = function (ref) {
 			var active = MapService.getActive();
-			return typeof active === "undefined" ? false : ref === active;
+			return ref === active;
 		};
 		
 	});

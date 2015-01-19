@@ -13,7 +13,7 @@
 		
 		// Methods
 		return {
-			getMap: function (ref) {
+			get: function (ref) {
 				var deferred = $q.defer();
 				$http.get("api/maps/" + ref)
 					.success(function (data, status) {
@@ -25,7 +25,7 @@
 
 				return deferred.promise;
 			},
-			getMaps: function () {
+			getAll: function () {
 				var deferred = $q.defer();
 				$http.get("api/maps/")
 					.success(function (data, status) {

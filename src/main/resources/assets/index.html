@@ -31,31 +31,6 @@
 
 <body>
 	<div ng-view></div>
-	<form id="search" class="form" role="search" ng-controller="TypeaheadController">
-		<div class="form-group">
-			<input type="text" class="form-control input-lg"
-				placeholder="find someone..." ng-model="selected"
-				typeahead="result as result.object.firstName + ' ' + result.object.lastName + ' (' + result.object.username + ')' for result in search($viewValue)"
-				typeahead-on-select="onSelect($item, $model, $label)"
-				typeahead-wait-ms="400" typeahead-editable="false">
-		</div>
-	</form>
-
-	<div id="areas" class="list-group"
-		ng-controller="MapsController">
-			<a class="list-group-item"
-				ng-repeat="(ref, map) in maps"
-				ng-href="#/maps/{{ref}}"
-				ng-class="{active: isActive(ref)}">
-					{{map.name}}
-			</a>
-	</div>
-
-	<div id="admin">
-		<a class="btn btn-default btn-lg" href="#/admin" role="button">
-			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-		</a>
-	</div>
 
 	<!-- jQuery -->
 	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>

@@ -6,13 +6,13 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("LeafletController", function ($scope, MapService, ImageService, leafletData, ref, map) {
+	app.controller("LeafletController", function ($scope, MapService, ImageService, leafletData, mapRef, map) {
 		
 		// Variable declarations
 		var getLeafletMap, getImageBounds, offsetBounds;
 		
 		// Init
-		MapService.setActive(ref);
+		MapService.setActive(mapRef);
 		getLeafletMap = leafletData.getMap;
 		
 		// Methods
@@ -63,21 +63,23 @@
 			});
 		});
 		
-		// Get dimensions of map and add map layer
-		ImageService.load("api/files/" + map.image).then(
-			function (img) {
-				getLeafletMap().then(function (leafletMap) {
-					var bounds, maxBounds;
-					bounds = getImageBounds(img);
-					maxBounds = offsetBounds(bounds, 200);
-					L.imageOverlay("api/files/" + map.image, bounds).addTo(leafletMap).bringToFront();
-					leafletMap.setMaxBounds(maxBounds);
-				});
-			},
-			function (reason) {
-				alert("Failed: " + reason);
-			}
-		);
+		if (map !== null) {
+			// Get dimensions of map and add map layer
+			ImageService.get(map.image).then(
+				function (img) {
+					getLeafletMap().then(function (leafletMap) {
+						var bounds, maxBounds;
+						bounds = getImageBounds(img);
+						maxBounds = offsetBounds(bounds, 200);
+						L.imageOverlay("api/files/" + map.image, bounds).addTo(leafletMap).bringToFront();
+						leafletMap.setMaxBounds(maxBounds);
+					});
+				},
+				function (reason) {
+					alert("Failed: " + reason);
+				}
+			);
+		}
 	});
 
 }());

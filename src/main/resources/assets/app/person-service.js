@@ -8,7 +8,7 @@
 
 	app.factory("PersonService", function ($http, $q) {
 		return {
-			getPerson: function (ref) {
+			get: function (ref) {
 				return $http.get("/api/persons/" + ref).then(
 					function (response) {
 						if (typeof response.data === "object") {
@@ -25,9 +25,45 @@
 					}
 				);
 			},
-			getPersons: function () {
+			getAll: function () {
 				var deferred = $q.defer();
-				$http.get("api/persons/")
+				$http.get("/api/persons/")
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
+			},
+			create: function (person) {
+				var deferred = $q.defer();
+				$http.post("/api/persons/", person)
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
+			},
+			update: function (ref, changes) {
+				var deferred = $q.defer();
+				$http.patch("/api/persons/" + ref, changes)
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
+			},
+			delete: function (ref) {
+				var deferred = $q.defer();
+				$http.delete("/api/persons/" + ref)
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})

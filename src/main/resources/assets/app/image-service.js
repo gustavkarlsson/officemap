@@ -10,7 +10,7 @@
 		
 		// Methods
 		return {
-			load: function (url) {
+			get: function (sha1) {
 				var deferred, image;
 				deferred = $q.defer();
 				image = new Image();
@@ -22,7 +22,7 @@
 					deferred.reject(false);
 				};
 
-				image.src = url;
+				image.src = "/api/files/" + sha1;
 				return deferred.promise;
 			}
 		};

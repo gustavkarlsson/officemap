@@ -1,24 +1,65 @@
-<div class="container" style="margin-top: 100px;">
-	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
-			<div class="container-fluid">
-				<div class="row" ng-repeat="(ref, map) in maps">
-					<a ng-href="#/maps/{{ref}}">
-						{{map.name}}
-					</a>
-				</div>
-			</div>
+<div class="fixed-top-right">
+	<a class="btn btn-default" href="#" role="button">
+		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	</a>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>Admin</h1>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title">Maps</h2>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(ref, map) in maps">
+						<td><a ng-href="/#/admin/maps/{{ref}}">{{map.name}}</a></td>
+						<td class="text-center" style="width: 1%;"><a ng-href="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+					</tr>
+				</tbody>
+			</table>
+			<a class="btn btn-primary" ng-href="/#/admin/maps/new" role="button">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				<span>Create...</span>
+			</a>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
-			<div class="container-fluid">
-				<div class="row" ng-repeat="(ref, person) in persons">
-					<a ng-href="#/persons/{{ref}}">
-						{{person.firstName + " " + person.lastName}}
-					</a>
-				</div>
-			</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title">Persons</h2>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Username</th>
+						<th>Full name</th>
+						<th>Email</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(ref, person) in persons">
+						<td><a ng-href="/#/admin/persons/{{ref}}">{{person.username}}</a></td>
+						<td>{{person.firstName + " " + person.lastName}}</td>
+						<td><a ng-href="mailto:{{person.email}}">{{person.email}}</a></td>
+						<td class="text-center" style="width: 1%;"><a ng-href="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+					</tr>
+				</tbody>
+			</table>
+			<a class="btn btn-primary" ng-href="/#/admin/persons/new" role="button">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				<span>Create...</span>
+			</a>
 		</div>
 	</div>
 </div>
