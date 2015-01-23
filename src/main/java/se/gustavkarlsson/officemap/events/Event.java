@@ -27,7 +27,7 @@ public abstract class Event {
 	@GeneratedValue(generator = "idgen")
 	protected final Long id;
 	
-	@Range(min = 1)
+	@Range(min = 0)
 	@NotNull
 	@Column(name = "timestamp", nullable = false)
 	protected final long timestamp;
