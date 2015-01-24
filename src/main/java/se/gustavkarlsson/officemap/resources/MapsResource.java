@@ -36,11 +36,11 @@ import com.sun.jersey.api.NotFoundException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public final class MapsResource extends ItemsResource<Map> {
-	
+
 	public MapsResource(final State state, final EventDao dao) {
 		super(state, dao, state.getMaps());
 	}
-
+	
 	@GET
 	@Path("/{ref}")
 	public synchronized Map read(@PathParam("ref") final IntParam ref) {
@@ -50,12 +50,12 @@ public final class MapsResource extends ItemsResource<Map> {
 			throw new NotFoundException();
 		}
 	}
-	
+
 	@GET
 	public synchronized java.util.Map<Integer, Map> readAll() {
 		return items.getAll();
 	}
-	
+
 	@POST
 	@UnitOfWork
 	public synchronized Response create(@Valid final Map map, @Context final UriInfo uriInfo) {
@@ -63,9 +63,9 @@ public final class MapsResource extends ItemsResource<Map> {
 		final Event event = new CreateMapEvent(currentTimeMillis(), ref, map);
 		processEvent(event);
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
-		return Response.created(uri).build();
+		return Response.created(uri).entity(ref).build();
 	}
-	
+
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
@@ -78,7 +78,7 @@ public final class MapsResource extends ItemsResource<Map> {
 		}
 		return Response.ok().build();
 	}
-
+	
 	@DELETE
 	@Path("/{ref}")
 	@UnitOfWork

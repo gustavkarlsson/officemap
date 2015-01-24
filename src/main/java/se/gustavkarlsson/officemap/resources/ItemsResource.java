@@ -7,19 +7,19 @@ import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
 import se.gustavkarlsson.officemap.events.Event;
 
-public class ItemsResource<T> extends Resource {
-
+public abstract class ItemsResource<T> extends Resource {
+	
 	private final State state;
 	private final EventDao dao;
-
+	
 	protected final ItemStore<T> items;
-
+	
 	public ItemsResource(final State state, final EventDao dao, final ItemStore<T> items) {
 		this.state = state;
 		this.dao = dao;
 		this.items = items;
 	}
-
+	
 	protected void processEvents(final List<? extends Event> events) {
 		items.backup();
 		try {
@@ -33,7 +33,7 @@ public class ItemsResource<T> extends Resource {
 			throw e;
 		}
 	}
-
+	
 	protected void processEvent(final Event event) {
 		items.backup();
 		try {
@@ -45,5 +45,5 @@ public class ItemsResource<T> extends Resource {
 			throw e;
 		}
 	}
-
+	
 }

@@ -39,11 +39,11 @@ import com.sun.jersey.api.NotFoundException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public final class PersonsResource extends ItemsResource<Person> {
-
+	
 	public PersonsResource(final State state, final EventDao dao) {
 		super(state, dao, state.getPersons());
 	}
-
+	
 	@GET
 	@Path("/{ref}")
 	public synchronized Person read(@PathParam("ref") final IntParam ref) {
@@ -53,12 +53,12 @@ public final class PersonsResource extends ItemsResource<Person> {
 			throw new NotFoundException();
 		}
 	}
-	
+
 	@GET
 	public synchronized Map<Integer, Person> readAll() {
 		return items.getAll();
 	}
-	
+
 	@POST
 	@UnitOfWork
 	public synchronized Response create(@Valid final Person person, @Context final UriInfo uriInfo) {
@@ -70,9 +70,9 @@ public final class PersonsResource extends ItemsResource<Person> {
 			throw new ConflictException(e.getMessage());
 		}
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
-		return Response.created(uri).build();
+		return Response.created(uri).entity(ref).build();
 	}
-	
+
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
@@ -87,7 +87,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 		}
 		return Response.ok().build();
 	}
-
+	
 	@DELETE
 	@Path("/{ref}")
 	@UnitOfWork

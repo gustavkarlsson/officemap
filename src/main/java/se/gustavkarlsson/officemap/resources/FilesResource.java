@@ -32,13 +32,13 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/files")
 public final class FilesResource extends Resource {
 	private static final Logger logger = LoggerFactory.getLogger(FilesResource.class);
-	
-	private final FileHandler fileHandler;
 
+	private final FileHandler fileHandler;
+	
 	public FilesResource(final FileHandler fileHandler) {
 		this.fileHandler = fileHandler;
 	}
-	
+
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@UnitOfWork
@@ -48,9 +48,9 @@ public final class FilesResource extends Resource {
 		final Sha1 file = fileHandler.saveFile(fileInputStream);
 		final URI uri = getCreatedResourceUri(uriInfo, file.getHex());
 		logger.info("Saved file at " + uri);
-		return Response.created(uri).build();
+		return Response.created(uri).entity(file.getHex()).build();
 	}
-	
+
 	@Path("/{sha1}")
 	@GET
 	@UnitOfWork
