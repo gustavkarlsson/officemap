@@ -44,10 +44,17 @@
 					}
 				}
 			})
+			.when("/admin/persons/new", {
+				templateUrl: "partials/create_person.html",
+				controller: "CreatePersonController"
+			})
 			.when("/admin/persons/:ref", {
-				templateUrl: "partials/person.html",
-				controller: "PersonController",
+				templateUrl: "partials/edit_person.html",
+				controller: "EditPersonController",
 				resolve: {
+					ref: function ($route) {
+						return $route.current.params.ref;
+					},
 					person: function (PersonService, $route) {
 						return PersonService.get($route.current.params.ref);
 					}

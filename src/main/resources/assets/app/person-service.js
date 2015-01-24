@@ -9,21 +9,16 @@
 	app.factory("PersonService", function ($http, $q) {
 		return {
 			get: function (ref) {
-				return $http.get("/api/persons/" + ref).then(
-					function (response) {
-						if (typeof response.data === "object") {
-							return response.data;
-						} else {
-							// invalid response
-							return $q.reject(response.data);
-						}
+				var deferred = $q.defer();
+				$http.get("/api/persons/" + ref)
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
 
-					},
-					function (response) {
-						// something went wrong
-						return $q.reject(response.data);
-					}
-				);
+				return deferred.promise;
 			},
 			getAll: function () {
 				var deferred = $q.defer();
@@ -40,8 +35,8 @@
 			create: function (person) {
 				var deferred = $q.defer();
 				$http.post("/api/persons/", person)
-					.success(function (data, status) {
-						deferred.resolve(data);
+					.success(function (ref) {
+						deferred.resolve(ref);
 					})
 					.error(function (data, status) {
 						deferred.reject(data);
