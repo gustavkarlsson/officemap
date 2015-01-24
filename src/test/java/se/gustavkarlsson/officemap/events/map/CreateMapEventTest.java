@@ -21,29 +21,28 @@ public class CreateMapEventTest {
 
 	@Test
 	public void testCreateWithValidMapIsValid() throws Exception {
-		CreateMapEvent event = new CreateMapEvent(0, 0, map);
+		final CreateMapEvent event = new CreateMapEvent(0, 0, map);
 		assertThat(event).isValid();
 	}
 
 	@Test
 	public void testCreateWithNullMapIsInvalid() throws Exception {
-		CreateMapEvent event = new CreateMapEvent(0, 0, null);
+		final CreateMapEvent event = new CreateMapEvent(0, 0, null);
 		assertThat(event).isInvalid();
 	}
 
 	@Test
 	public void equalsContract() throws Exception {
-		EqualsVerifier.forClass(CreateMapEvent.class).usingGetClass()
-				.allFieldsShouldBeUsedExcept("id").verify();
+		EqualsVerifier.forClass(CreateMapEvent.class).usingGetClass().allFieldsShouldBeUsedExcept("id").verify();
 	}
 
 	@Test
 	public void testProcessCreatesMap() throws Exception {
 		// FIXME mock state
-		State state = new State();
-		int ref = state.getMaps().getNextRef();
+		final State state = new State();
+		final int ref = state.getMaps().getNextRef();
 		new CreateMapEvent(0, ref, map).process(state);
-		Map savedMap = state.getMaps().get(ref);
+		final Map savedMap = state.getMaps().get(ref);
 		assertThat(savedMap).isEqualTo(map);
 	}
 

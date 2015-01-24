@@ -8,11 +8,11 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
-import com.google.common.base.Objects;
-
 import se.gustavkarlsson.officemap.api.items.Map;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.events.ItemEvent;
+
+import com.google.common.base.Objects;
 
 @Entity
 @Table(name = CreateMapEvent.TYPE)
@@ -41,8 +41,7 @@ public final class CreateMapEvent extends ItemEvent {
 
 	@Override
 	public String toString() {
-		return "CreateMapEvent [id=" + id + ", timestamp=" + timestamp
-				+ ", ref=" + ref + ", map=" + map + "]";
+		return "CreateMapEvent [id=" + id + ", timestamp=" + timestamp + ", ref=" + ref + ", map=" + map + "]";
 	}
 
 	@Override
@@ -62,8 +61,8 @@ public final class CreateMapEvent extends ItemEvent {
 			return false;
 		}
 		final CreateMapEvent rhs = (CreateMapEvent) obj;
-		return new EqualsBuilder().append(timestamp, rhs.timestamp)
-				.append(ref, rhs.ref).append(map, rhs.map).isEquals();
+		return new EqualsBuilder().append(timestamp, rhs.timestamp).append(ref, rhs.ref).append(map, rhs.map)
+				.isEquals();
 	}
 
 }
