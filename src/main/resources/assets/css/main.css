@@ -38,3 +38,18 @@
 	bottom: 10px;
 	right: 10px;
 }
+
+
+.image-caption-container {
+    position: relative;
+}
+.image-caption-container .caption {
+    position: absolute;
+	padding: 5px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: block;
+    background: rgba(0, 0, 0, .6);
+    color: #FFF;
+}

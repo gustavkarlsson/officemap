@@ -4,6 +4,6 @@
 
 (function () {
 	"use strict";
-	var app = angular.module("main", ["ui.bootstrap", "ngRoute", "leaflet-directive"]);
+	var app = angular.module("main", ["ui.bootstrap", "ngRoute", "leaflet-directive", 'angularFileUpload']);
 
 }());
