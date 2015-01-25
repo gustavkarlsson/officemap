@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -32,15 +33,16 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/files")
 public final class FilesResource extends Resource {
 	private static final Logger logger = LoggerFactory.getLogger(FilesResource.class);
-
-	private final FileHandler fileHandler;
 	
+	private final FileHandler fileHandler;
+
 	public FilesResource(final FileHandler fileHandler) {
 		this.fileHandler = fileHandler;
 	}
-
+	
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.TEXT_PLAIN)
 	@UnitOfWork
 	public Response receive(@FormDataParam("file") final InputStream fileInputStream,
 			@FormDataParam("file") final FormDataContentDisposition contentDispositionHeader,
@@ -50,7 +52,7 @@ public final class FilesResource extends Resource {
 		logger.info("Saved file at " + uri);
 		return Response.created(uri).entity(file.getHex()).build();
 	}
-
+	
 	@Path("/{sha1}")
 	@GET
 	@UnitOfWork
