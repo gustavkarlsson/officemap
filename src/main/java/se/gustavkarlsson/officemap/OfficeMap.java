@@ -45,7 +45,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		}
 	};
 
-	private final AssetsBundle assets = new AssetsBundle("/assets", "/", "index.html");
+	private final AssetsBundle assets = new AssetsBundle("/web", "/", "index.html");
 
 	private SessionFactory sessionFactory;
 	private EventDao dao;
