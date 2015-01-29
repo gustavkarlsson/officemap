@@ -54,7 +54,7 @@
 
 		$scope.getPortraitUrl = function () {
 			if (!$scope.person.portrait) {
-				return "/images/profile.png";
+				return "/assets/images/profile.png";
 			}
 			return "/api/files/" + $scope.person.portrait;
 		};
