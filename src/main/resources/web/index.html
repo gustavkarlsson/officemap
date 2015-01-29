@@ -9,17 +9,17 @@
 <title>Office Map</title>
 
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css" />
 
 <!-- Bootstrap Theme CSS -->
 <link rel="stylesheet" type="text/css"
-	href="css/bootstrap-theme.min.css" />
+	href="/assets/css/bootstrap-theme.min.css" />
 
 <!-- Leaflet CSS -->
-<link rel="stylesheet" type="text/css" href="css/leaflet.css" />
+<link rel="stylesheet" type="text/css" href="/assets/css/leaflet.css" />
 
 <!-- Main CSS -->
-<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="/assets/css/main.css" />
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,37 +32,32 @@
 <body>
 	<div ng-view></div>
 
-	<!-- jQuery -->
-	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-	<!-- Bootstrap -->
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<!-- Angular -->
-	<script type="text/javascript" src="js/angular.min.js"></script>
-	<!-- Angular Route -->
-	<script type="text/javascript" src="js/angular-route.min.js"></script>
-	<!-- Angular File Upload -->
-	<script type="text/javascript" src="js/angular-file-upload-shim.min.js"></script>
-	<script type="text/javascript" src="js/angular-file-upload.min.js"></script>
-	<!-- UI Bootstrap -->
-	<script type="text/javascript" src="js/ui-bootstrap-tpls-0.11.2.min.js"></script>
-	<!-- Leaflet -->
-	<script type="text/javascript" src="js/leaflet.js"></script>
-	<!-- Leaflet directive for AngularJs -->
-	<script type="text/javascript"
-		src="js/angular-leaflet-directive.min.js"></script>
+	<!-- 3rd party -->
+	<script type="text/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/angular.min.js"></script>
+	<script type="text/javascript" src="/assets/js/angular-route.min.js"></script>
+	<script type="text/javascript" src="/assets/js/angular-file-upload-shim.min.js"></script>
+	<script type="text/javascript" src="/assets/js/angular-file-upload.min.js"></script>
+	<script type="text/javascript" src="/assets/js/ui-bootstrap-tpls-0.11.2.min.js"></script>
+	<script type="text/javascript" src="/assets/js/leaflet.js"></script>
+	<script type="text/javascript" src="/assets/js/angular-leaflet-directive.min.js"></script>
+    
 	<!-- App -->
-	<script type="text/javascript" src="app/app.js"></script>
-	<script type="text/javascript" src="app/routing.js"></script>
-	<script type="text/javascript" src="app/diff-service.js"></script>
-	<script type="text/javascript" src="app/image-service.js"></script>
-	<script type="text/javascript" src="app/map-service.js"></script>
-	<script type="text/javascript" src="app/person-service.js"></script>
-	<script type="text/javascript" src="app/maps-controller.js"></script>
-	<script type="text/javascript" src="app/leaflet-controller.js"></script>
-	<script type="text/javascript" src="app/create-person-controller.js"></script>
-	<script type="text/javascript" src="app/edit-person-controller.js"></script>
-	<script type="text/javascript" src="app/admin-controller.js"></script>
-	<script type="text/javascript" src="app/typeahead-controller.js"></script>
+	<script type="text/javascript" src="/app/app.module.js"></script>
+	<script type="text/javascript" src="/app/app.routes.js"></script>
+    <!-- Shared -->
+	<script type="text/javascript" src="/app/shared/services/diffService.js"></script>
+	<script type="text/javascript" src="/app/shared/services/imageService.js"></script>
+	<script type="text/javascript" src="/app/shared/services/mapService.js"></script>
+	<script type="text/javascript" src="/app/shared/services/personService.js"></script>
+	<script type="text/javascript" src="/app/shared/leaflet/leafletController.js"></script>
+    <!-- Components -->
+	<script type="text/javascript" src="/app/components/createPerson/createPersonController.js"></script>
+	<script type="text/javascript" src="/app/components/editPerson/editPersonController.js"></script>
+	<script type="text/javascript" src="/app/components/admin/adminController.js"></script>
+	<script type="text/javascript" src="/app/components/map/mapsController.js"></script>
+	<script type="text/javascript" src="/app/components/map/typeaheadController.js"></script>
 </body>
 
 </html>

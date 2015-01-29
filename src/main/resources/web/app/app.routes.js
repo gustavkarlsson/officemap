@@ -9,7 +9,7 @@
 	app.config(function ($routeProvider) {
 		$routeProvider
 			.when("/", {
-				templateUrl: "partials/map.html",
+				templateUrl: "/app/components/map/mapView.html",
 				controller: "LeafletController",
 				resolve: {
 					mapRef: function () {
@@ -21,7 +21,7 @@
 				}
 			})
 			.when("/maps/:ref", {
-				templateUrl: "partials/map.html",
+				templateUrl: "/app/components/map/mapView.html",
 				controller: "LeafletController",
 				resolve: {
 					mapRef: function ($route) {
@@ -33,7 +33,7 @@
 				}
 			})
 			.when("/admin", {
-				templateUrl: "partials/admin.html",
+				templateUrl: "/app/components/admin/adminView.html",
 				controller: "AdminController",
 				resolve: {
 					persons: function (PersonService) {
@@ -45,11 +45,11 @@
 				}
 			})
 			.when("/admin/persons/new", {
-				templateUrl: "partials/create_person.html",
+				templateUrl: "/app/components/createPerson/createPersonView.html",
 				controller: "CreatePersonController"
 			})
 			.when("/admin/persons/:ref", {
-				templateUrl: "partials/edit_person.html",
+				templateUrl: "/app/components/editPerson/editPersonView.html",
 				controller: "EditPersonController",
 				resolve: {
 					ref: function ($route) {
