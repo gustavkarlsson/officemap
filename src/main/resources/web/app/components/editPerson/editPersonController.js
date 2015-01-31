@@ -6,7 +6,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("EditPersonController", function ($scope, $location, $route, ref, person, PersonService, DiffService, ImageService) {
+	app.controller("EditPersonController", function ($scope, $location, $route, ref, person, PersonService, DiffService, ImageService, ModalService) {
 		var originalPerson = angular.copy(person);
 
 		$scope.ref = ref;
@@ -32,7 +32,7 @@
 				$route.reload();
 				//TODO toast success
 			}, function (reason) {
-				alert('Failed: ' + reason);
+				alert("Failed: " + reason);
 				//TODO toast failed
 			});
 		};
@@ -42,13 +42,19 @@
 		};
 
 		$scope.delete = function () {
-			var promise = PersonService.delete($scope.ref);
-			promise.then(function () {
-				$location.path("/admin");
-				//TODO toast success
-			}, function (reason) {
-				alert('Failed: ' + reason);
-				//TODO toast failed
+			var modalOptions = {
+				bodyText: "Are you sure you want to delete this person?"
+			};
+			
+			ModalService.showDeleteModal({}, modalOptions).then(function (result) {
+				var promise = PersonService.delete($scope.ref);
+				promise.then(function () {
+					$location.path("/admin");
+					//TODO toast success
+				}, function (reason) {
+					alert("Failed: " + reason);
+					//TODO toast failed
+				});
 			});
 		};
 
@@ -67,7 +73,7 @@
 			promise.then(function (sha1) {
 				$scope.person.portrait = sha1;
 			}, function (reason) {
-				alert('Failed: ' + reason);
+				alert("Failed: " + reason);
 				//TODO toast failed
 			});
 		});
