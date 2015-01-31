@@ -1,5 +1,5 @@
 <div class="fixed-top-right">
-	<a class="btn btn-default" href="/#" role="button">
+	<a class="btn btn-default" href="/" role="button">
 		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 	</a>
 </div>
@@ -22,12 +22,12 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="(ref, map) in maps">
-						<td><a ng-href="/#/admin/maps/{{ref}}">{{map.name}}</a></td>
-						<td class="text-center" style="width: 1%;"><a ng-href="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+						<td><a ng-href="/admin/maps/{{ref}}">{{map.name}}</a></td>
+						<td class="text-center" style="width: 1%;"><a href="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
 					</tr>
 				</tbody>
 			</table>
-			<a class="btn btn-primary" ng-href="/#/admin/maps/new" role="button">
+			<a class="btn btn-primary" href="/admin/maps/new" role="button">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 				<span>Create...</span>
 			</a>
@@ -49,14 +49,14 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="(ref, person) in persons">
-						<td><a ng-href="/#/admin/persons/{{ref}}">{{person.username}}</a></td>
+						<td><a ng-href="/admin/persons/{{ref}}">{{person.username}}</a></td>
 						<td>{{person.firstName + " " + person.lastName}}</td>
 						<td><a ng-href="mailto:{{person.email}}">{{person.email}}</a></td>
-						<td class="text-center" style="width: 1%;"><a ng-href="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+						<td class="text-center" style="width: 1%;"><a ref="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
 					</tr>
 				</tbody>
 			</table>
-			<a class="btn btn-primary" ng-href="/#/admin/persons/new" role="button">
+			<a class="btn btn-primary" href="/admin/persons/new" role="button">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 				<span>Create...</span>
 			</a>

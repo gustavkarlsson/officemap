@@ -46,7 +46,7 @@
 					dummy: {
 						name: "dummy",
 						type: "imageOverlay",
-						url: "images/dummy_map.png",
+						url: "/assets/images/dummy_map.png",
 						bounds: [[0, 0], [0, 0]],
 						layerParams: {
 							noWrap: true
@@ -71,7 +71,7 @@
 						var bounds, maxBounds;
 						bounds = getImageBounds(img);
 						maxBounds = offsetBounds(bounds, 200);
-						L.imageOverlay("api/files/" + map.image, bounds).addTo(leafletMap).bringToFront();
+						L.imageOverlay("/api/files/" + map.image, bounds).addTo(leafletMap).bringToFront();
 						leafletMap.setMaxBounds(maxBounds);
 					});
 				},

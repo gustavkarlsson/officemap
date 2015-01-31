@@ -12,7 +12,7 @@
 		$scope.save = function () {
 			var promise = PersonService.create($scope.person);
 			promise.then(function (ref) {
-				$location.url("/admin/persons/" + ref);
+				$location.path("/admin/persons/" + ref);
 				//TODO toast success
 			}, function (reason) {
 				alert('Failed: ' + reason);

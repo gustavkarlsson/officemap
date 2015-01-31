@@ -15,14 +15,14 @@
 		ng-controller="MapsController">
 			<a class="list-group-item"
 				ng-repeat="(ref, map) in maps"
-				ng-href="#/maps/{{ref}}"
+				ng-href="/maps/{{ref}}"
 				ng-class="{active: isActive(ref)}">
 					{{map.name}}
 			</a>
 	</div>
 
 	<div class="fixed-bottom-left">
-		<a class="btn btn-default" href="#/admin" role="button">
+		<a class="btn btn-default" href="/admin" role="button">
 			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 		</a>
 	</div>

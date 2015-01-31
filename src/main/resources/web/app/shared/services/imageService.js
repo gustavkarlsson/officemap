@@ -29,7 +29,7 @@
 				var deferred = $q.defer(),
 					formData = new FormData();
 				formData.append("file", file);
-				$http.post("api/files/", formData, {
+				$http.post("/api/files/", formData, {
 						transformRequest: angular.identity,
 						headers: {
 							"Content-Type": undefined

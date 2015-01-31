@@ -15,7 +15,7 @@
 		return {
 			get: function (ref) {
 				var deferred = $q.defer();
-				$http.get("api/maps/" + ref)
+				$http.get("/api/maps/" + ref)
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})
@@ -27,7 +27,7 @@
 			},
 			getAll: function () {
 				var deferred = $q.defer();
-				$http.get("api/maps/")
+				$http.get("/api/maps/")
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})

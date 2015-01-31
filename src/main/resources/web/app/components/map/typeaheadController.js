@@ -6,7 +6,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("TypeaheadController", function ($scope, $http) {
+	app.controller("TypeaheadController", function ($scope, $location, $http) {
 
 		$scope.selected = undefined;
 
@@ -17,7 +17,7 @@
 		};
 
 		$scope.onSelect = function ($item, $model, $label) {
-			window.location.href = "/#" + $item.url;
+			$location.path($item.url);
 		};
 	});
 
