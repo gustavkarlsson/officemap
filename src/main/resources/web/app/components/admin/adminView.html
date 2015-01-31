@@ -17,13 +17,11 @@
 				<thead>
 					<tr>
 						<th>Name</th>
-						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="(ref, map) in maps">
 						<td><a ng-href="/admin/maps/{{ref}}">{{map.name}}</a></td>
-						<td class="text-center" style="width: 1%;"><a href="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -44,7 +42,6 @@
 						<th>Username</th>
 						<th>Full name</th>
 						<th>Email</th>
-						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -52,7 +49,6 @@
 						<td><a ng-href="/admin/persons/{{ref}}">{{person.username}}</a></td>
 						<td>{{person.firstName + " " + person.lastName}}</td>
 						<td><a ng-href="mailto:{{person.email}}">{{person.email}}</a></td>
-						<td class="text-center" style="width: 1%;"><a ref="#" class="text-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
 					</tr>
 				</tbody>
 			</table>
