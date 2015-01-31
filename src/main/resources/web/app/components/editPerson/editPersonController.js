@@ -41,13 +41,13 @@
 			$scope.person = angular.copy(originalPerson);
 		};
 
-		$scope.delete = function () {
+		$scope.remove = function () {
 			var modalOptions = {
 				bodyText: "Are you sure you want to delete this person?"
 			};
 
 			ModalService.showDeleteModal({}, modalOptions).then(function (result) {
-				var promise = PersonService.delete($scope.ref);
+				var promise = PersonService.remove($scope.ref);
 				promise.then(function () {
 					$location.path("/admin");
 					//TODO toast success

@@ -56,9 +56,9 @@
 
 				return deferred.promise;
 			},
-			delete: function (ref) {
+			remove: function (ref) {
 				var deferred = $q.defer();
-				$http.delete("/api/persons/" + ref)
+				$http["delete"]("/api/persons/" + ref)
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})

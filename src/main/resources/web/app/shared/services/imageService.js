@@ -1,6 +1,7 @@
 /*global alert */
 /*global L */
 /*global angular */
+/*global FormData */
 
 (function () {
 	"use strict";
@@ -30,17 +31,15 @@
 					formData = new FormData();
 				formData.append("file", file);
 				$http.post("/api/files/", formData, {
-						transformRequest: angular.identity,
-						headers: {
-							"Content-Type": undefined
-						}
-					})
-					.success(function (sha1) {
-						deferred.resolve(sha1);
-					})
-					.error(function (data, status) {
-						deferred.reject(data);
-					});
+					transformRequest: angular.identity,
+					headers: {
+						"Content-Type": undefined
+					}
+				}).success(function (sha1) {
+					deferred.resolve(sha1);
+				}).error(function (data, status) {
+					deferred.reject(data);
+				});
 
 				return deferred.promise;
 			}
