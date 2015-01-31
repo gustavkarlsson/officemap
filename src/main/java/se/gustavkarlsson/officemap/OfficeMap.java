@@ -10,11 +10,16 @@ import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+import java.util.EnumSet;
 import java.util.List;
 
+import javax.servlet.DispatcherType;
+
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.context.internal.ManagedSessionContext;
+import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
@@ -77,6 +82,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 
 		setupHealthChecks(environment.healthChecks());
 		setupJersey(environment.jersey());
+		setupUrlRewriting(environment);
 	}
 
 	private void setupHealthChecks(final HealthCheckRegistry healthChecks) {
@@ -90,6 +96,12 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		jersey.register(new PersonsResource(state, dao));
 		jersey.register(new MapsResource(state, dao));
 		jersey.register(new SearchResource(state));
+	}
+
+	private void setupUrlRewriting(final Environment environment) {
+		final FilterHolder filter = environment.getApplicationContext().addFilter(UrlRewriteFilter.class, "/*",
+				EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
+		filter.setInitParameter("confPath", "urlrewrite.xml");
 	}
 
 	private State initState(final SessionFactory sessionFactory, final EventDao dao) {
