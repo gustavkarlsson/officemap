@@ -7,7 +7,7 @@
 	var app = angular.module("main");
 
 	app.controller("MapsController", function ($scope, $http, MapService) {
-		
+
 		// Init
 		var mapsPromise = MapService.getAll();
 		mapsPromise.then(
@@ -18,16 +18,16 @@
 				alert("Failed: " + reason);
 			}
 		);
-		
+
 		// Members
 		$scope.maps = [];
-		
+
 		// Methods
 		$scope.isActive = function (ref) {
 			var active = MapService.getActive();
 			return ref === active;
 		};
-		
+
 	});
 
 }());

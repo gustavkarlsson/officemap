@@ -7,10 +7,10 @@
 	var app = angular.module("main");
 
 	app.factory("MapService", function ($http, $q) {
-		
+
 		// Members
 		var active;
-		
+
 		// Methods
 		return {
 			get: function (ref) {
@@ -45,7 +45,7 @@
 				return;
 			}
 		};
-		
+
 	});
 
 }());

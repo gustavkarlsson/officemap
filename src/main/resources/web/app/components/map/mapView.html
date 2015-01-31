@@ -1,22 +1,14 @@
 <div id="map-container">
 	<leaflet defaults="defaults" controls="controls" layers="layers" center="center"></leaflet>
-	
+
 	<form id="search" class="form fixed-top-left" role="search" ng-controller="TypeaheadController">
 		<div class="form-group">
-			<input type="text" class="form-control input-lg"
-				placeholder="find someone..." ng-model="selected"
-				typeahead="result as result.object.firstName + ' ' + result.object.lastName + ' (' + result.object.username + ')' for result in search($viewValue)"
-				typeahead-on-select="onSelect($item, $model, $label)"
-				typeahead-wait-ms="400" typeahead-editable="false">
+			<input type="text" class="form-control input-lg" placeholder="find someone..." ng-model="selected" typeahead="result as result.object.firstName + ' ' + result.object.lastName + ' (' + result.object.username + ')' for result in search($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" typeahead-wait-ms="400" typeahead-editable="false">
 		</div>
 	</form>
 
-	<div class="list-group fixed-top-right"
-		ng-controller="MapsController">
-			<a class="list-group-item"
-				ng-repeat="(ref, map) in maps"
-				ng-href="/maps/{{ref}}"
-				ng-class="{active: isActive(ref)}">
+	<div class="list-group fixed-top-right" ng-controller="MapsController">
+		<a class="list-group-item" ng-repeat="(ref, map) in maps" ng-href="/maps/{{ref}}" ng-class="{active: isActive(ref)}">
 					{{map.name}}
 			</a>
 	</div>

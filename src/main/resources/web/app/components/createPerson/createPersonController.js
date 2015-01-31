@@ -8,7 +8,7 @@
 
 	app.controller("CreatePersonController", function ($scope, $location, PersonService) {
 		$scope.person = {};
-		
+
 		$scope.save = function () {
 			var promise = PersonService.create($scope.person);
 			promise.then(function (ref) {

@@ -45,7 +45,7 @@
 			var modalOptions = {
 				bodyText: "Are you sure you want to delete this person?"
 			};
-			
+
 			ModalService.showDeleteModal({}, modalOptions).then(function (result) {
 				var promise = PersonService.delete($scope.ref);
 				promise.then(function () {

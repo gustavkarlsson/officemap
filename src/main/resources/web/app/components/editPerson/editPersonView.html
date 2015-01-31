@@ -11,13 +11,11 @@
 	<form role="form" name="form">
 		<ng-include src="'/app/shared/views/personFormItems.html'"></ng-include>
 		<button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid || !isChanged()">
-			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-			Save
+			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>Save
 		</button>
 		<button type="button" class="btn btn-warning" ng-click="reset()">Reset</button>
 		<button type="button" class="btn btn-link pull-right" ng-click="delete()">
-			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-			Delete
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete
 		</button>
 	</form>
 </div>

@@ -21,7 +21,8 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="(ref, map) in maps">
-						<td><a ng-href="/admin/maps/{{ref}}">{{map.name}}</a></td>
+						<td><a ng-href="/admin/maps/{{ref}}">{{map.name}}</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -46,9 +47,11 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="(ref, person) in persons">
-						<td><a ng-href="/admin/persons/{{ref}}">{{person.username}}</a></td>
+						<td><a ng-href="/admin/persons/{{ref}}">{{person.username}}</a>
+						</td>
 						<td>{{person.firstName + " " + person.lastName}}</td>
-						<td><a ng-href="mailto:{{person.email}}">{{person.email}}</a></td>
+						<td><a ng-href="mailto:{{person.email}}">{{person.email}}</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>

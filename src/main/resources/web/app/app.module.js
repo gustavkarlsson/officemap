@@ -4,8 +4,8 @@
 
 (function () {
 	"use strict";
-	var app = angular.module("main", ["ui.bootstrap", "ngRoute", "leaflet-directive", 'angularFileUpload']);
-	
+	var app = angular.module("main", ["ui.bootstrap", "ngRoute", "leaflet-directive", "angularFileUpload"]);
+
 	app.config(function ($locationProvider) {
 		$locationProvider.html5Mode(true);
 	});

@@ -7,23 +7,23 @@
 	var app = angular.module("main");
 
 	app.controller("LeafletController", function ($scope, MapService, ImageService, leafletData, mapRef, map) {
-		
+
 		// Variable declarations
 		var getLeafletMap, getImageBounds, offsetBounds;
-		
+
 		// Init
 		MapService.setActive(mapRef);
 		getLeafletMap = leafletData.getMap;
-		
+
 		// Methods
 		getImageBounds = function (img) {
 			return [[-(img.height / 2), -(img.width / 2)], [img.height / 2, img.width / 2]];
 		};
-		
+
 		offsetBounds = function (bounds, offset) {
 			return [[bounds[0][0] - offset, bounds[0][1] - offset], [bounds[1][0] + offset, bounds[1][1] + offset]];
 		};
-		
+
 		// Build Leaflet Map
 		angular.extend($scope, {
 			defaults: {
@@ -55,14 +55,14 @@
 				}
 			}
 		});
-		
+
 		// Clear layers
 		getLeafletMap().then(function (leafletMap) {
 			leafletMap.eachLayer(function (layer) {
 				leafletMap.removeLayer(layer);
 			});
 		});
-		
+
 		if (map !== null) {
 			// Get dimensions of map and add map layer
 			ImageService.get(map.image).then(
