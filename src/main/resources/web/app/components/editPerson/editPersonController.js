@@ -29,7 +29,7 @@
 				promise;
 			promise = PersonService.update($scope.ref, changes);
 			promise.then(function () {
-				$route.reload();
+				$location.path("/admin");
 				//TODO toast success
 			}, function (reason) {
 				alert("Failed: " + reason);

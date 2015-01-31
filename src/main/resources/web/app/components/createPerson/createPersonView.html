@@ -9,22 +9,10 @@
 		<h1>Create person</h1>
 	</div>
 	<form role="form" name="form">
-		<div class="form-group" ng-class="{ 'has-error': form.username.$invalid }">
-			<label for="username">Username</label>
-			<input class="form-control" name="username" placeholder="Enter username" ng-model="person.username" required>
-		</div>
-		<div class="form-group" ng-class="{ 'has-error': form.firstName.$invalid }">
-			<label for="firstName">First name</label>
-			<input class="form-control" name="firstName" placeholder="Enter first name" ng-model="person.firstName" required>
-		</div>
-		<div class="form-group" ng-class="{ 'has-error': form.lastName.$invalid }">
-			<label for="lastName">Last name</label>
-			<input class="form-control" name="lastName" placeholder="Enter last name" ng-model="person.lastName" required>
-		</div>
-		<div class="form-group" ng-class="{ 'has-error': form.email.$invalid }">
-			<label for="email">Email address</label>
-			<input type="email" class="form-control" name="email" placeholder="Enter email" ng-model="person.email" required>
-		</div>
-		<button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">Save</button>
+		<ng-include src="'/app/shared/views/personFormItems.html'"></ng-include>
+		<button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">
+			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+			Save
+		</button>
 	</form>
 </div>
