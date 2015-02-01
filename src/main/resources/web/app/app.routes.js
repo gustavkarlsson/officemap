@@ -44,6 +44,30 @@
 					}
 				}
 			})
+			.when("/admin/maps/new", {
+				templateUrl: "/app/components/editMap/editMapView.html",
+				controller: "EditMapController",
+				resolve: {
+					ref: function ($route) {
+						return null;
+					},
+					map: function (MapService, $route) {
+						return null;
+					}
+				}
+			})
+			.when("/admin/maps/:ref", {
+				templateUrl: "/app/components/editMap/editMapView.html",
+				controller: "EditMapController",
+				resolve: {
+					ref: function ($route) {
+						return $route.current.params.ref;
+					},
+					map: function (MapService, $route) {
+						return MapService.get($route.current.params.ref);
+					}
+				}
+			})
 			.when("/admin/persons/new", {
 				templateUrl: "/app/components/editPerson/editPersonView.html",
 				controller: "EditPersonController",
