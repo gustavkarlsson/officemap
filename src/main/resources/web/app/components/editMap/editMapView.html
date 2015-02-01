@@ -10,9 +10,9 @@
 			<h1 ng-hide="!isNew()">Create map</h1>
 			<h1 ng-hide="isNew()">Edit map</h1>
 		</div>
-		<form role="form" name="form">
-			<div class="form-group" ng-class="{ 'has-error': !hasImage() }">
-				<label for="portrait">Image</label>
+		<form novalidate role="form" name="form">
+			<div class="form-group">
+				<label for="image">Image</label>
 				<div ng-file-drop ng-file-select ng-model="file" allow-dir="false" accept="image/*" style="width: 200px; max-height: 250px; cursor: pointer;" class="image-caption-container">
 					<img ng-src="{{getImageUrl()}}" class="img-responsive" />
 					<div class="caption">Click or use drag and drop to upload an image</div>

@@ -10,7 +10,7 @@
 			<h1 ng-hide="!isNew()">Create person</h1>
 			<h1 ng-hide="isNew()">Edit person</h1>
 		</div>
-		<form role="form" name="form">
+		<form novalidate role="form" name="form">
 			<div class="form-group">
 				<label for="portrait">Portrait</label>
 				<div ng-file-drop ng-file-select ng-model="file" allow-dir="false" accept="image/*" style="width: 200px; max-height: 250px; cursor: pointer;" class="image-caption-container">
