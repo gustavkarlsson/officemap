@@ -45,8 +45,16 @@
 				}
 			})
 			.when("/admin/persons/new", {
-				templateUrl: "/app/components/createPerson/createPersonView.html",
-				controller: "CreatePersonController"
+				templateUrl: "/app/components/editPerson/editPersonView.html",
+				controller: "EditPersonController",
+				resolve: {
+					ref: function ($route) {
+						return null;
+					},
+					person: function (PersonService, $route) {
+						return null;
+					}
+				}
 			})
 			.when("/admin/persons/:ref", {
 				templateUrl: "/app/components/editPerson/editPersonView.html",

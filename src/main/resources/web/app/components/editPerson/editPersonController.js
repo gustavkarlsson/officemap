@@ -11,20 +11,34 @@
 
 		$scope.ref = ref;
 		$scope.person = person;
-
-		$scope.removePortrait = function () {
-			$scope.person.portrait = null;
-		};
-
-		$scope.hasPortrait = function () {
-			return $scope.person.portrait;
-		};
+		if ($scope.person === null) {
+			$scope.person = {};
+		}
 
 		$scope.isChanged = function () {
 			return !angular.equals($scope.person, originalPerson);
 		};
 
-		$scope.save = function () {
+		$scope.reset = function () {
+			$scope.person = angular.copy(originalPerson);
+		};
+
+		$scope.isNew = function () {
+			return originalPerson === null;
+		};
+
+		$scope.create = function () {
+			var promise = PersonService.create($scope.person);
+			promise.then(function (ref) {
+				$location.path("/admin");
+				//TODO toast success
+			}, function (reason) {
+				alert("Failed: " + reason);
+				//TODO toast failed
+			});
+		};
+
+		$scope.update = function () {
 			var changes = DiffService.getChanges(originalPerson, $scope.person),
 				promise;
 			promise = PersonService.update($scope.ref, changes);
@@ -35,10 +49,6 @@
 				alert("Failed: " + reason);
 				//TODO toast failed
 			});
-		};
-
-		$scope.reset = function () {
-			$scope.person = angular.copy(originalPerson);
 		};
 
 		$scope.remove = function () {
@@ -56,6 +66,14 @@
 					//TODO toast failed
 				});
 			});
+		};
+
+		$scope.removePortrait = function () {
+			$scope.person.portrait = null;
+		};
+
+		$scope.hasPortrait = function () {
+			return $scope.person.portrait;
 		};
 
 		$scope.getPortraitUrl = function () {
