@@ -41,7 +41,8 @@
 				<thead>
 					<tr>
 						<th>Username</th>
-						<th>Full name</th>
+						<th>First name</th>
+						<th>Last name</th>
 						<th>Email</th>
 					</tr>
 				</thead>
@@ -49,7 +50,8 @@
 					<tr ng-repeat="(ref, person) in persons">
 						<td><a ng-href="/admin/persons/{{ref}}">{{person.username}}</a>
 						</td>
-						<td>{{person.firstName + " " + person.lastName}}</td>
+						<td>{{person.firstName}}</td>
+						<td>{{person.lastName}}</td>
 						<td><a ng-href="mailto:{{person.email}}">{{person.email}}</a>
 						</td>
 					</tr>
