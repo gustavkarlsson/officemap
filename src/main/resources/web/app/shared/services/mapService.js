@@ -8,10 +8,6 @@
 
 	app.factory("MapService", function ($http, $q) {
 
-		// Members
-		var active;
-
-		// Methods
 		return {
 			get: function (ref) {
 				var deferred = $q.defer();
@@ -72,13 +68,6 @@
 					});
 
 				return deferred.promise;
-			},
-			getActive: function () {
-				return active;
-			},
-			setActive: function (ref) {
-				active = ref;
-				return;
 			}
 		};
 

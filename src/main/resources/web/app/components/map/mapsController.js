@@ -6,7 +6,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("MapsController", function ($scope, $http, MapService) {
+	app.controller("MapsController", function ($scope, $http, ActiveMapService, MapService) {
 
 		// Init
 		var mapsPromise = MapService.getAll();
@@ -24,7 +24,7 @@
 
 		// Methods
 		$scope.isActive = function (ref) {
-			var active = MapService.getActive();
+			var active = ActiveMapService.get();
 			return ref === active;
 		};
 
