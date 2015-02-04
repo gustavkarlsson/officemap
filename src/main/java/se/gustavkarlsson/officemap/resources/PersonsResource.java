@@ -6,8 +6,11 @@ import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.params.IntParam;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -17,12 +20,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import se.gustavkarlsson.officemap.api.changesets.person.PersonChangeSet;
+import se.gustavkarlsson.officemap.api.items.Location;
 import se.gustavkarlsson.officemap.api.items.Person;
 import se.gustavkarlsson.officemap.core.ItemNotFoundException;
 import se.gustavkarlsson.officemap.core.State;
@@ -39,11 +44,11 @@ import com.sun.jersey.api.NotFoundException;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public final class PersonsResource extends ItemsResource<Person> {
-	
+
 	public PersonsResource(final State state, final EventDao dao) {
 		super(state, dao, state.getPersons());
 	}
-	
+
 	@GET
 	@Path("/{ref}")
 	public synchronized Person read(@PathParam("ref") final IntParam ref) {
@@ -55,15 +60,37 @@ public final class PersonsResource extends ItemsResource<Person> {
 	}
 
 	@GET
-	public synchronized Map<Integer, Person> readAll() {
-		return items.getAll();
+	public synchronized Map<Integer, Person> readAll(
+			@QueryParam("mapRef") IntParam mapRef) {
+		Map<Integer, Person> persons = items.getAll();
+		if (mapRef != null) {
+			return onlyWithMapRef(persons, mapRef.get());
+		}
+		return persons;
+	}
+
+	private Map<Integer, Person> onlyWithMapRef(Map<Integer, Person> persons,
+			final int ref) {
+		Map<Integer, Person> filteredPersons = new HashMap<Integer, Person>(
+				persons);
+		for (Iterator<Entry<Integer, Person>> it = filteredPersons.entrySet()
+				.iterator(); it.hasNext();) {
+			Person person = it.next().getValue();
+			Location location = person.getLocation();
+			if (location == null || location.getMapRef() != ref) {
+				it.remove();
+			}
+		}
+		return filteredPersons;
 	}
 
 	@POST
 	@UnitOfWork
-	public synchronized Response create(@Valid final Person person, @Context final UriInfo uriInfo) {
+	public synchronized Response create(@Valid final Person person,
+			@Context final UriInfo uriInfo) {
 		final int ref = items.getNextRef();
-		final Event event = new CreatePersonEvent(currentTimeMillis(), ref, person);
+		final Event event = new CreatePersonEvent(currentTimeMillis(), ref,
+				person);
 		try {
 			processEvent(event);
 		} catch (final MapRefNotFoundException e) {
@@ -76,8 +103,10 @@ public final class PersonsResource extends ItemsResource<Person> {
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
-	public synchronized Response update(@PathParam("ref") final IntParam ref, @Valid final PersonChangeSet changes) {
-		final List<Event> events = changes.generateEvents(currentTimeMillis(), ref.get());
+	public synchronized Response update(@PathParam("ref") final IntParam ref,
+			@Valid final PersonChangeSet changes) {
+		final List<Event> events = changes.generateEvents(currentTimeMillis(),
+				ref.get());
 		try {
 			processEvents(events);
 		} catch (final ItemNotFoundException e) {
@@ -87,12 +116,13 @@ public final class PersonsResource extends ItemsResource<Person> {
 		}
 		return Response.ok().build();
 	}
-	
+
 	@DELETE
 	@Path("/{ref}")
 	@UnitOfWork
 	public synchronized Response delete(@PathParam("ref") final IntParam ref) {
-		final Event event = new DeletePersonEvent(currentTimeMillis(), ref.get());
+		final Event event = new DeletePersonEvent(currentTimeMillis(),
+				ref.get());
 		try {
 			processEvent(event);
 		} catch (final ItemNotFoundException e) {

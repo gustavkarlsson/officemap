@@ -22,7 +22,19 @@
 			},
 			getAll: function () {
 				var deferred = $q.defer();
-				$http.get("/api/persons/")
+				$http.get("/api/persons")
+					.success(function (data, status) {
+						deferred.resolve(data);
+					})
+					.error(function (data, status) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
+			},
+			getAllByMapRef: function (ref) {
+				var deferred = $q.defer();
+				$http.get("/api/persons?mapRef=" + ref)
 					.success(function (data, status) {
 						deferred.resolve(data);
 					})
@@ -34,7 +46,7 @@
 			},
 			create: function (person) {
 				var deferred = $q.defer();
-				$http.post("/api/persons/", person)
+				$http.post("/api/persons", person)
 					.success(function (ref) {
 						deferred.resolve(ref);
 					})

@@ -6,13 +6,13 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("LeafletController", function ($scope, MapService, ImageService, leafletData, mapRef, map) {
+	app.controller("LeafletController", function ($scope, ActiveMapService, MapService, ImageService, leafletData, mapRef, map, persons, activePerson) {
 
 		// Variable declarations
 		var getLeafletMap, getImageBounds, offsetBounds;
 
 		// Init
-		MapService.setActive(mapRef);
+		ActiveMapService.set(mapRef);
 		getLeafletMap = leafletData.getMap;
 
 		// Methods
@@ -53,6 +53,15 @@
 						}
 					}
 				}
+			},
+			markers: {
+				osloMarker: {
+					lat: 0,
+					lng: 0,
+					message: "Peter",
+					focus: true,
+					draggable: false
+				}
 			}
 		});
 
@@ -73,6 +82,7 @@
 						maxBounds = offsetBounds(bounds, 200);
 						L.imageOverlay("/api/files/" + map.image, bounds).addTo(leafletMap).bringToFront();
 						leafletMap.setMaxBounds(maxBounds);
+						L.marker([50.5, 30.5]).addTo(leafletMap);
 					});
 				},
 				function (reason) {

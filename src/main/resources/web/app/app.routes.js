@@ -17,6 +17,12 @@
 					},
 					map: function () {
 						return null;
+					},
+					persons: function () {
+						return [];
+					},
+					activePerson: function () {
+						return null;
 					}
 				}
 			})
@@ -29,6 +35,12 @@
 					},
 					map: function (MapService, $route) {
 						return MapService.get($route.current.params.ref);
+					},
+					persons: function (PersonService, $route) {
+						return PersonService.getAllByMapRef($route.current.params.ref);
+					},
+					activePerson: function () {
+						return null;
 					}
 				}
 			})
