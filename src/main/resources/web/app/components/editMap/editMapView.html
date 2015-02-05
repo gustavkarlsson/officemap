@@ -1,40 +1,39 @@
 <div class="fixed-top-right">
-	<div class="fixed-top-right">
-		<a class="btn btn-default" href="/admin" role="button">
-			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		</a>
-	</div>
+	<a class="btn btn-default" href="/admin" role="button">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	</a>
+</div>
 
-	<div class="container">
-		<div class="page-header">
-			<h1 ng-hide="!isNew()">Create map</h1>
-			<h1 ng-hide="isNew()">Edit map</h1>
-		</div>
-		<form novalidate role="form" name="form">
-			<div class="form-group">
-				<label for="image">Image</label>
-				<div ng-file-drop ng-file-select ng-model="file" allow-dir="false" accept="image/*" style="width: 200px; max-height: 250px; cursor: pointer;" class="image-caption-container">
-					<img ng-src="{{getImageUrl()}}" class="img-responsive" />
-					<div class="caption">Click or use drag and drop to upload an image</div>
-				</div>
-			</div>
-			<div class="form-group" ng-class="{ 'has-error': form.name.$invalid }">
-				<label for="name">Name</label>
-				<input class="form-control" name="name" placeholder="Enter name" ng-model="map.name" required>
-			</div>
-			<div ng-hide="!isNew()">
-				<button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid">
-					<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Create
-				</button>
-			</div>
-			<div ng-hide="isNew()">
-				<button type="submit" class="btn btn-primary" ng-click="update()" ng-disabled="form.$invalid || !isChanged()">
-					<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Save
-				</button>
-				<button type="button" class="btn btn-warning" ng-click="reset()">&nbsp;Reset</button>
-				<button type="button" class="btn btn-link pull-right" ng-click="remove()">
-					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;Delete
-				</button>
-			</div>
-		</form>
+<div class="container">
+	<div class="page-header">
+		<h1 ng-hide="!isNew()">Create map</h1>
+		<h1 ng-hide="isNew()">Edit map</h1>
 	</div>
+	<form novalidate role="form" name="form">
+		<div class="form-group">
+			<label for="image">Image</label>
+			<div ng-file-drop ng-file-select ng-model="file" allow-dir="false" accept="image/*" style="width: 200px; max-height: 250px; cursor: pointer;" class="image-caption-container">
+				<img ng-src="{{getImageUrl()}}" class="img-responsive" />
+				<div class="caption">Click or use drag and drop to upload an image</div>
+			</div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error': form.name.$invalid }">
+			<label for="name">Name</label>
+			<input class="form-control" name="name" placeholder="Enter name" ng-model="map.name" required>
+		</div>
+		<div ng-hide="!isNew()">
+			<button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid">
+				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Create
+			</button>
+		</div>
+		<div ng-hide="isNew()">
+			<button type="submit" class="btn btn-primary" ng-click="update()" ng-disabled="form.$invalid || !isChanged()">
+				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Save
+			</button>
+			<button type="button" class="btn btn-warning" ng-click="reset()">&nbsp;Reset</button>
+			<button type="button" class="btn btn-link pull-right" ng-click="remove()">
+				<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;Delete
+			</button>
+		</div>
+	</form>
+</div>
