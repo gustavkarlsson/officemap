@@ -6,7 +6,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.factory("MapService", function ($http, $q) {
+	app.service("MapService", function ($http, $q) {
 
         this.get = function (ref) {
             var deferred = $q.defer();
