@@ -9,7 +9,9 @@
 	app.controller("LeafletController", function ($scope, ActiveMapService, MapService, ImageService, leafletData, mapRef, map, persons, activePerson) {
 
 		// Variable declarations
-		var getLeafletMap, getImageBounds, offsetBounds;
+		var getLeafletMap,
+            getImageBounds,
+            offsetBounds;
 
 		// Init
 		ActiveMapService.set(mapRef);

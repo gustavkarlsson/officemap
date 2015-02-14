@@ -8,7 +8,9 @@
 	var app = angular.module("main");
 
 	app.service("ModalService", function ($modal) {
-		var modalDefaults, modalOptions, show;
+		var modalDefaults,
+            modalOptions,
+            show;
 
 		modalDefaults = {
 			templateUrl: "/app/shared/services/modal/modalView.html"
