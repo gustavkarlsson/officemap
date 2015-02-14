@@ -6,19 +6,16 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.factory("ActiveMapService", function ($http, $q) {
-
+	app.service("ActiveMapService", function ($http, $q) {
 		var active;
 
-		return {
-			get: function () {
-				return active;
-			},
-			set: function (ref) {
-				active = ref;
-				return;
-			}
-		};
+        this.get = function () {
+            return active;
+        };
+
+        this.set = function (ref) {
+            active = ref;
+        };
 
 	});
 
