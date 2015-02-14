@@ -7,7 +7,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.factory("ModalService", function ($modal) {
+	app.service("ModalService", function ($modal) {
 		var modalDefaults, modalOptions, show;
 		
 		modalDefaults = {
@@ -42,24 +42,21 @@
 
 			return $modal.open(tempModalDefaults).result;
 		};
-		
-		return {
-			showModal: function (customModalDefaults, customModalOptions) {
-				//if (!customModalDefaults) {
-				//	customModalDefaults = {};
-				//}
-				return show(customModalDefaults, customModalOptions);
-			},
-			showDeleteModal: function (customModalDefaults, customModalOptions) {
-				if (!customModalOptions) {
-					customModalOptions = {};
-				}
-				customModalOptions.confirmButtonText = "Delete";
-				customModalOptions.confirmButtonType = "danger";
-				customModalOptions.headerText = "Delete?";
-				return show(customModalDefaults, customModalOptions);
-			}
-		};
-	});
+
+
+        this.showModal = function (customModalDefaults, customModalOptions) {
+            return show(customModalDefaults, customModalOptions);
+        };
+
+        this.showDeleteModal = function (customModalDefaults, customModalOptions) {
+            if (!customModalOptions) {
+                customModalOptions = {};
+            }
+            customModalOptions.confirmButtonText = "Delete";
+            customModalOptions.confirmButtonType = "danger";
+            customModalOptions.headerText = "Delete?";
+            return show(customModalDefaults, customModalOptions);
+        };
+    });
 
 }());
