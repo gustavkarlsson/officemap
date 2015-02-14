@@ -9,7 +9,7 @@
 
 	app.service("ModalService", function ($modal) {
 		var modalDefaults, modalOptions, show;
-		
+
 		modalDefaults = {
 			templateUrl: "/app/shared/services/modal/modalView.html"
 		};
@@ -21,10 +21,10 @@
 			cancelButtonType: "link",
 			headerText: "Are you sure?"
 		};
-		
+
 		show = function (customModalDefaults, customModalOptions) {
 			var tempModalDefaults = {}, tempModalOptions = {};
-			
+
 			angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
 			angular.extend(tempModalOptions, modalOptions, customModalOptions);
 
