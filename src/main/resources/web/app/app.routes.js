@@ -36,6 +36,11 @@
 					map: function (MapService, $route) {
 						return MapService.get($route.current.params.ref);
 					},
+					image: function (MapService, ImageService, $route) {
+						return MapService.get($route.current.params.ref).then(function (map) {
+                            return ImageService.get(map.image);
+                        });
+					},
 					persons: function (PersonService, $route) {
 						return PersonService.getAllByMapRef($route.current.params.ref);
 					},
