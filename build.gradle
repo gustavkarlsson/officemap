@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+group = 'se.gustavkarlsson'
+version = '1.0.0-SNAPSHOT'
+
+description = 'OfficeMap'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'commons-codec:commons-codec:1.10',
+            'com.h2database:h2:1.4.182',
+            'com.sun.jersey.contribs:jersey-multipart:1.18.2',
+            'org.apache.tika:tika-core:1.6',
+            'org.tuckey:urlrewritefilter:4.0.3',
+            'io.dropwizard:dropwizard-testing:0.7.1',
+            'io.dropwizard:dropwizard-hibernate:0.7.1',
+            'io.dropwizard:dropwizard-migrations:0.7.1',
+            'io.dropwizard:dropwizard-core:0.7.1',
+            'io.dropwizard:dropwizard-views-mustache:0.7.1',
+            'io.dropwizard:dropwizard-assets:0.7.1'
+    testCompile 'junit:junit:4.11',
+            'org.easytesting:fest-assert-core:2.0M10',
+            'nl.jqno.equalsverifier:equalsverifier:1.5',
+            'com.google.jimfs:jimfs:1.0',
+            'org.skyscreamer:jsonassert:1.2.3'
+}
+
+mainClassName = 'se.gustavkarlsson.officemap.OfficeMap'

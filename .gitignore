@@ -18,8 +18,9 @@ hs_err_pid*
 /.idea
 *.iml
 
-# Maven
-target/
+# Gradle
+build/
+.gradle/
 
 # Embedded Databases
 *.db
