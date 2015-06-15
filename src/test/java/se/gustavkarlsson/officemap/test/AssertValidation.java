@@ -1,13 +1,12 @@
 package se.gustavkarlsson.officemap.test;
 
-import java.util.Set;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-
-import org.fest.assertions.api.AbstractAssert;
-import org.fest.assertions.api.Assertions;
+import java.util.Set;
 
 public class AssertValidation extends AbstractAssert<AssertValidation, Object> {
 
