@@ -2,7 +2,7 @@ package se.gustavkarlsson.officemap;
 
 import com.codahale.metrics.health.HealthCheckRegistry;
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -47,7 +47,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		}
 	};
 
-	private final AssetsBundle assets = new AssetsBundle("/web", "/", "index.html");
+	private final ConfiguredAssetsBundle assets = new ConfiguredAssetsBundle("/web", "/", "index.html");
 
 	private final MultiPartBundle multipart = new MultiPartBundle();
 

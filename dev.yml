@@ -1,0 +1,3 @@
+assets:
+  overrides:
+    /: src/main/resources/web/
