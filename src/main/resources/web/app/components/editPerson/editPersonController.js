@@ -19,7 +19,7 @@
 			return !angular.equals($scope.person, originalPerson);
 		};
 
-		$scope.reset = function () {
+		$scope.revert = function () {
 			$scope.person = angular.copy(originalPerson);
 		};
 

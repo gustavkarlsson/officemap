@@ -19,7 +19,7 @@
 			return !angular.equals($scope.map, originalMap);
 		};
 
-		$scope.reset = function () {
+		$scope.revert = function () {
 			$scope.map = angular.copy(originalMap);
 		};
 
