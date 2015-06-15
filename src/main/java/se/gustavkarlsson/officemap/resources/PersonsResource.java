@@ -1,31 +1,8 @@
 package se.gustavkarlsson.officemap.resources;
 
-import static java.lang.System.currentTimeMillis;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.params.IntParam;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
 import se.gustavkarlsson.officemap.api.changesets.person.PersonChangeSet;
 import se.gustavkarlsson.officemap.api.items.Location;
 import se.gustavkarlsson.officemap.api.items.Person;
@@ -37,8 +14,21 @@ import se.gustavkarlsson.officemap.events.person.CreatePersonEvent;
 import se.gustavkarlsson.officemap.events.person.DeletePersonEvent;
 import se.gustavkarlsson.officemap.events.person.update.MapRefNotFoundException;
 
-import com.sun.jersey.api.ConflictException;
-import com.sun.jersey.api.NotFoundException;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static java.lang.System.currentTimeMillis;
+
 
 @Path("/persons")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -94,7 +84,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 		try {
 			processEvent(event);
 		} catch (final MapRefNotFoundException e) {
-			throw new ConflictException(e.getMessage());
+			throw new ClientErrorException(e.getMessage(), Response.Status.CONFLICT);
 		}
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
 		return Response.created(uri).entity(ref).build();
@@ -112,7 +102,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 		} catch (final ItemNotFoundException e) {
 			throw new NotFoundException();
 		} catch (final MapRefNotFoundException e) {
-			throw new ConflictException(e.getMessage());
+			throw new ClientErrorException(e.getMessage(), Response.Status.CONFLICT);
 		}
 		return Response.ok().build();
 	}

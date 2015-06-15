@@ -1,34 +1,19 @@
 package se.gustavkarlsson.officemap.resources;
 
+import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
-
-import java.io.InputStream;
-import java.net.URI;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.StreamingOutput;
-import javax.ws.rs.core.UriInfo;
-
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.gustavkarlsson.officemap.api.items.Sha1;
 import se.gustavkarlsson.officemap.util.FileHandler;
 
-import com.google.common.base.Optional;
-import com.sun.jersey.api.NotFoundException;
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.Status;
+import java.io.InputStream;
+import java.net.URI;
 
 @Path("/files")
 public final class FilesResource extends Resource {

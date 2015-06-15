@@ -1,12 +1,12 @@
 package se.gustavkarlsson.officemap.api.items;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
 
 @Embeddable
 public final class Location implements Buildable<Location> {
@@ -50,7 +50,7 @@ public final class Location implements Buildable<Location> {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("mapRef", mapRef).add("latitude", latitude).add("longitude", longitude)
+		return MoreObjects.toStringHelper(this).add("mapRef", mapRef).add("latitude", latitude).add("longitude", longitude)
 				.toString();
 	}
 

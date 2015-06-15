@@ -1,7 +1,7 @@
 package se.gustavkarlsson.officemap.api.items;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.fest.assertions.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.fail;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static se.gustavkarlsson.officemap.test.AssertValidation.assertThat;
 import io.dropwizard.jackson.Jackson;

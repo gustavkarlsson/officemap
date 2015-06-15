@@ -1,18 +1,16 @@
 package se.gustavkarlsson.officemap.events.map;
 
+import com.google.common.base.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import se.gustavkarlsson.officemap.api.items.Map;
+import se.gustavkarlsson.officemap.core.State;
+import se.gustavkarlsson.officemap.events.ItemEvent;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-
-import se.gustavkarlsson.officemap.api.items.Map;
-import se.gustavkarlsson.officemap.core.State;
-import se.gustavkarlsson.officemap.events.ItemEvent;
-
-import com.google.common.base.Objects;
 
 @Entity
 @Table(name = CreateMapEvent.TYPE)

@@ -1,9 +1,9 @@
 package se.gustavkarlsson.officemap.util;
 
-import static org.fest.assertions.api.Assertions.assertThat;
 import nl.jqno.equalsverifier.EqualsVerifier;
-
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ValueTest {
 	

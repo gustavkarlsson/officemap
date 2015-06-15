@@ -1,39 +1,50 @@
 package se.gustavkarlsson.officemap;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import io.dropwizard.server.DefaultServerFactory;
+import io.dropwizard.server.ServerFactory;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class OfficeMapConfiguration extends Configuration {
-	
-	@NotBlank
-	@JsonProperty
-	private String dataPath = "data/";
 
 	@Valid
 	@NotNull
-	@JsonProperty
-	private final DataSourceFactory database = createDefaultDataSourceFactory();
+	private final ServerFactory serverFactory = createDefaultServerFactory();
+
+	@Valid
+	@NotNull
+	private final DataSourceFactory dataSourceFactory = createDefaultDataSourceFactory();
 	
+	@NotBlank
+	private final String dataPath = "data/";
+
+	@Override
+	@JsonProperty("server")
+	public ServerFactory getServerFactory() {
+		return serverFactory;
+	}
+
+	@JsonProperty("database")
+	public final DataSourceFactory getDataSourceFactory() {
+		return dataSourceFactory;
+	}
+
+	@JsonProperty("dataPath")
 	public final Path getDataPath() {
 		return Paths.get(dataPath);
 	}
 
-	public final void setDataPath(final String dataPath) {
-		this.dataPath = dataPath;
-	}
-
-	public final DataSourceFactory getDataSourceFactory() {
-		return database;
+	private ServerFactory createDefaultServerFactory() {
+		DefaultServerFactory factory = new DefaultServerFactory();
+		factory.setJerseyRootPath("/api/*");
+		return factory;
 	}
 
 	private DataSourceFactory createDefaultDataSourceFactory() {

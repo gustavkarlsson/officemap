@@ -1,26 +1,21 @@
 package se.gustavkarlsson.officemap;
 
+import com.codahale.metrics.health.HealthCheckRegistry;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.ScanningHibernateBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import java.util.EnumSet;
-import java.util.List;
-
-import javax.servlet.DispatcherType;
-
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.context.internal.ManagedSessionContext;
 import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
-
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
 import se.gustavkarlsson.officemap.events.Event;
@@ -31,7 +26,9 @@ import se.gustavkarlsson.officemap.resources.PersonsResource;
 import se.gustavkarlsson.officemap.resources.SearchResource;
 import se.gustavkarlsson.officemap.util.FileHandler;
 
-import com.codahale.metrics.health.HealthCheckRegistry;
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
+import java.util.List;
 
 public class OfficeMap extends Application<OfficeMapConfiguration> {
 
@@ -52,6 +49,8 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 
 	private final AssetsBundle assets = new AssetsBundle("/web", "/", "index.html");
 
+	private final MultiPartBundle multipart = new MultiPartBundle();
+
 	private SessionFactory sessionFactory;
 	private EventDao dao;
 	private FileHandler fileHandler;
@@ -71,6 +70,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		bootstrap.addBundle(hibernate);
 		bootstrap.addBundle(migrations);
 		bootstrap.addBundle(assets);
+		bootstrap.addBundle(multipart);
 	}
 
 	@Override
@@ -90,8 +90,6 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 	}
 
 	private void setupJersey(final JerseyEnvironment jersey) {
-		jersey.setUrlPattern("/api/*");
-
 		jersey.register(new FilesResource(fileHandler));
 		jersey.register(new PersonsResource(state, dao));
 		jersey.register(new MapsResource(state, dao));

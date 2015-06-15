@@ -1,21 +1,16 @@
 package se.gustavkarlsson.officemap.api.items;
 
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
-import com.google.common.collect.Sets;
+import javax.persistence.*;
+import java.util.Set;
 
 @Embeddable
 public final class Person implements Buildable<Person>, Searchable {
@@ -96,7 +91,7 @@ public final class Person implements Buildable<Person>, Searchable {
 	
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("username", username).add("firstName", firstName)
+		return MoreObjects.toStringHelper(this).add("username", username).add("firstName", firstName)
 				.add("lastName", lastName).add("email", email).add("portrait", portrait).add("location", location)
 				.toString();
 	}

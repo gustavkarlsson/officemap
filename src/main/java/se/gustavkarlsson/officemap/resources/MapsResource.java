@@ -1,26 +1,8 @@
 package se.gustavkarlsson.officemap.resources;
 
-import static java.lang.System.currentTimeMillis;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.params.IntParam;
-
-import java.net.URI;
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
 import se.gustavkarlsson.officemap.api.changesets.map.MapChangeSet;
 import se.gustavkarlsson.officemap.api.items.Map;
 import se.gustavkarlsson.officemap.core.ItemNotFoundException;
@@ -30,7 +12,17 @@ import se.gustavkarlsson.officemap.events.Event;
 import se.gustavkarlsson.officemap.events.map.CreateMapEvent;
 import se.gustavkarlsson.officemap.events.map.DeleteMapEvent;
 
-import com.sun.jersey.api.NotFoundException;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
+import java.util.List;
+
+import static java.lang.System.currentTimeMillis;
+
 
 @Path("/maps")
 @Consumes(MediaType.APPLICATION_JSON)

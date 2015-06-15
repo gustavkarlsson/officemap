@@ -13,19 +13,19 @@ repositories {
     mavenCentral()
 }
 
-def dropwizardVersion = '0.7.1'
+def dropwizardVersion = '0.8.1'
 
 dependencies {
     compile 'commons-codec:commons-codec:1.10',
             'com.h2database:h2:1.4.182',
-            'com.sun.jersey.contribs:jersey-multipart:1.18.2',
             'org.apache.tika:tika-core:1.6',
             'org.tuckey:urlrewritefilter:4.0.3',
             'io.dropwizard:dropwizard-testing:' + dropwizardVersion,
             'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion,
             'io.dropwizard:dropwizard-migrations:' + dropwizardVersion,
             'io.dropwizard:dropwizard-core:' + dropwizardVersion,
-            'io.dropwizard:dropwizard-assets:' + dropwizardVersion
+            'io.dropwizard:dropwizard-assets:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-forms:' + dropwizardVersion
     testCompile 'junit:junit:4.11',
             'org.easytesting:fest-assert-core:2.0M10',
             'nl.jqno.equalsverifier:equalsverifier:1.5',

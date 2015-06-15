@@ -1,17 +1,13 @@
 package se.gustavkarlsson.officemap.api.items;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class Map implements Buildable<Map> {
@@ -48,7 +44,7 @@ public class Map implements Buildable<Map> {
 	
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("name", name).add("image", image).toString();
+		return MoreObjects.toStringHelper(this).add("name", name).add("image", image).toString();
 	}
 	
 	@Override

@@ -1,23 +1,20 @@
 package se.gustavkarlsson.officemap.util;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import com.google.common.base.Optional;
+import com.google.common.io.Resources;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import org.junit.Test;
+import se.gustavkarlsson.officemap.api.items.Sha1;
 
+import javax.ws.rs.core.StreamingOutput;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import javax.ws.rs.core.StreamingOutput;
-
-import org.junit.Test;
-
-import se.gustavkarlsson.officemap.api.items.Sha1;
-
-import com.google.common.base.Optional;
-import com.google.common.io.Resources;
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileHandlerTest {
 

@@ -1,22 +1,5 @@
 package se.gustavkarlsson.officemap.api.items;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.io.IOException;
-import java.util.Arrays;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang.builder.EqualsBuilder;
-
-import se.gustavkarlsson.officemap.api.items.Sha1.Sha1Deserializer;
-import se.gustavkarlsson.officemap.api.items.Sha1.Sha1Serializer;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -28,7 +11,21 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import se.gustavkarlsson.officemap.api.items.Sha1.Sha1Deserializer;
+import se.gustavkarlsson.officemap.api.items.Sha1.Sha1Serializer;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.util.Arrays;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Embeddable
 @JsonSerialize(using = Sha1Serializer.class)
@@ -62,7 +59,7 @@ public final class Sha1 implements Buildable<Sha1> {
 	
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("SHA-1", getHex()).toString();
+		return MoreObjects.toStringHelper(this).add("SHA-1", getHex()).toString();
 	}
 	
 	@Override
