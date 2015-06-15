@@ -22,7 +22,7 @@
 			<input class="form-control" name="name" placeholder="Enter name" ng-model="map.name" required>
 		</div>
 		<div ng-hide="!isNew()">
-			<button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid">
+			<button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid || !hasImage()">
 				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Create
 			</button>
 		</div>
