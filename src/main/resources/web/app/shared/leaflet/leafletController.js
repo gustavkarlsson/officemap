@@ -6,7 +6,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("LeafletController", function ($scope, ActiveMapService, MapService, ImageService, leafletData, mapRef, map, image, persons, activePerson) {
+	app.controller("LeafletController", function ($scope, MapService, ImageService, leafletData, mapRef, map, image, persons, activePerson) {
 
 		// Variable declarations
 		var getLeafletMap,
@@ -14,7 +14,6 @@
             offsetBounds;
 
 		// Init
-		ActiveMapService.set(mapRef);
 		getLeafletMap = leafletData.getMap;
 
 		// Methods
@@ -28,6 +27,7 @@
 
 		// Build Leaflet Map
 		angular.extend($scope, {
+            mapRef: mapRef,
 			defaults: {
 				zoomControl: false,
 				crs: "Simple",

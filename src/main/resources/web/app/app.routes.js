@@ -9,22 +9,7 @@
 	app.config(function ($routeProvider) {
 		$routeProvider
 			.when("/", {
-				templateUrl: "/app/components/map/mapView.html",
-				controller: "LeafletController",
-				resolve: {
-					mapRef: function () {
-						return null;
-					},
-					map: function () {
-						return null;
-					},
-					persons: function () {
-						return [];
-					},
-					activePerson: function () {
-						return null;
-					}
-				}
+				templateUrl: "/app/components/home/homeView.html"
 			})
 			.when("/maps/:ref", {
 				templateUrl: "/app/components/map/mapView.html",

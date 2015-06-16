@@ -1,0 +1,5 @@
+<div class="list-group">
+    <a class="list-group-item" ng-repeat="(ref, map) in maps" ng-href="/maps/{{ref}}" ng-class="{active: ref == activeMapRef}">
+        {{map.name}}
+    </a>
+</div>
