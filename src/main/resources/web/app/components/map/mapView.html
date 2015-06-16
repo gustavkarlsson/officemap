@@ -1,11 +1,7 @@
 <div id="map-container">
 	<leaflet defaults="defaults" controls="controls" layers="layers" markers="markers" center="center"></leaflet>
 
-	<form id="search" class="form fixed-top-left" role="search" ng-controller="TypeaheadController">
-		<div class="form-group">
-			<input type="text" class="form-control input-lg" placeholder="find someone..." ng-model="selected" typeahead="result as result.object.firstName + ' ' + result.object.lastName + ' (' + result.object.username + ')' for result in search($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" typeahead-wait-ms="400" typeahead-editable="false">
-		</div>
-	</form>
+    <search class="fixed-top-left" ng-controller="SearchController"></search>
 
 	<maps class="fixed-top-right" ng-controller="MapsController" maps="maps" active-map-ref="mapRef"></maps>
 

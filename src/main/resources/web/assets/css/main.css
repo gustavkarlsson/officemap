@@ -7,10 +7,6 @@
 	overflow: hidden;
 }
 
-#search .input-group {
-	width: 100%;
-}
-
 .angular-leaflet-map {
 	height: 100%;
 }
@@ -38,7 +34,6 @@
 	bottom: 10px;
 	right: 10px;
 }
-
 
 .image-caption-container {
     position: relative;
