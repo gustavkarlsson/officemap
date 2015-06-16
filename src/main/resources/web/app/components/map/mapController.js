@@ -6,12 +6,13 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("LeafletController", function ($scope, MapService, ImageService, leafletData, mapRef, map, image, persons, activePerson) {
+	app.controller("MapController", function ($scope, MapService, ImageService, leafletData, mapRef, map, image, persons, activePerson) {
 
 		// Variable declarations
 		var getLeafletMap,
             getImageBounds,
-            offsetBounds;
+            offsetBounds,
+            createMarkers;
 
 		// Init
 		getLeafletMap = leafletData.getMap;
@@ -24,6 +25,21 @@
 		offsetBounds = function (bounds, offset) {
 			return [[bounds[0][0] - offset, bounds[0][1] - offset], [bounds[1][0] + offset, bounds[1][1] + offset]];
 		};
+
+        createMarkers = function () {
+            var person,
+                markers = [];
+            for(person in persons) {
+                markers.push({
+                    lat:person.latitude,
+                    lng: person.longitude,
+                    message: person.firstName + " " + person.lastName,
+                    focus: true,
+                    draggable: false
+                });
+            }
+            return markers;
+        };
 
 		// Build Leaflet Map
 		angular.extend($scope, {
@@ -56,7 +72,8 @@
 						}
 					}
 				}
-			}
+			},
+            markers: createMarkers()
 		});
 	});
 

@@ -13,7 +13,7 @@
 			})
 			.when("/maps/:ref", {
 				templateUrl: "/app/components/map/mapView.html",
-				controller: "LeafletController",
+				controller: "MapController",
 				resolve: {
 					mapRef: function ($route) {
 						return $route.current.params.ref;
