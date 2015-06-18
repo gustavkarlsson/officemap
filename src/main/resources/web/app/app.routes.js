@@ -11,29 +11,60 @@
 			.when("/", {
 				templateUrl: "/app/components/home/homeView.html"
 			})
-			.when("/maps/:ref", {
+			.when("/persons/:ref", {
 				templateUrl: "/app/components/map/mapView.html",
 				controller: "MapController",
 				resolve: {
-					mapRef: function ($route) {
-						return $route.current.params.ref;
+					mapRef: function (PersonService, $route) {
+                        return PersonService.get($route.current.params.ref).then(function (person) {
+                            return person.location.mapRef;
+                        });
 					},
-					map: function (MapService, $route) {
-						return MapService.get($route.current.params.ref);
+					map: function (PersonService, MapService, $route) {
+                        return PersonService.get($route.current.params.ref).then(function (person) {
+                            return MapService.get(person.location.mapRef);
+                        });
 					},
-					image: function (MapService, ImageService, $route) {
-						return MapService.get($route.current.params.ref).then(function (map) {
-                            return ImageService.get(map.image);
+					image: function (PersonService, MapService, ImageService, $route) {
+                        return PersonService.get($route.current.params.ref).then(function (person) {
+                            return MapService.get(person.location.mapRef).then(function (map) {
+                                return ImageService.get(map.image);
+                            });
                         });
 					},
 					persons: function (PersonService, $route) {
-						return PersonService.getAllByMapRef($route.current.params.ref);
+                        return PersonService.get($route.current.params.ref).then(function (person) {
+                            return PersonService.getAllByMapRef(person.location.mapRef);
+                        });
 					},
-					activePersonRef: function () {
-						return null;
+					activePersonRef: function ($route) {
+						return $route.current.params.ref;
 					}
 				}
 			})
+            .when("/maps/:ref", {
+                templateUrl: "/app/components/map/mapView.html",
+                controller: "MapController",
+                resolve: {
+                    mapRef: function ($route) {
+                        return $route.current.params.ref;
+                    },
+                    map: function (MapService, $route) {
+                        return MapService.get($route.current.params.ref);
+                    },
+                    image: function (MapService, ImageService, $route) {
+                        return MapService.get($route.current.params.ref).then(function (map) {
+                            return ImageService.get(map.image);
+                        });
+                    },
+                    persons: function (PersonService, $route) {
+                        return PersonService.getAllByMapRef($route.current.params.ref);
+                    },
+                    activePersonRef: function () {
+                        return null;
+                    }
+                }
+            })
 			.when("/admin", {
 				templateUrl: "/app/components/admin/adminView.html",
 				controller: "AdminController",
