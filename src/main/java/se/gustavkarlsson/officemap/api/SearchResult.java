@@ -1,21 +1,21 @@
 package se.gustavkarlsson.officemap.api;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SearchResult<T> implements Comparable<SearchResult<?>> {
 
 	private final T object;
 
-	private final String url;
+	private final int ref;
 
 	private final double score;
 
-	public SearchResult(final T object, final String url, final double score) {
+	public SearchResult(final T object, final int ref, final double score) {
 		this.object = checkNotNull(object);
-		this.url = checkNotNull(url);
+		this.ref = ref;
 		this.score = score;
 	}
 
@@ -24,9 +24,9 @@ public class SearchResult<T> implements Comparable<SearchResult<?>> {
 		return object;
 	}
 
-	@JsonProperty("url")
-	public final String getUrl() {
-		return url;
+	@JsonProperty("ref")
+	public final int getRef() {
+		return ref;
 	}
 
 	@JsonIgnore
@@ -41,6 +41,6 @@ public class SearchResult<T> implements Comparable<SearchResult<?>> {
 
 	@Override
 	public String toString() {
-		return "SearchResult [object=" + object + ", url=" + url + ", score=" + score + "]";
+		return "SearchResult [object=" + object + ", ref=" + ref + ", score=" + score + "]";
 	}
 }

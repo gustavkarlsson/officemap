@@ -1,10 +1,9 @@
 package se.gustavkarlsson.officemap.resources;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map.Entry;
+import com.google.common.collect.Lists;
+import se.gustavkarlsson.officemap.api.SearchResult;
+import se.gustavkarlsson.officemap.api.items.Person;
+import se.gustavkarlsson.officemap.core.State;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -13,12 +12,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-
-import se.gustavkarlsson.officemap.api.SearchResult;
-import se.gustavkarlsson.officemap.api.items.Person;
-import se.gustavkarlsson.officemap.core.State;
-
-import com.google.common.collect.Lists;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
 
 @Path("/search")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -39,8 +37,7 @@ public final class SearchResource {
 			final Person person = entry.getValue();
 			final double score = calculateSearchScore(terms, person.getKeywords());
 			if (score > 0) {
-				final String url = "/persons/" + entry.getKey();
-				results.add(new SearchResult<Person>(person, url, score));
+				results.add(new SearchResult<>(person, entry.getKey(), score));
 			}
 		}
 		Collections.sort(results, Collections.reverseOrder());

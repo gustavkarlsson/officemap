@@ -17,7 +17,11 @@
         };
 
         $scope.onSelect = function ($item, $model, $label) {
-            $location.path($item.url);
+            if ($item.object.location) {
+                $location.path("/persons/" + $item.ref);
+            } else {
+                $location.path("/admin/persons/" + $item.ref);
+            }
         };
     });
 
