@@ -27,13 +27,15 @@
 		};
 
         createMarkers = function () {
-            var person,
+            var personRef,
+                person,
                 markers = [];
-            for(person in persons) {
+            for(personRef in persons) {
+                person = persons[personRef];
                 markers.push({
-                    lat:person.latitude,
-                    lng: person.longitude,
-                    message: person.firstName + " " + person.lastName,
+                    lat: person.location.latitude,
+                    lng: person.location.longitude,
+                    message: '<a href="/admin/persons/' + personRef + '">' + person.firstName + ' ' + person.lastName + '</a>',
                     focus: true,
                     draggable: false
                 });
