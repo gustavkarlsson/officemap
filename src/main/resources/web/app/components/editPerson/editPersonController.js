@@ -6,15 +6,24 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("EditPersonController", function ($scope, $location, $route, ref, person, PersonService, DiffService, ImageService, ModalService) {
-		var originalPerson = angular.copy(person);
+	app.controller("EditPersonController", function ($scope, $location, $route, ref, person, PersonService, MapService, DiffService, ImageService, ModalService) {
+        // Init
+        var originalPerson = angular.copy(person);
+        $scope.ref = ref;
+        $scope.person = person;
+        if ($scope.person === null) {
+            $scope.person = {};
+        }
+        MapService.getAll().then(
+            function (maps) {
+                $scope.maps = maps;
+            },
+            function (reason) {
+                alert("Failed: " + reason);
+            }
+        );
 
-		$scope.ref = ref;
-		$scope.person = person;
-		if ($scope.person === null) {
-			$scope.person = {};
-		}
-
+        // Functions
 		$scope.isChanged = function () {
 			return !angular.equals($scope.person, originalPerson);
 		};
@@ -82,6 +91,12 @@
 			}
 			return "/api/files/" + $scope.person.portrait;
 		};
+
+        $scope.updateLocation = function () {
+            if (!$scope.person.location.mapRef) {
+                $scope.person.location = null;
+            }
+        };
 
 		$scope.$watch("file", function () {
 			if (!$scope.file) {

@@ -34,6 +34,20 @@
 			<label for="email">Email address</label>
 			<input class="form-control" id="email" name="email" placeholder="Enter email" ng-model="person.email" type="email" required>
 		</div>
+        <div class="form-group">
+            <label>Location</label>
+            <select class="form-control" ng-model="person.location.mapRef" ng-options="ref*1 as map.name for (ref, map) in maps" ng-change="updateLocation()">
+                <option value="">No map</option>
+            </select>
+        </div>
+        <div ng-show="person.location.mapRef" class="form-group" ng-class="{ 'has-error': form.latitude.$invalid }">
+            <label for="latitude">Latitude</label>
+            <input class="form-control" id="latitude" name="latitude" ng-model="person.location.latitude" type="number" ng-required="person.location.mapRef">
+        </div>
+        <div ng-show="person.location.mapRef" class="form-group" ng-class="{ 'has-error': form.longitude.$invalid }">
+            <label for="longitude">Longitude</label>
+            <input class="form-control" id="longitude" name="longitude" ng-model="person.location.longitude" type="number" ng-required="person.location.mapRef">
+        </div>
 		<div ng-show="isNew()">
 			<button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid">
 				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Create
