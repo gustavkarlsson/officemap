@@ -11,7 +11,7 @@
 	</div>
 	<form novalidate role="form" name="form">
 		<div class="form-group">
-			<label for="image">Image</label>
+			<label>Image</label>
 			<div ng-file-drop ng-file-select ng-model="file" allow-dir="false" accept="image/*" style="width: 200px; max-height: 250px; cursor: pointer;" class="image-caption-container">
 				<img ng-src="{{getImageUrl()}}" class="img-responsive" />
 				<div class="caption">Click or use drag and drop to upload an image</div>
@@ -19,9 +19,9 @@
 		</div>
 		<div class="form-group" ng-class="{ 'has-error': form.name.$invalid }">
 			<label for="name">Name</label>
-			<input class="form-control" name="name" placeholder="Enter name" ng-model="map.name" required>
+			<input class="form-control" id="name" name="name" placeholder="Enter name" ng-model="map.name" required>
 		</div>
-		<div ng-hide="!isNew()">
+		<div ng-show="isNew()">
 			<button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid || !hasImage()">
 				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Create
 			</button>

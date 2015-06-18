@@ -11,7 +11,7 @@
 	</div>
 	<form novalidate role="form" name="form">
 		<div class="form-group">
-			<label for="portrait">Portrait</label>
+			<label>Portrait</label>
 			<div ng-file-drop ng-file-select ng-model="file" allow-dir="false" accept="image/*" style="width: 200px; max-height: 250px; cursor: pointer;" class="image-caption-container">
 				<img ng-src="{{getPortraitUrl()}}" class="img-responsive" />
 				<div class="caption">Click or use drag and drop to upload a portrait</div>
@@ -20,21 +20,21 @@
 		</div>
 		<div class="form-group" ng-class="{ 'has-error': form.username.$invalid }">
 			<label for="username">Username</label>
-			<input class="form-control" name="username" placeholder="Enter username" ng-model="person.username" required>
+			<input class="form-control" id="username" name="username" placeholder="Enter username" ng-model="person.username" required>
 		</div>
 		<div class="form-group" ng-class="{ 'has-error': form.firstName.$invalid }">
 			<label for="firstName">First name</label>
-			<input class="form-control" name="firstName" placeholder="Enter first name" ng-model="person.firstName" required>
+			<input class="form-control" id="firstName" name="firstName" placeholder="Enter first name" ng-model="person.firstName" required>
 		</div>
 		<div class="form-group" ng-class="{ 'has-error': form.lastName.$invalid }">
 			<label for="lastName">Last name</label>
-			<input class="form-control" name="lastName" placeholder="Enter last name" ng-model="person.lastName" required>
+			<input class="form-control" id="lastName" name="lastName" placeholder="Enter last name" ng-model="person.lastName" required>
 		</div>
 		<div class="form-group" ng-class="{ 'has-error': form.email.$invalid }">
 			<label for="email">Email address</label>
-			<input type="email" class="form-control" name="email" placeholder="Enter email" ng-model="person.email" required>
+			<input class="form-control" id="email" name="email" placeholder="Enter email" ng-model="person.email" type="email" required>
 		</div>
-		<div ng-hide="!isNew()">
+		<div ng-show="isNew()">
 			<button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid">
 				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Create
 			</button>
