@@ -6,7 +6,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("MapController", function ($scope, MapService, ImageService, leafletData, mapRef, map, image, persons, activePerson) {
+	app.controller("MapController", function ($scope, MapService, ImageService, leafletData, mapRef, map, image, persons, activePersonRef) {
 
 		// Variable declarations
 		var getLeafletMap,
@@ -36,7 +36,7 @@
                     lat: person.location.latitude,
                     lng: person.location.longitude,
                     message: '<a href="/admin/persons/' + personRef + '">' + person.firstName + ' ' + person.lastName + '</a>',
-                    focus: true,
+                    focus: personRef == activePersonRef,
                     draggable: false
                 });
             }

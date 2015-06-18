@@ -29,7 +29,7 @@
 					persons: function (PersonService, $route) {
 						return PersonService.getAllByMapRef($route.current.params.ref);
 					},
-					activePerson: function () {
+					activePersonRef: function () {
 						return null;
 					}
 				}
