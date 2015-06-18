@@ -1,13 +1,14 @@
-<div id="map-container">
-	<leaflet defaults="defaults" controls="controls" layers="layers" markers="markers" center="center"></leaflet>
-
-    <search class="fixed-top-left" ng-controller="SearchController"></search>
-
-	<maps class="fixed-top-right" ng-controller="MapsController" maps="maps" active-map-ref="mapRef"></maps>
-
-	<div class="fixed-bottom-left">
-		<a class="btn btn-default" href="/admin" role="button">
-			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-		</a>
-	</div>
+<div layout="column" flex>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button href="/">OfficeMap</md-button>
+            <search ng-controller="SearchController"></search>
+            <span flex></span>
+            <md-button href="/admin">Admin</md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" flex>
+        <maps class="fixed-top-right" ng-controller="MapsController" maps="maps"></maps>
+        <leaflet defaults="defaults" controls="controls" layers="layers" markers="markers" center="center" flex></leaflet>
+    </md-content>
 </div>
