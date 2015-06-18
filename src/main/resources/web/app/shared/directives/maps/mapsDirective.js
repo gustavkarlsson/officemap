@@ -12,8 +12,7 @@
         $scope.maps = [];
 
 		// Init
-		var mapsPromise = MapService.getAll();
-		mapsPromise.then(
+		MapService.getAll().then(
 			function (maps) {
 				$scope.maps = maps;
 			},
