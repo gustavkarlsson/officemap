@@ -1,11 +1,13 @@
-<div>
-    <search class="fixed-top-left" ng-controller="SearchController"></search>
-
-    <maps class="fixed-top-right" ng-controller="MapsController" maps="maps"></maps>
-
-	<div class="fixed-bottom-left">
-		<a class="btn btn-default" href="/admin" role="button">
-			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-		</a>
-	</div>
+<div layout="column" flex>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button href="/" >OfficeMap</md-button>
+            <search ng-controller="SearchController"></search>
+            <span flex></span>
+            <md-button href="/admin">Admin</md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout-padding flex>
+        <maps class="fixed-top-right" ng-controller="MapsController" maps="maps"></maps>
+    </md-content>
 </div>
