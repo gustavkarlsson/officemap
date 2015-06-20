@@ -6,17 +6,17 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("SearchController", function ($scope, $location, $http) {
+	app.controller("SearchController", function ($scope, $location, $http, $q) {
 
-        $scope.selected = undefined;
-
-        $scope.search = function (searchTerm) {
-            return $http.post("/api/search", searchTerm).then(function (response) {
-                return response.data;
-            });
+        $scope.search = function ( searchTerm ) {
+            var q = $q.defer();
+            $http.post("/api/search", searchTerm).then(function (response) {
+                q.resolve( response.data );
+            } );
+            return q.promise;
         };
 
-        $scope.onSelect = function ($item, $model, $label) {
+        $scope.onSelect = function ($item) {
             if ($item.object.location) {
                 $location.path("/persons/" + $item.ref);
             } else {
