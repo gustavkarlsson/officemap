@@ -4,17 +4,8 @@ body {
     overflow: hidden;
 }
 
-#map-container {
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	overflow: hidden;
-}
-
-.angular-leaflet-map {
-	height: 100%;
+.leaflet-container {
+    background-color: #ffffff;
 }
 
 .fixed-top-left {
