@@ -1,5 +1,7 @@
-<div class="list-group">
-    <a class="list-group-item" ng-repeat="(ref, map) in maps" ng-href="/maps/{{ref}}" ng-class="{active: ref == activeMapRef}">
-        {{map.name}}
-    </a>
-</div>
+<md-list>
+    <md-list-item ng-repeat="(ref, map) in maps">
+        <md-button ng-href="/maps/{{ref}}" ng-class="{'md-primary': ref == activeMapRef}">
+            {{map.name}}
+        </md-button>
+    </md-list-item>
+</md-list>
