@@ -2,7 +2,7 @@
     <div class="form-group">
         <md-autocomplete md-search-text="searchText" md-items="result in search(searchText)" md-delay="400" md-selected-item="selected" md-selected-item-change="onSelect(selected)" md-min-length="2" md-autofocus="true" md-autoselect="true" placeholder="Search">
             <md-item-template>
-                <span md-highlight-text="searchText">{{result.object.firstName}} {{result.object.lastName}} ({{result.object.username}})</span>
+                <span md-highlight-text="searchText" md-highlight-flags="gi">{{result.object.firstName}} {{result.object.lastName}} ({{result.object.username}})</span>
             </md-item-template>
             <md-not-found>
                 No matches found.
