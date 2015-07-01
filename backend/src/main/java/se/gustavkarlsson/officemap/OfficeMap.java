@@ -2,7 +2,6 @@ package se.gustavkarlsson.officemap;
 
 import com.codahale.metrics.health.HealthCheckRegistry;
 import io.dropwizard.Application;
-import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -11,11 +10,9 @@ import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.servlet.FilterHolder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.context.internal.ManagedSessionContext;
-import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
 import se.gustavkarlsson.officemap.events.Event;
@@ -26,8 +23,6 @@ import se.gustavkarlsson.officemap.resources.PersonsResource;
 import se.gustavkarlsson.officemap.resources.SearchResource;
 import se.gustavkarlsson.officemap.util.FileHandler;
 
-import javax.servlet.DispatcherType;
-import java.util.EnumSet;
 import java.util.List;
 
 public class OfficeMap extends Application<OfficeMapConfiguration> {
@@ -46,8 +41,6 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 			return config.getDataSourceFactory();
 		}
 	};
-
-	private final ConfiguredAssetsBundle assets = new ConfiguredAssetsBundle("/web", "/", "index.html");
 
 	private final MultiPartBundle multipart = new MultiPartBundle();
 
@@ -69,7 +62,6 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 	public void initialize(final Bootstrap<OfficeMapConfiguration> bootstrap) {
 		bootstrap.addBundle(hibernate);
 		bootstrap.addBundle(migrations);
-		bootstrap.addBundle(assets);
 		bootstrap.addBundle(multipart);
 	}
 
@@ -82,7 +74,6 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 
 		setupHealthChecks(environment.healthChecks());
 		setupJersey(environment.jersey());
-		setupUrlRewriting(environment);
 	}
 
 	private void setupHealthChecks(final HealthCheckRegistry healthChecks) {
@@ -94,12 +85,6 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		jersey.register(new PersonsResource(state, dao));
 		jersey.register(new MapsResource(state, dao));
 		jersey.register(new SearchResource(state));
-	}
-
-	private void setupUrlRewriting(final Environment environment) {
-		final FilterHolder filter = environment.getApplicationContext().addFilter(UrlRewriteFilter.class, "/*",
-				EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
-		filter.setInitParameter("confPath", "urlrewrite.xml");
 	}
 
 	private State initState(final SessionFactory sessionFactory, final EventDao dao) {
