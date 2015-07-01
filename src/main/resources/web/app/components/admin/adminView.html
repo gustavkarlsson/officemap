@@ -1,32 +1,52 @@
-<div class="fixed-top-right">
-	<a class="btn btn-default" href="/" role="button">
-		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-	</a>
+<div layout="column" flex>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button href="/">OfficeMap</md-button>
+            <search ng-controller="SearchController"></search>
+            <span flex></span>
+            <md-button href="/">Close</md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout="row" layout-padding>
+        <div flex-gt-lg="20"></div>
+        <div flex flex-gt-lg="60">
+            <h1 class="md-headline">Admin</h1>
+            <div class="md-whiteframe-z2" layout-padding>
+                <h2 class="md-title">Maps</h2>
+                <md-list>
+                    <md-list-item ng-repeat="(ref, map) in maps">
+                        <a ng-href="/admin/maps/{{ref}}">{{map.name}}</a>
+                    </md-list-item>
+                </md-list>
+                <div layout="row" layout-align="end">
+                    <md-button class="md-fab" href="/admin/maps/new" aria-label="Create map">
+                        +
+                    </md-button>
+                </div>
+            </div>
+            <div class="md-whiteframe-z2" layout-padding>
+                <h2 class="md-title">Maps</h2>
+                <md-list>
+                    <md-list-item ng-repeat="(ref, map) in maps">
+                        <a ng-href="/admin/maps/{{ref}}">{{map.name}}</a>
+                    </md-list-item>
+                </md-list>
+                <div layout="row" layout-align="end">
+                    <md-button class="md-fab" href="/admin/persons/new" aria-label="Create person">
+                        +
+                    </md-button>
+                </div>
+            </div>
+        </div>
+        <div flex-gt-lg="20"></div>
+    </md-content>
 </div>
 
 <div class="container">
-	<div class="page-header">
-		<h1>Admin</h1>
-	</div>
+
 	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h2 class="panel-title">Maps</h2>
-		</div>
 		<div class="panel-body">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Name</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="(ref, map) in maps">
-						<td><a ng-href="/admin/maps/{{ref}}">{{map.name}}</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<a class="btn btn-primary" href="/admin/maps/new" role="button">
+			<a class="btn btn-primary"  role="button">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 				<span>Create...</span>
 			</a>
