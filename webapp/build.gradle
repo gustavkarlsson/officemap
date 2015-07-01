@@ -1,12 +1,10 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.5
-version = '1.0'
-
-repositories {
-    mavenCentral()
+plugins {
+    id "com.moowork.node" version "0.10"
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+apply plugin: 'com.moowork.node'
+
+task serve(dependsOn: ':webapp:npmInstall', type: NodeTask) {
+    script = file('app.js')
+    ignoreExitValue = true
 }
