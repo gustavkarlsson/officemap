@@ -15,7 +15,7 @@ hs_err_pid*
 .classpath
 
 # IntelliJ
-/.idea
+.idea
 *.iml
 
 # Gradle
@@ -26,4 +26,4 @@ build/
 *.db
 
 # Runtime data
-/data/
+/backend/data/
