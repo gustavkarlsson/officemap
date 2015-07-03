@@ -29,10 +29,10 @@ angular
   .config(function ($routeProvider) {
       $routeProvider
           .when("/", {
-              templateUrl: "/app/components/home/homeView.html"
+              templateUrl: "/scripts/components/home/homeView.html"
           })
           .when("/persons/:ref", {
-              templateUrl: "/app/components/map/mapView.html",
+              templateUrl: "/scripts/components/map/mapView.html",
               controller: "MapController",
               resolve: {
                   mapRef: function (PersonService, $route) {
@@ -63,7 +63,7 @@ angular
               }
           })
           .when("/maps/:ref", {
-              templateUrl: "/app/components/map/mapView.html",
+              templateUrl: "/scripts/components/map/mapView.html",
               controller: "MapController",
               resolve: {
                   mapRef: function ($route) {
@@ -86,7 +86,7 @@ angular
               }
           })
           .when("/admin", {
-              templateUrl: "/app/components/admin/adminView.html",
+              templateUrl: "/scripts/components/admin/adminView.html",
               controller: "AdminController",
               resolve: {
                   persons: function (PersonService) {
@@ -98,7 +98,7 @@ angular
               }
           })
           .when("/admin/maps/new", {
-              templateUrl: "/app/components/editMap/editMapView.html",
+              templateUrl: "/scripts/components/editMap/editMapView.html",
               controller: "EditMapController",
               resolve: {
                   ref: function ($route) {
@@ -110,7 +110,7 @@ angular
               }
           })
           .when("/admin/maps/:ref", {
-              templateUrl: "/app/components/editMap/editMapView.html",
+              templateUrl: "/scripts/components/editMap/editMapView.html",
               controller: "EditMapController",
               resolve: {
                   ref: function ($route) {
@@ -122,7 +122,7 @@ angular
               }
           })
           .when("/admin/persons/new", {
-              templateUrl: "/app/components/editPerson/editPersonView.html",
+              templateUrl: "/scripts/components/editPerson/editPersonView.html",
               controller: "EditPersonController",
               resolve: {
                   ref: function ($route) {
@@ -134,7 +134,7 @@ angular
               }
           })
           .when("/admin/persons/:ref", {
-              templateUrl: "/app/components/editPerson/editPersonView.html",
+              templateUrl: "/scripts/components/editPerson/editPersonView.html",
               controller: "EditPersonController",
               resolve: {
                   ref: function ($route) {

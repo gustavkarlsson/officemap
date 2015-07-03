@@ -74,7 +74,7 @@
 
 		$scope.getImageUrl = function () {
 			if (!$scope.map.image) {
-				return "/assets/images/map.png";
+				return "/images/map.png";
 			}
 			return "/api/files/" + $scope.map.image;
 		};

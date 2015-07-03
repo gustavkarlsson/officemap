@@ -13,7 +13,7 @@
             show;
 
 		modalDefaults = {
-			templateUrl: "/app/shared/services/modal/modalView.html"
+			templateUrl: "/scripts/shared/services/modal/modalView.html"
 		};
 
 		modalOptions = {

@@ -1,6 +1,4 @@
-/*global alert */
-/*global L */
-/*global angular */
+/* global angular */
 
 (function () {
 	"use strict";
@@ -28,7 +26,7 @@
     app.directive("search", function() {
         return {
             restrict: "E",
-            templateUrl: "/app/shared/directives/search/searchView.html"
+            templateUrl: "/scripts/shared/directives/search/searchView.html"
         };
     });
 
