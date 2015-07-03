@@ -1,5 +1,14 @@
+# Node Modules
 /node_modules
-/dist
-/.tmp
-/.sass-cache
+
+# Bower Components
 /bower_components
+
+# Grunt output directory
+/dist
+
+# Temporary build files
+/.tmp
+
+# SASS cache
+/.sass-cache
