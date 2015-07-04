@@ -12,3 +12,6 @@
 
 # SASS cache
 /.sass-cache
+
+# Gradle build caches
+/.caches/

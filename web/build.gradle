@@ -1,0 +1,48 @@
+plugins {
+  id 'com.moowork.node' version '0.10'
+  id "com.moowork.grunt" version "0.10"
+}
+
+apply plugin: 'base'
+apply plugin: 'com.moowork.node'
+apply plugin: 'com.moowork.grunt'
+
+node {
+    version = '0.12.5'
+    npmVersion = '2.11.2'
+    download = true
+}
+
+task npmCacheConfig(type: NpmTask) {
+    description = 'Configure the NPM cache'
+    def npmCacheDir = "${projectDir}/.caches/npm"
+    outputs.files file(npmCacheDir)
+    args = [ 'config', 'set', 'cache', npmCacheDir ]
+}
+
+task bowerInstall(type: NodeTask, dependsOn: npm_install) {
+    script = file('node_modules/bower/bin/bower')
+    args = ["--config.storage.cache=${projectDir}/caches/bower/cache",
+            "--config.storage.packages=${projectDir}/.caches/bower/packages",
+            "--config.storage.registry=${projectDir}/.caches/bower/registry",
+            'install']
+    inputs.files file('bower.json')
+    outputs.files file('bower_components')
+}
+
+task serve(dependsOn: grunt_serve) {
+}
+
+npm_install.dependsOn npmCacheConfig
+grunt_build.dependsOn installGrunt
+grunt_build.dependsOn npmInstall
+grunt_serve.dependsOn installGrunt
+grunt_serve.dependsOn npmInstall
+build.dependsOn grunt_build
+
+clean.delete << file('dist')
+clean.delete << file('node_modules')
+clean.delete << file('bower_components')
+clean.delete << file('.caches')
+clean.delete << file('.sass-cache')
+clean.delete << file('.tmp')
