@@ -20,7 +20,14 @@ task npmCacheConfig(type: NpmTask) {
     args = [ 'config', 'set', 'cache', npmCacheDir ]
 }
 
-task bowerInstall(type: NodeTask, dependsOn: npm_install) {
+task npmInstallPackages(type: NpmTask, dependsOn: npmCacheConfig) {
+    description = "Install Node.js packages"
+    args = [ 'install' ]
+    inputs.files file('package.json')
+    outputs.files file('node_modules')
+}
+
+task bowerInstall(type: NodeTask, dependsOn: npmInstallPackages) {
     script = file('node_modules/bower/bin/bower')
     args = ["--config.storage.cache=${projectDir}/caches/bower/cache",
             "--config.storage.packages=${projectDir}/.caches/bower/packages",
@@ -33,11 +40,12 @@ task bowerInstall(type: NodeTask, dependsOn: npm_install) {
 task serve(dependsOn: grunt_serve) {
 }
 
-npm_install.dependsOn npmCacheConfig
 grunt_build.dependsOn installGrunt
-grunt_build.dependsOn npmInstall
+grunt_build.dependsOn bowerInstall
+
 grunt_serve.dependsOn installGrunt
-grunt_serve.dependsOn npmInstall
+grunt_serve.dependsOn bowerInstall
+
 build.dependsOn grunt_build
 
 clean.delete << file('dist')
