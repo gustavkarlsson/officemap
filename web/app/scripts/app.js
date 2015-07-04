@@ -1,14 +1,6 @@
 /*global angular */
 'use strict';
 
-/**
- * @ngdoc overview
- * @name officemapWebappApp
- * @description
- * # officemapWebappApp
- *
- * Main module of the application.
- */
 angular
   .module('main', [
     'ngAnimate',

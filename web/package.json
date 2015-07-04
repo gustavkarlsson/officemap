@@ -1,5 +1,5 @@
 {
-  "name": "officemapwebapp",
+  "name": "officemap",
   "private": true,
   "devDependencies": {
     "grunt": "^0.4.5",

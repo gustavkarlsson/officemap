@@ -1,5 +1,5 @@
 {
-  "name": "officemap-webapp",
+  "name": "officemap",
   "version": "0.0.0",
   "dependencies": {
     "angular": "1.3.x",
@@ -19,7 +19,7 @@
     "angular-mocks": "1.3.x"
   },
   "appPath": "app",
-  "moduleName": "officemapWebapp",
+  "moduleName": "officemap",
   "resolutions": {
     "angular": "1.3.x"
   }
