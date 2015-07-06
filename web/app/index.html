@@ -25,11 +25,12 @@
 		<![endif]-->
 		<div layout="column" flex>
       <md-toolbar>
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" layout-fill>
           <md-button href="/">OfficeMap</md-button>
-          <search ng-controller="SearchController"></search>
-          <span flex></span>
-          <md-button href="/admin">Admin</md-button>
+          <search ng-controller="SearchController" flex></search>
+          <md-button href="/admin" aria-label="Admin">
+            <md-icon>edit</md-icon>
+          </md-button>
         </div>
       </md-toolbar>
       <div layout="column" flex ng-view></div>
