@@ -1,8 +1,8 @@
 /* global alert */
 /* global angular */
-"use strict";
 
 (function() {
+	"use strict";
 	var app = angular.module("main");
 
 	app.controller("EditMapController", function($scope, $location, $route, ref, map, MapService, DiffService,

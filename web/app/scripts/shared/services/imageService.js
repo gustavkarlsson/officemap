@@ -1,8 +1,8 @@
 /* global angular */
 /* global FormData */
-"use strict";
 
 (function() {
+	"use strict";
 	var app = angular.module("main");
 
 	app.service("ImageService", function($q, $http) {

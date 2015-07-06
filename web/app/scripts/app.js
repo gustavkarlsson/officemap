@@ -1,7 +1,7 @@
 /* global angular */
-"use strict";
 
 (function() {
+    "use strict";
     angular
         .module("main", [
             "ngAnimate",

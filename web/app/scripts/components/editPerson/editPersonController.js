@@ -1,8 +1,8 @@
 /* global alert */
 /* global angular */
-"use strict";
 
 (function() {
+	"use strict";
 	var app = angular.module("main");
 
 	app.controller("EditPersonController", function($scope, $location, $route, ref, person, PersonService, MapService,

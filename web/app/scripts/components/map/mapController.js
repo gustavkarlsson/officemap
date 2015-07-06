@@ -1,8 +1,8 @@
 /* global L */
 /* global angular */
-"use strict";
 
 (function() {
+	"use strict";
 	var app = angular.module("main");
 
 	app.controller("MapController", function($scope, MapService, ImageService, leafletData, mapRef, map, image, persons,

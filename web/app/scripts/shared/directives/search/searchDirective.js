@@ -1,7 +1,7 @@
 /* global angular */
-"use strict";
 
 (function() {
+	"use strict";
 	var app = angular.module("main");
 
 	app.controller("SearchController", function($scope, $location, $http, $q) {
