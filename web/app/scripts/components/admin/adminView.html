@@ -1,86 +1,40 @@
 <div layout="column" flex>
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <md-button href="/">OfficeMap</md-button>
-            <search ng-controller="SearchController"></search>
-            <span flex></span>
-            <md-button href="/">Close</md-button>
-        </div>
-    </md-toolbar>
-    <md-content layout="row" layout-padding>
-        <div flex-gt-lg="20"></div>
-        <div flex flex-gt-lg="60">
-            <h1 class="md-headline">Admin</h1>
-            <div class="md-whiteframe-z2" layout-padding>
-                <h2 class="md-title">Maps</h2>
-                <md-list>
-                    <md-list-item ng-repeat="(ref, map) in maps">
-                        <a ng-href="/admin/maps/{{ref}}">{{map.name}}</a>
-                    </md-list-item>
-                </md-list>
-                <div layout="row" layout-align="end">
-                    <md-button class="md-fab" href="/admin/maps/new" aria-label="Create map">
-                        +
-                    </md-button>
-                </div>
-            </div>
-            <div class="md-whiteframe-z2" layout-padding>
-                <h2 class="md-title">Maps</h2>
-                <md-list>
-                    <md-list-item ng-repeat="(ref, map) in maps">
-                        <a ng-href="/admin/maps/{{ref}}">{{map.name}}</a>
-                    </md-list-item>
-                </md-list>
-                <div layout="row" layout-align="end">
-                    <md-button class="md-fab" href="/admin/persons/new" aria-label="Create person">
-                        +
-                    </md-button>
-                </div>
-            </div>
-        </div>
-        <div flex-gt-lg="20"></div>
-    </md-content>
-</div>
-
-<div class="container">
-
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<a class="btn btn-primary"  role="button">
-				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				<span>Create...</span>
-			</a>
-		</div>
-	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h2 class="panel-title">Persons</h2>
-		</div>
-		<div class="panel-body">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Username</th>
-						<th>First name</th>
-						<th>Last name</th>
-						<th>Email</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="(ref, person) in persons">
-						<td><a ng-href="/admin/persons/{{ref}}">{{person.username}}</a>
-						</td>
-						<td>{{person.firstName}}</td>
-						<td>{{person.lastName}}</td>
-						<td><a ng-href="mailto:{{person.email}}">{{person.email}}</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<a class="btn btn-primary" href="/admin/persons/new" role="button">
-				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				<span>Create...</span>
-			</a>
-		</div>
-	</div>
+  <md-toolbar>
+      <div class="md-toolbar-tools">
+          <md-button href="/">OfficeMap</md-button>
+          <search ng-controller="SearchController"></search>
+          <span flex></span>
+          <md-button href="/">Close</md-button>
+      </div>
+  </md-toolbar>
+  <md-tabs md-center-tabs="true" flex>
+    <md-tab label="People">
+      <md-list>
+        <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="go('/admin/persons/{{ref}}');">
+          <div class="md-list-item-text">
+            <h3>{{ person.firstName }} {{ person.lastName }}</h3>
+            <h4>{{ person.username }}</h4>
+            <p>{{ person.email }}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+      <div layout="row" layout-align="end">
+        <md-button class="md-fab" href="/admin/persons/new" aria-label="Create person">
+          <md-icon>add</md-icon>
+        </md-button>
+      </div>
+    </md-tab>
+    <md-tab label="Maps">
+      <md-list>
+        <md-list-item ng-repeat="(ref, map) in maps" ng-click="go('/admin/maps/{{ref}}');">
+          <p>{{ map.name }}</p>
+        </md-list-item>
+      </md-list>
+      <div layout="row" layout-align="end">
+        <md-button class="md-fab" href="/admin/maps/new" aria-label="Create map">
+          <md-icon>add</md-icon>
+        </md-button>
+      </div>
+    </md-tab>
+  </md-tabs>
 </div>
