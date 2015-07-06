@@ -1,77 +1,75 @@
-/*global alert */
-/*global L */
-/*global angular */
+/* global angular */
+"use strict";
 
-(function () {
-	"use strict";
+(function() {
 	var app = angular.module("main");
 
-	app.service("MapService", function ($http, $q) {
+	app.service("MapService", function($http, $q) {
 
-        this.get = function (ref) {
-            var deferred = $q.defer();
-            $http.get("/api/maps/" + ref)
-                .success(function (data, status) {
-                    deferred.resolve(data);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+		this.get = function(ref) {
+			var deferred = $q.defer();
+			$http.get("/api/maps/" + ref)
+				.success(function(data, status) {
+					deferred.resolve(data);
+				})
+				.error(function(data, status) {
+					deferred.reject(data);
+				});
 
-            return deferred.promise;
-        };
+			return deferred.promise;
+		};
 
-        this.getAll = function () {
-            var deferred = $q.defer();
-            $http.get("/api/maps/")
-                .success(function (data, status) {
-                    deferred.resolve(data);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+		this.getAll = function() {
+			var deferred = $q.defer();
+			$http.get("/api/maps/")
+				.success(function(data, status) {
+					deferred.resolve(data);
+				})
+				.error(function(data, status) {
+					deferred.reject(data);
+				});
 
-            return deferred.promise;
-        };
+			return deferred.promise;
+		};
 
-        this.create = function (map) {
-            var deferred = $q.defer();
-            $http.post("/api/maps/", map)
-                .success(function (ref) {
-                    deferred.resolve(ref);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+		this.create = function(map) {
+			var deferred = $q.defer();
+			$http.post("/api/maps/", map)
+				.success(function(ref) {
+					deferred.resolve(ref);
+				})
+				.error(function(data, status) {
+					deferred.reject(data);
+				});
 
-            return deferred.promise;
-        };
+			return deferred.promise;
+		};
 
-        this.update = function (ref, changes) {
-            var deferred = $q.defer();
-            $http.patch("/api/maps/" + ref, changes)
-                .success(function (data, status) {
-                    deferred.resolve(data);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+		this.update = function(ref, changes) {
+			var deferred = $q.defer();
+			$http.patch("/api/maps/" + ref, changes)
+				.success(function(data, status) {
+					deferred.resolve(data);
+				})
+				.error(function(data, status) {
+					deferred.reject(data);
+				});
 
-            return deferred.promise;
-        };
+			return deferred.promise;
+		};
 
-        this.remove = function (ref) {
-            var deferred = $q.defer();
-            $http["delete"]("/api/maps/" + ref)
-                .success(function (data, status) {
-                    deferred.resolve(data);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+		this.remove = function(ref) {
+			var deferred = $q.defer();
+			$http["delete"]("/api/maps/" + ref)
+				.success(function(data, status) {
+					deferred.resolve(data);
+				})
+				.error(function(data, status) {
+					deferred.reject(data);
+				});
 
-            return deferred.promise;
-        };
+			return deferred.promise;
+		};
 
 	});
 

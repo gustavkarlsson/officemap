@@ -1,12 +1,10 @@
-/*global alert */
-/*global L */
-/*global angular */
+/* global angular */
+"use strict";
 
-(function () {
-	"use strict";
+(function() {
 	var app = angular.module("main");
 
-	app.controller("AdminController", function ($scope, persons, maps) {
+	app.controller("AdminController", function($scope, persons, maps) {
 		$scope.persons = persons;
 		$scope.maps = maps;
 	});
