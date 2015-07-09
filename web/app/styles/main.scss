@@ -9,55 +9,57 @@
 }
 
 body {
-    max-width: 100%;
-    max-height: 100%;
-    overflow: hidden;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  background-color: #f2f2f2;
 }
 
-.center {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+.fill {
+  height: 100%;
+  width: 100%;
 }
 
 .leaflet-container {
-    background-color: #ffffff;
+  background-color: #f2f2f2;
+  @extend .fill;
 }
 
 .fixed-top-left {
-	position: absolute;
-	top: 10px;
-	left: 10px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 .fixed-top-right {
-	position: absolute;
-	top: 10px;
-	right: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .fixed-bottom-left {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
 }
 
 .fixed-bottom-right {
-	position: absolute;
-	bottom: 10px;
-	right: 10px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
 
 .image-caption-container {
-    position: relative;
+  position: relative;
 }
+
 .image-caption-container .caption {
-    position: absolute;
-	padding: 5px;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: block;
-    background: rgba(0, 0, 0, .6);
-    color: #FFF;
+  position: absolute;
+  padding: 5px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  background: rgba(0, 0, 0, .6);
+  color: #FFF;
 }

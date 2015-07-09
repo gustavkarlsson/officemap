@@ -6,14 +6,14 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width">
 		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-		<!-- build:css(.) styles/vendor.css -->
+		<!-- build:css(.) /styles/vendor.css -->
 		<!-- bower:css -->
-		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-		<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
-		<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" href="/bower_components/angular-material/angular-material.css" />
+		<link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
+		<link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
 		<!-- endbower -->
 		<!-- endbuild -->
-		<!-- build:css(.tmp) styles/main.css -->
+		<!-- build:css(.tmp) /styles/main.css -->
 		<link rel="stylesheet" href="/styles/main.css">
 		<!-- endbuild -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -23,43 +23,30 @@
 		<!--[if lte IE 8]>
 			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
-		<div layout="column" flex>
-      <md-toolbar>
-        <div class="md-toolbar-tools center">
-          <md-button href="/">OfficeMap</md-button>
-          <search ng-controller="SearchController" flex></search>
-          <md-button href="/admin" aria-label="Admin">
-            <md-icon>edit</md-icon>
-            <md-tooltip>
-              Enter admin view
-            </md-tooltip>
-          </md-button>
-        </div>
-      </md-toolbar>
-      <md-content layout="column" layout-margin flex ng-view></md-content>
-    </div>
+    <div class="fill" ui-view></div>
 
-	  <!-- build:js(.) scripts/vendor.js -->
+	  <!-- build:js(.) /scripts/vendor.js -->
 	  <!-- bower:js -->
-	  <script src="bower_components/es5-shim/es5-shim.js"></script>
-	  <script src="bower_components/angular/angular.js"></script>
-	  <script src="bower_components/angular-animate/angular-animate.js"></script>
-	  <script src="bower_components/angular-aria/angular-aria.js"></script>
-	  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-	  <script src="bower_components/angular-messages/angular-messages.js"></script>
-	  <script src="bower_components/angular-resource/angular-resource.js"></script>
-	  <script src="bower_components/angular-route/angular-route.js"></script>
-	  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-	  <script src="bower_components/angular-touch/angular-touch.js"></script>
-	  <script src="bower_components/angular-material/angular-material.js"></script>
-	  <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
-	  <script src="bower_components/leaflet/dist/leaflet.js"></script>
-	  <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
-	  <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+	  <script src="/bower_components/es5-shim/es5-shim.js"></script>
+	  <script src="/bower_components/angular/angular.js"></script>
+	  <script src="/bower_components/angular-animate/angular-animate.js"></script>
+	  <script src="/bower_components/angular-aria/angular-aria.js"></script>
+	  <script src="/bower_components/angular-cookies/angular-cookies.js"></script>
+	  <script src="/bower_components/angular-messages/angular-messages.js"></script>
+	  <script src="/bower_components/angular-resource/angular-resource.js"></script>
+	  <script src="/bower_components/angular-route/angular-route.js"></script>
+	  <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+	  <script src="/bower_components/angular-touch/angular-touch.js"></script>
+	  <script src="/bower_components/angular-material/angular-material.js"></script>
+	  <script src="/bower_components/angular-file-upload/angular-file-upload.js"></script>
+	  <script src="/bower_components/leaflet/dist/leaflet.js"></script>
+	  <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
+	  <script src="/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+	  <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 	  <!-- endbower -->
 	  <!-- endbuild -->
 
-	  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+	  <!-- build:js({.tmp,app}) /scripts/scripts.js -->
 	  <!-- App -->
 	  <script src="/scripts/app.js"></script>
 	  <!-- Components -->

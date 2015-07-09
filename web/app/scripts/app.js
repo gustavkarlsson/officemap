@@ -9,7 +9,7 @@
             "ngCookies",
             "ngMessages",
             "ngResource",
-            "ngRoute",
+            "ui.router",
             "ngSanitize",
             "ngTouch",
             "ngMaterial",
@@ -19,6 +19,41 @@
         .config(function($locationProvider) {
             $locationProvider.html5Mode(true);
         })
+        .config(function($stateProvider, $urlRouterProvider) {
+          $urlRouterProvider.otherwise("home");
+
+          $stateProvider
+            .state("home", {
+              url: "/",
+              templateUrl: "/scripts/components/home/homeView.html"
+            })
+            .state("maps", {
+              url: "/maps/{ref:int}",
+              templateUrl: "/scripts/components/map/mapView.html",
+              controller: "MapController",
+              resolve: {
+                mapRef: function ($stateParams) {
+                  return $stateParams.ref;
+                },
+                map: function (MapService, $stateParams) {
+                  return MapService.get($stateParams.ref);
+                },
+                image: function (MapService, ImageService, $stateParams) {
+                  return MapService.get($stateParams.ref).then(function (map) {
+                    return ImageService.get(map.image);
+                  });
+                },
+                persons: function (PersonService, $stateParams) {
+                  return PersonService.getAllByMapRef($stateParams.ref);
+                },
+                activePersonRef: function () {
+                  return null;
+                }
+              }
+            });
+
+        });
+        /*
         .config(function($routeProvider) {
             $routeProvider
                 .when("/", {
@@ -142,5 +177,5 @@
                     redirectTo: "/"
                 });
         });
-
+        */
 }());
