@@ -8,11 +8,10 @@
       <md-card class="center">
         <md-list>
           <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="go('/admin/persons/{{ref}}');">
-            <img ng-src="{{ getThumbnail(person.portrait, 'small') }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
+            <img ng-src="{{ getThumbnail(person.portrait, 40) }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
             <div class="md-list-item-text">
               <h3>{{ person.firstName }} {{ person.lastName }}</h3>
               <h4>{{ person.username }}</h4>
-
               <p>{{ person.email }}</p>
             </div>
             <md-divider ng-if="!$last"></md-divider>
@@ -31,9 +30,11 @@
     <md-tab label="Maps">
       <md-card class="center" layout="column">
         <md-list>
-          <md-list-item ng-repeat="(ref, map) in maps" ng-click="go('/admin/maps/{{ref}}');">
-            <img ng-src="{{ getThumbnail(map.image, 'medium') }}" class="md-avatar" alt="{{ map.name }}" style="width: 160px; height: 160px; border-radius: 0;" />
-            <p class="md-title">{{ map.name }}</p>
+          <md-list-item class="md-3-line" ng-repeat="(ref, map) in maps" ng-click="go('/admin/maps/{{ref}}');">
+            <img ng-src="{{ getThumbnail(map.image, 80) }}" class="md-avatar" alt="{{ map.name }}" style="width: 80px; height: 80px; border-radius: 0;" />
+            <div class="md-list-item-text">
+              <h3>{{ map.name }}</h3>
+            </div>
             <md-divider ng-if="!$last"></md-divider>
           </md-list-item>
         </md-list>

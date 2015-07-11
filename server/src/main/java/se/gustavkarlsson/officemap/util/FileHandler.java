@@ -5,7 +5,6 @@ import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.gustavkarlsson.officemap.api.items.Sha1;
-import se.gustavkarlsson.officemap.resources.FilesResource;
 
 import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
@@ -129,7 +128,7 @@ public class FileHandler {
 		return true;
 	}
 
-	public Optional<? extends StreamingOutput> readFile(final Sha1 fileSha1, FilesResource.ImageSize size) {
+	public Optional<? extends StreamingOutput> readFile(final Sha1 fileSha1, Optional<Integer> size) {
 		checkNotNull(fileSha1);
 		checkNotNull(size);
 		logger.debug("Getting stream of file: " + fileSha1.getHex());
@@ -137,9 +136,9 @@ public class FileHandler {
 		if (!Files.exists(path)) {
 			return Optional.absent();
 		}
-		if (size != FilesResource.ImageSize.FULL) {
+		if (size.isPresent()) {
 			logger.debug("Requesting thumbnail of size: " + size);
-			Path thumbnail = thumbnailHandler.getThumbnail(path, size);
+			Path thumbnail = thumbnailHandler.getThumbnail(path, size.get());
 			return Optional.of(new FileStreamingOutput(thumbnail));
 		}
 		return Optional.of(new FileStreamingOutput(path));

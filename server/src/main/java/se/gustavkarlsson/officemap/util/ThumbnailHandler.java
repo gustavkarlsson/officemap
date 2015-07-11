@@ -4,7 +4,6 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.gustavkarlsson.officemap.resources.FilesResource;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,14 +27,14 @@ public class ThumbnailHandler {
 		this.thumbsCachePath = Files.createDirectories(thumbsCachePath);
 	}
 
-	public Path getThumbnail(Path source, FilesResource.ImageSize size) {
+	public Path getThumbnail(Path source, int size) {
 		checkNotNull(source);
 		checkNotNull(size);
-		checkArgument(size != FilesResource.ImageSize.FULL, "Cannot get a full sized thumbnail");
+		checkArgument(size > 0, "size must be positive");
 		Path target = getTarget(source, size);
 		if (!Files.exists(target)) {
 			try {
-				createThumbnail(source, target, getDimension(size));
+				createThumbnail(source, target, size);
 			} catch (IOException e) {
 				throw new RuntimeException("Failed to create thumbnail of " + source, e);
 			}
@@ -43,43 +42,14 @@ public class ThumbnailHandler {
 		return target;
 	}
 
-	private Path getTarget(Path source, FilesResource.ImageSize size) {
-		String targetPath = source.toFile().getName() + DELIMITER + getSuffix(size);
+	private Path getTarget(Path source, int size) {
+		String targetPath = source.toFile().getName() + DELIMITER + size + 'x' + size;
 		return thumbsCachePath.resolve(targetPath);
 	}
 
-	private static String getSuffix(FilesResource.ImageSize size) {
-		switch (size) {
-			case SMALL:
-				return "small";
-			case MEDIUM:
-				return "medium";
-			case LARGE:
-				return "large";
-			default:
-				throw new IllegalArgumentException("No suffix for thumbnail size: " + size);
-		}
-	}
-
-	private static int getDimension(FilesResource.ImageSize size) {
-		switch (size) {
-			case SMALL:
-				return 40;
-			case MEDIUM:
-				return 160;
-			case LARGE:
-				return 640;
-			default:
-				throw new IllegalArgumentException("No suffix for thumbnail size: " + size);
-		}
-	}
-
-	private void createThumbnail(Path source, Path target, int dimension) throws IOException {
-		checkNotNull(source);
-		checkNotNull(target);
-		checkArgument(dimension > 0, "dimension must be positive");
+	private void createThumbnail(Path source, Path target, int size) throws IOException {
 		try (OutputStream out = new FileOutputStream(target.toFile())) {
-			Thumbnails.of(source.toFile()).size(dimension, dimension).crop(Positions.CENTER).toOutputStream(out);
+			Thumbnails.of(source.toFile()).size(size, size).crop(Positions.CENTER).toOutputStream(out);
 		}
 	}
 }

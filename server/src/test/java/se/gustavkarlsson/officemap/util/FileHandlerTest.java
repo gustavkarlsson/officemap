@@ -6,7 +6,6 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import org.junit.Test;
 import se.gustavkarlsson.officemap.api.items.Sha1;
-import se.gustavkarlsson.officemap.resources.FilesResource;
 
 import javax.ws.rs.core.StreamingOutput;
 import java.io.File;
@@ -59,7 +58,7 @@ public class FileHandlerTest {
 	// TODO verify stream content
 	private void assertReadFile(final FileHandler fh) throws FileNotFoundException {
 		final Sha1 fileHash = saveFile(fh);
-		final Optional<? extends StreamingOutput> stream = fh.readFile(fileHash, FilesResource.ImageSize.FULL);
+		final Optional<? extends StreamingOutput> stream = fh.readFile(fileHash, Optional.of(40));
 		assertThat(stream.isPresent()).isTrue();
 	}
 
