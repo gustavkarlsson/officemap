@@ -20,6 +20,8 @@
 			};
       if (size) {
         sizeQuery = "?size=" + size;
+      } else {
+        sizeQuery = "";
       }
 			image.src = "/api/files/" + sha1 + sizeQuery;
 			return deferred.promise;
