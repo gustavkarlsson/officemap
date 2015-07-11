@@ -16,9 +16,7 @@
 
 		$scope.onSelect = function($item) {
 			if ($item.object.location) {
-				$location.path("/persons/" + $item.ref);
-			} else {
-				$location.path("/admin/persons/" + $item.ref);
+				$location.path("/people/" + $item.ref);
 			}
 		};
 	});

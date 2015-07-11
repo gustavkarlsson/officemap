@@ -41,7 +41,7 @@
 				markers.push({
 					lat: person.location.latitude,
 					lng: person.location.longitude,
-					message: '<a href="/people/' + personRef + '">' + person.firstName + ' ' + person.lastName + '</a>',
+					message: '<a ui-sref="people({ref: 1})">' + person.firstName + ' ' + person.lastName + '</a>',
 					focus: personRef == activePersonRef,
 					draggable: false
 				});
