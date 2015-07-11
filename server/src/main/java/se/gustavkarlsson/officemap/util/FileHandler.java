@@ -1,7 +1,13 @@
 package se.gustavkarlsson.officemap.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.base.Optional;
+import org.apache.tika.Tika;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import se.gustavkarlsson.officemap.api.items.Sha1;
+import se.gustavkarlsson.officemap.resources.FilesResource;
 
+import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,15 +21,7 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import javax.ws.rs.core.StreamingOutput;
-
-import org.apache.tika.Tika;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import se.gustavkarlsson.officemap.api.items.Sha1;
-
-import com.google.common.base.Optional;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class FileHandler {
 	private static final Logger logger = LoggerFactory.getLogger(FileHandler.class);
@@ -33,11 +31,14 @@ public class FileHandler {
 
 	private final Tika tika = new Tika();
 	private final Path dataPath;
+	private final ThumbnailHandler thumbnailHandler;
 
-	public FileHandler(final Path dataPath) throws IOException {
+	public FileHandler(final Path dataPath, ThumbnailHandler thumbnailHandler) throws IOException {
 		checkNotNull(dataPath);
+		checkNotNull(thumbnailHandler);
 		logger.debug("Creating data directory in " + dataPath);
 		this.dataPath = Files.createDirectories(dataPath);
+		this.thumbnailHandler = thumbnailHandler;
 	}
 
 	public Sha1 saveFile(final InputStream input) {
@@ -128,12 +129,18 @@ public class FileHandler {
 		return true;
 	}
 
-	public Optional<? extends StreamingOutput> readFile(final Sha1 fileSha1) {
+	public Optional<? extends StreamingOutput> readFile(final Sha1 fileSha1, FilesResource.ImageSize size) {
 		checkNotNull(fileSha1);
+		checkNotNull(size);
 		logger.debug("Getting stream of file: " + fileSha1.getHex());
 		final Path path = dataPath.resolve(fileSha1.getHex());
 		if (!Files.exists(path)) {
 			return Optional.absent();
+		}
+		if (size != FilesResource.ImageSize.FULL) {
+			logger.debug("Requesting thumbnail of size: " + size);
+			Path thumbnail = thumbnailHandler.getThumbnail(path, size);
+			return Optional.of(new FileStreamingOutput(thumbnail));
 		}
 		return Optional.of(new FileStreamingOutput(path));
 	}

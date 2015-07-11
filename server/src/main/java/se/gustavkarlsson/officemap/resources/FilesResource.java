@@ -41,18 +41,37 @@ public final class FilesResource extends Resource {
 	@Path("/{sha1}")
 	@GET
 	@UnitOfWork
-	public Response send(@PathParam("sha1") final String hex) {
+	public Response send(@PathParam("sha1") final String hex, @QueryParam("size") @DefaultValue("full") String size) {
 		final Sha1 sha1;
 		try {
 			sha1 = Sha1.builder().withHex(hex).build();
 		} catch (final IllegalArgumentException e) {
 			throw new WebApplicationException(Status.BAD_REQUEST);
 		}
-		final Optional<? extends StreamingOutput> stream = fileHandler.readFile(sha1);
+		final Optional<? extends StreamingOutput> stream = fileHandler.readFile(sha1, ImageSize.parse(size));
 		if (!stream.isPresent()) {
 			throw new NotFoundException();
 		}
 		final String mimeType = fileHandler.getMimeType(sha1);
 		return Response.ok(stream.get()).type(mimeType).build();
+	}
+
+	public enum ImageSize {
+		SMALL, MEDIUM, LARGE, FULL;
+
+		public static ImageSize parse(String name) {
+			switch (name.toLowerCase()) {
+				case "small":
+					return FilesResource.ImageSize.SMALL;
+				case "medium":
+					return FilesResource.ImageSize.MEDIUM;
+				case "large":
+					return FilesResource.ImageSize.LARGE;
+				case "full":
+					return FilesResource.ImageSize.FULL;
+				default:
+					throw new IllegalArgumentException("Invalid image size: " + name);
+			}
+		}
 	}
 }

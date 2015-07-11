@@ -19,6 +19,9 @@ public class OfficeMapConfiguration extends Configuration {
 	@NotBlank
 	private final String dataPath = "data/";
 
+	@NotBlank
+	private final String thumbsCachePath = "thumbs_cache/";
+
 	@JsonProperty("database")
 	public final DataSourceFactory getDataSourceFactory() {
 		return dataSourceFactory;
@@ -27,6 +30,11 @@ public class OfficeMapConfiguration extends Configuration {
 	@JsonProperty("dataPath")
 	public final Path getDataPath() {
 		return Paths.get(dataPath);
+	}
+
+	@JsonProperty("thumbsCachePath")
+	public Path getThumbsCachePath() {
+		return Paths.get(thumbsCachePath);
 	}
 
 	private DataSourceFactory createDefaultDataSourceFactory() {

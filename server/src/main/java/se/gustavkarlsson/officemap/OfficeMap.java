@@ -22,6 +22,7 @@ import se.gustavkarlsson.officemap.resources.MapsResource;
 import se.gustavkarlsson.officemap.resources.PersonsResource;
 import se.gustavkarlsson.officemap.resources.SearchResource;
 import se.gustavkarlsson.officemap.util.FileHandler;
+import se.gustavkarlsson.officemap.util.ThumbnailHandler;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 	public void run(final OfficeMapConfiguration config, final Environment environment) throws Exception {
 		sessionFactory = hibernate.getSessionFactory();
 		dao = new EventDao(sessionFactory);
-		fileHandler = new FileHandler(config.getDataPath());
+		fileHandler = new FileHandler(config.getDataPath(), new ThumbnailHandler(config.getThumbsCachePath()));
 		state = initState(sessionFactory, dao);
 
 		setupHealthChecks(environment.healthChecks());

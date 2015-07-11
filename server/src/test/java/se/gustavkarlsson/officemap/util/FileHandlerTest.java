@@ -6,6 +6,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import org.junit.Test;
 import se.gustavkarlsson.officemap.api.items.Sha1;
+import se.gustavkarlsson.officemap.resources.FilesResource;
 
 import javax.ws.rs.core.StreamingOutput;
 import java.io.File;
@@ -13,12 +14,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileHandlerTest {
 
 	private static final String DATA_PATH = "data/";
+	private static final String THUMBS_CACHE_PATH = "thumbs_cache/";
 	private static final String FILE_SHA1 = "ddf7c2558cd58a06075d6506b886e7c6ebc858cc";
 
 	private static final File file = new File(Resources.getResource("file.png").getPath());
@@ -56,7 +59,7 @@ public class FileHandlerTest {
 	// TODO verify stream content
 	private void assertReadFile(final FileHandler fh) throws FileNotFoundException {
 		final Sha1 fileHash = saveFile(fh);
-		final Optional<? extends StreamingOutput> stream = fh.readFile(fileHash);
+		final Optional<? extends StreamingOutput> stream = fh.readFile(fileHash, FilesResource.ImageSize.FULL);
 		assertThat(stream.isPresent()).isTrue();
 	}
 
@@ -73,8 +76,13 @@ public class FileHandlerTest {
 	}
 
 	private static FileHandler getFileHandlerForOs(final Configuration configuration) throws IOException {
-		return new FileHandler(Files.createDirectory(Jimfs.newFileSystem(configuration).getRootDirectories().iterator()
-				.next().resolve(DATA_PATH)));
+		Path root = createInMemoryFileSystemRoot(configuration);
+		return new FileHandler(Files.createDirectory(root.resolve(DATA_PATH)), new ThumbnailHandler(root.resolve(THUMBS_CACHE_PATH)));
+	}
+
+	private static Path createInMemoryFileSystemRoot(Configuration configuration) {
+		return Jimfs.newFileSystem(configuration).getRootDirectories().iterator()
+				.next();
 	}
 
 	private static void assertSaveFile(final FileHandler fh) throws FileNotFoundException {
