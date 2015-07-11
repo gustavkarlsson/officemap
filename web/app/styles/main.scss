@@ -31,6 +31,10 @@ body {
   @extend .fill;
 }
 
+.leaflet-control-layers-toggle {
+  display: none;
+}
+
 .fixed-top-left {
   position: absolute;
   top: 10px;
