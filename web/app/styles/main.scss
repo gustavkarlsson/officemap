@@ -20,6 +20,12 @@ body {
   width: 100%;
 }
 
+.center {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .leaflet-container {
   background-color: #f2f2f2;
   @extend .fill;
