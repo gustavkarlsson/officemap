@@ -50,7 +50,7 @@ public final class FilesResource extends Resource {
 			throw new WebApplicationException(Status.BAD_REQUEST);
 		}
 		Integer size = sizeParam == null ? null : sizeParam.get();
-		final Optional<? extends StreamingOutput> stream = fileHandler.readFile(sha1, Optional.of(size));
+		final Optional<? extends StreamingOutput> stream = fileHandler.readFile(sha1, Optional.fromNullable(size));
 		if (!stream.isPresent()) {
 			throw new NotFoundException();
 		}
