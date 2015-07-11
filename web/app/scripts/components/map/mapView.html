@@ -1,9 +1,4 @@
 <leaflet defaults="defaults" controls="controls" layers="layers" markers="markers" center="center" flex></leaflet>
 <search class="fixed-top-left" ng-controller="SearchController"></search>
 <maps class="fixed-top-right" ng-controller="MapsController" maps="maps" active-map-ref="mapRef"></maps>
-<md-button class="fixed-bottom-left md-icon-button" href="/admin">
-  <md-icon>edit</md-icon>
-  <md-tooltip>
-    Administrate
-  </md-tooltip>
-</md-button>
+<admin-button class="fixed-bottom-left"></admin-button>
