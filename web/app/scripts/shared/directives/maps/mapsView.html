@@ -1,7 +1,9 @@
-<md-list>
+<md-card>
+  <md-list>
     <md-list-item ng-repeat="(ref, map) in maps">
-        <md-button ng-href="/maps/{{ref}}" ng-class="{'md-primary': ref == activeMapRef}">
-            {{map.name}}
-        </md-button>
+      <md-button ng-href="/maps/{{ref}}" ng-class="{'md-primary': ref == activeMapRef}">
+        {{map.name}}
+      </md-button>
     </md-list-item>
-</md-list>
+  </md-list>
+</md-card>
