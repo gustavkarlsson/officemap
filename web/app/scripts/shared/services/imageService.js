@@ -7,8 +7,8 @@
 
 	app.service("ImageService", function($q, $http) {
 
-		this.get = function(sha1) {
-			var deferred, image;
+		this.get = function(sha1, size) {
+			var deferred, image, sizeQuery;
 			deferred = $q.defer();
 			image = new Image();
 
@@ -18,8 +18,10 @@
 			image.error = function() {
 				deferred.reject(false);
 			};
-
-			image.src = "/api/files/" + sha1;
+      if (size) {
+        sizeQuery = "?size=" + size;
+      }
+			image.src = "/api/files/" + sha1 + sizeQuery;
 			return deferred.promise;
 		};
 

@@ -1,12 +1,13 @@
-<div>
-  <div class="center">
-    <h1 class="md-headline">Admin</h1>
+<div layout="column" flex>
+  <div>
+    <h1 class="center md-headline">Admin</h1>
   </div>
-  <md-tabs md-center-tabs="true" md-no-bar>
+  <md-tabs md-center-tabs="true" md-no-bar flex>
     <md-tab label="People">
       <md-card class="center">
         <md-list>
           <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="go('/admin/persons/{{ref}}');">
+            <img ng-src="{{ getThumbnail(person.portrait, 'small') }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
             <div class="md-list-item-text">
               <h3>{{ person.firstName }} {{ person.lastName }}</h3>
               <h4>{{ person.username }}</h4>
@@ -27,10 +28,11 @@
       </md-card>
     </md-tab>
     <md-tab label="Maps">
-      <md-card class="center">
+      <md-card class="center" layout="column">
         <md-list>
           <md-list-item ng-repeat="(ref, map) in maps" ng-click="go('/admin/maps/{{ref}}');">
-            <p>{{ map.name }}</p>
+            <img ng-src="{{ getThumbnail(map.image, 'medium') }}" class="md-avatar" alt="{{ map.name }}" style="width: 160px; height: 160px; border-radius: 0;" />
+            <p class="md-title">{{ map.name }}</p>
             <md-divider ng-if="!$last"></md-divider>
           </md-list-item>
         </md-list>
