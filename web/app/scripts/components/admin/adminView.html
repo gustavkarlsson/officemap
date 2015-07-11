@@ -1,9 +1,9 @@
-<div layout="column" flex>
+<div layout="column">
   <close-button class="fixed-top-right"></close-button>
   <div>
     <h1 class="center md-headline">Admin</h1>
   </div>
-  <md-tabs md-center-tabs="true" md-no-bar flex>
+  <md-tabs md-center-tabs="true" md-no-bar md-dynamic-height="true">
     <md-tab label="People">
       <md-card class="center">
         <md-list>
@@ -30,7 +30,7 @@
     <md-tab label="Maps">
       <md-card class="center" layout="column">
         <md-list>
-          <md-list-item class="md-3-line" ng-repeat="(ref, map) in maps" ng-click="go('/admin/maps/{{ref}}');">
+          <md-list-item class="md-2line" ng-repeat="(ref, map) in maps" ng-click="go('/admin/maps/{{ref}}');">
             <img ng-src="{{ getThumbnail(map.image, 80) }}" class="md-avatar" alt="{{ map.name }}" style="width: 80px; height: 80px; border-radius: 0;" />
             <div class="md-list-item-text">
               <h3>{{ map.name }}</h3>
