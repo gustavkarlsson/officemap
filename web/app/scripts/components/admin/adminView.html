@@ -3,11 +3,11 @@
   <div>
     <h1 class="center md-headline">Admin</h1>
   </div>
-  <md-tabs md-center-tabs="true" md-no-bar md-dynamic-height="true">
-    <md-tab label="People">
+  <md-tabs md-center-tabs="true" md-no-bar md-dynamic-height="true" md-selected="sectionId">
+    <md-tab label="People" md-on-select="updateSection('people')">
       <md-card class="center">
         <md-list>
-          <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="go('/admin/persons/{{ref}}');">
+          <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="go('admin.people({ ref: ref })');">
             <img ng-src="{{ getThumbnail(person.portrait, 40) }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
             <div class="md-list-item-text">
               <h3>{{ person.firstName }} {{ person.lastName }}</h3>
@@ -27,10 +27,10 @@
         </div>
       </md-card>
     </md-tab>
-    <md-tab label="Maps">
+    <md-tab label="Maps" md-on-select="updateSection('maps')">
       <md-card class="center" layout="column">
         <md-list>
-          <md-list-item class="md-3-line" ng-repeat="(ref, map) in maps" ng-click="go('/admin/maps/{{ref}}');">
+          <md-list-item class="md-3-line" ng-repeat="(ref, map) in maps" ng-click="go('admin.maps({ ref: ref })');">
             <img ng-src="{{ getThumbnail(map.image, 80) }}" class="md-avatar" alt="{{ map.name }}" style="width: 80px; height: 80px; border-radius: 0;" />
             <div class="md-list-item-text">
               <h3>{{ map.name }}</h3>

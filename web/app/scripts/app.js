@@ -20,7 +20,6 @@
       $locationProvider.html5Mode(true);
     })
     .config(function ($stateProvider, $urlRouterProvider) {
-      $urlRouterProvider.otherwise("/");
 
       $stateProvider
         .state("home", {
@@ -84,7 +83,7 @@
           }
         })
         .state("admin", {
-          url: "/admin",
+          url: "/admin/{section}",
           templateUrl: "/scripts/components/admin/adminView.html",
           controller: "AdminController",
           resolve: {
@@ -93,9 +92,14 @@
             },
             maps: function (MapService) {
               return MapService.getAll();
+            },
+            section: function ($stateParams) {
+              return $stateParams.section;
             }
           }
         });
 
+      $urlRouterProvider.when("/admin", "/admin/people");
+      $urlRouterProvider.otherwise("/");
     });
 }());
