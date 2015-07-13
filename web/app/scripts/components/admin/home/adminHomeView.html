@@ -2,8 +2,8 @@
   <md-tab label="People">
     <md-card class="center">
       <md-list>
-        <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="$state.go('^.people', { ref: ref })">
-          <img ng-src="{{ getThumbnail(person.portrait, 40) }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
+        <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="go('^.people', { ref: ref })">
+          <img ng-src="{{ getImageUrl(person.portrait, 40) }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
           <div class="md-list-item-text">
             <h3>{{ person.firstName }} {{ person.lastName }}</h3>
             <h4>{{ person.username }}</h4>
@@ -23,10 +23,10 @@
     </md-card>
   </md-tab>
   <md-tab label="Maps">
-    <md-card class="center" layout="column">
+    <md-card class="center">
       <md-list>
-        <md-list-item class="md-3-line" ng-repeat="(ref, map) in maps" ng-click="$state.go('^.maps', { ref: ref })">
-          <img ng-src="{{ getThumbnail(map.image, 80) }}" class="md-avatar" alt="{{ map.name }}" style="width: 80px; height: 80px; border-radius: 0;" />
+        <md-list-item class="md-3-line" ng-repeat="(ref, map) in maps" ng-click="go('^.maps', { ref: ref })">
+          <img ng-src="{{ getImageUrl(map.image, 80) }}" class="md-avatar" alt="{{ map.name }}" style="width: 80px; height: 80px; border-radius: 0;" />
           <div class="md-list-item-text">
             <h3>{{ map.name }}</h3>
           </div>

@@ -7,8 +7,16 @@
 
 	app.service("ImageService", function($q, $http) {
 
+    this.getUrl = function(sha1, size) {
+      var search = "";
+      if (size) {
+        search = "?size=" + size;
+      }
+      return "/api/files/" + sha1 + search;
+    };
+
 		this.get = function(sha1, size) {
-			var deferred, image, sizeQuery;
+			var deferred, image;
 			deferred = $q.defer();
 			image = new Image();
 
@@ -18,12 +26,7 @@
 			image.error = function() {
 				deferred.reject(false);
 			};
-      if (size) {
-        sizeQuery = "?size=" + size;
-      } else {
-        sizeQuery = "";
-      }
-			image.src = "/api/files/" + sha1 + sizeQuery;
+			image.src = this.getUrl(sha1, size);
 			return deferred.promise;
 		};
 
