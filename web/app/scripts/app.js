@@ -83,9 +83,15 @@
           }
         })
         .state("admin", {
-          url: "/admin/{section}",
-          templateUrl: "/scripts/components/admin/adminView.html",
-          controller: "AdminController",
+          url: "/admin",
+          abstract: true,
+          templateUrl: "/scripts/components/admin/adminView.html"
+        })
+        .state("admin.home", {
+          url: "?tab", // Same as parent
+          reloadOnSearch: false,
+          templateUrl: "/scripts/components/admin/home/adminHomeView.html",
+          controller: "AdminHomeController",
           resolve: {
             persons: function (PersonService) {
               return PersonService.getAll();
@@ -93,11 +99,42 @@
             maps: function (MapService) {
               return MapService.getAll();
             },
-            section: function ($stateParams) {
-              return $stateParams.section;
+            initialTab: function ($stateParams) {
+              return $stateParams.tab;
+            }
+          }
+        })
+        .state("admin.people", {
+          url: "/people/{ref:int}",
+          templateUrl: "/scripts/components/editPerson/editPersonView.html",
+          controller: "EditPersonController",
+          resolve: {
+            ref: function ($stateParams) {
+              return $stateParams.ref;
+            },
+            person: function (PersonService, $stateParams) {
+              return PersonService.get($stateParams.ref);
+            }
+          }
+        })
+        .state("admin.maps", {
+          url: "/maps/{ref:int}",
+          templateUrl: "/scripts/components/editMap/editMapView.html",
+          controller: "EditMapController",
+          resolve: {
+            ref: function ($stateParams) {
+              return $stateParams.ref;
+            },
+            map: function (MapService, $stateParams) {
+              return MapService.get($stateParams.ref);
             }
           }
         });
+        /*.state("people.new", {
+          parent: 'admin',
+          url: "/new",
+          onEnter: //similar to people.new
+        })*/
 
       $urlRouterProvider.when("/admin", "/admin/people");
       $urlRouterProvider.otherwise("/");
