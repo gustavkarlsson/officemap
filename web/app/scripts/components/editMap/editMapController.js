@@ -20,7 +20,7 @@
 
     // Scope
     $scope.map = angular.copy(originalMap);
-    $scope.isNew = originalMap === {}
+    $scope.isNew = originalMap === {};
 
     $scope.isChanged = function () {
       return !angular.equals($scope.map, originalMap);
