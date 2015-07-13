@@ -1,28 +1,21 @@
 <h1 ng-if="isNew">Create map</h1>
 <h1 ng-if="!isNew">Edit map</h1>
-<form role="form" name="form">
-  <div>
-    <label>Image</label>
-    <div ng-file-drop ng-file-select ng-model="file" allow-dir="false" accept="image/*">
-      <img ng-src="{{getImageUrl()}}" />
+<md-card class="center">
+  <form layout="column" role="form" name="form">
+    <div ngf-drop ngf-select ngf-allow-dir="false" ngf-accept="'image/*'" ng-model="files">
+      <img ng-src="{{ getImageUrl() }}" />
     </div>
-  </div>
-  <div>
-    <label for="name">Name</label>
-    <input class="form-control" id="name" name="name" placeholder="Enter name" ng-model="map.name" required>
-  </div>
-  <div ng-if="isNew">
-    <button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid || !hasImage()">
-      Create
-    </button>
-  </div>
-  <div ng-if="!isNew">
-    <button type="submit" class="btn btn-primary" ng-click="update()" ng-disabled="form.$invalid || !isChanged()">
-      Save
-    </button>
-    <button type="button" class="btn btn-warning" ng-click="revert()">&nbsp;Revert</button>
-    <button type="button" class="btn btn-link pull-right" ng-click="remove()">
-      Delete
-    </button>
-  </div>
-</form>
+    <md-input-container>
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" ng-model="map.name" required>
+    </md-input-container>
+    <div ng-if="isNew">
+      <button type="submit" class="btn btn-primary" ng-click="create()" ng-disabled="form.$invalid || !hasImage()">Create</button>
+    </div>
+    <div ng-if="!isNew" layout="row">
+      <md-button type="submit" class="md-raised md-primary" ng-click="update()" ng-disabled="form.$invalid || !isChanged()">Save</md-button>
+      <md-button type="button" ng-click="revert()">Revert</md-button>
+      <md-button type="button" class="md-warn" ng-click="remove()">Delete</md-button>
+    </div>
+  </form>
+</md-card>

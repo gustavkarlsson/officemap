@@ -14,7 +14,7 @@
       "ngTouch",
       "ngMaterial",
       "leaflet-directive",
-      "angularFileUpload"
+      "ngFileUpload"
     ])
     .config(function ($locationProvider) {
       $locationProvider.html5Mode(true);

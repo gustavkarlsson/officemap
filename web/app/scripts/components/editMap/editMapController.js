@@ -7,13 +7,18 @@
 
   app.controller("EditMapController", function ($scope, $state, ref, map, MapService, DiffService, ImageService) {
     // Variables
-    var originalMap;
+    var originalMap,
+      hasFiles;
 
     // Static
     originalMap = map ? angular.copy(map) : {};
 
+    // Functions
+    hasFiles = function () {
+      return $scope.files && $scope.files.length > 0;
+    };
+
     // Scope
-    $scope.ref = ref;
     $scope.map = angular.copy(originalMap);
     $scope.isNew = originalMap === {}
 
@@ -72,11 +77,11 @@
     };
 
     // Listeners
-    $scope.$watch("file", function () {
-      if (!$scope.file) {
+    $scope.$watch("files", function () {
+      if (!hasFiles()) {
         return;
       }
-      var promise = ImageService.upload($scope.file[0]);
+      var promise = ImageService.upload($scope.files[0]);
       promise.then(function (sha1) {
         $scope.map.image = sha1;
       }, function (reason) {
