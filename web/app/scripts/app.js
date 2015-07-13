@@ -85,7 +85,7 @@
         .state("admin", {
           url: "/admin",
           abstract: true,
-          templateUrl: "/scripts/components/admin/adminView.html"
+          template: "<ui-view />"
         })
         .state("admin.home", {
           url: "?tab", // Same as parent
