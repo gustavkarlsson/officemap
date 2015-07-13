@@ -28,10 +28,6 @@
       }
     });
 
-    $scope.gotoPerson = function(ref) {
-      $state.go("^.people", { ref: ref });
-    }
-
     $scope.getThumbnail = function(sha1, size) {
       var sizeQuery = "";
 
