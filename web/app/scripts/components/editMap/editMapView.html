@@ -8,7 +8,7 @@
       <form layout="column" role="form" name="form">
         <div layout="row">
           <div class="caption-container" ngf-drop ngf-select ngf-allow-dir="false" ngf-accept="'image/*'" ng-model="files">
-            <img ng-src="{{ getImageUrl() }}" />
+            <img ng-src="{{ getImageUrl() }}" style="max-width: 320px" />
             <div class="caption">
               <div class="blur"></div>
               <div class="caption-text">
