@@ -8,7 +8,7 @@
 	app.controller("MapsController", function($scope, MapService) {
 
 		// Members
-		$scope.maps = [];
+		$scope.maps = {};
 
 		// Init
 		MapService.getAll().then(
@@ -26,7 +26,7 @@
 			restrict: "E",
 			scope: {
 				maps: "=",
-				activeMapRef: "="
+				activeRef: "="
 			},
 			templateUrl: "/scripts/shared/directives/maps/mapsView.html"
 		};

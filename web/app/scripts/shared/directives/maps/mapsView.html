@@ -1,9 +1,7 @@
-<md-card>
-  <md-list>
-    <md-list-item ng-repeat="(ref, map) in maps">
-      <md-button ui-sref="maps({ ref: ref })" ng-class="{'md-primary': ref == activeMapRef}">
-        {{map.name}}
-      </md-button>
-    </md-list-item>
-  </md-list>
-</md-card>
+<md-list>
+  <md-list-item ng-repeat="(ref, map) in maps">
+    <md-button ui-sref="maps({ ref: ref })" ng-class="{'md-primary': ref == activeRef}">
+      {{map.name}}
+    </md-button>
+  </md-list-item>
+</md-list>
