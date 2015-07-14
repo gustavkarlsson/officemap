@@ -118,6 +118,10 @@
           }
         })
         .state("admin.maps", {
+          abstract: true,
+          template: "<ui-view />"
+        })
+        .state("admin.maps.edit", {
           url: "/maps/{ref:int}",
           templateUrl: "/scripts/components/editMap/editMapView.html",
           controller: "EditMapController",
@@ -127,6 +131,19 @@
             },
             map: function (MapService, $stateParams) {
               return MapService.get($stateParams.ref);
+            }
+          }
+        })
+        .state("admin.maps.new", {
+          url: "/maps/new",
+          templateUrl: "/scripts/components/editMap/editMapView.html",
+          controller: "EditMapController",
+          resolve: {
+            ref: function () {
+              return null;
+            },
+            map: function () {
+              return null;
             }
           }
         });

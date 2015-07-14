@@ -56,17 +56,49 @@ html, body {
   right: 10px;
 }
 
-.image-caption-container {
-  position: relative;
+[ngf-drop] {
+  cursor: pointer;
 }
 
-.image-caption-container .caption {
-  position: absolute;
-  padding: 5px;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: block;
-  background: rgba(0, 0, 0, .6);
-  color: #FFF;
+.caption-container {
+  position: relative; // So that caption can be positioned at bottom
+  overflow: hidden; // Makes sure caption stays inside of container
+
+  .caption {
+    position: absolute;
+    width: 100%;
+    opacity: 0; // Normally hidden
+    // TODO Compassify
+    -webkit-transition:all 0.15s ease-in-out;
+    -moz-transition:all 0.15s ease-in-out;
+    -o-transition:all 0.15s ease-in-out;
+    -ms-transition:all 0.15s ease-in-out;
+    transition:all 0.15s ease-in-out;
+
+    .blur {
+      position: absolute;
+      z-index: 4;
+      width: 100%;
+      height: 50px;
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    .caption-text {
+      position: absolute;
+      z-index: 5;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+    }
+  }
+
+  &:hover .caption {
+    opacity: 1; // Caption appears when container is hovered
+    // TODO Compassify
+    transform: translateY(-50px);
+    -webkit-transform:translateY(-50px);
+    -moz-transform:translateY(-50px);
+    -ms-transform:translateY(-50px);
+    -o-transform:translateY(-50px);
+  }
 }

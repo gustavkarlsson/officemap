@@ -5,7 +5,7 @@
   "use strict";
   var app = angular.module("main");
 
-  app.controller("EditMapController", function ($scope, $state, ref, map, MapService, DiffService, ImageService) {
+  app.controller("EditMapController", function ($scope, $state, $mdToast, ref, map, MapService, DiffService, ImageService) {
     // Variables
     var originalMap,
       hasFiles;
@@ -20,7 +20,7 @@
 
     // Scope
     $scope.map = angular.copy(originalMap);
-    $scope.isNew = originalMap === {};
+    $scope.isNew = angular.equals(originalMap, {});
 
     $scope.isChanged = function () {
       return !angular.equals($scope.map, originalMap);
@@ -32,9 +32,9 @@
 
     $scope.create = function () {
       MapService.create($scope.map)
-        .then(function (ref) {
+        .then(function () {
           $state.go("admin.home", { tab: "maps" });
-          //TODO toast success
+          $mdToast.show($mdToast.simple().position("bottom right").content("Created " + $scope.map.name));
         }, function (reason) {
           alert("Failed: " + reason);
           //TODO toast failed
@@ -43,10 +43,10 @@
 
     $scope.update = function () {
       var changes = DiffService.getChanges(originalMap, $scope.map);
-      MapService.update($scope.ref, changes)
+      MapService.update(ref, changes)
         .then(function () {
           $state.go("admin.home", { tab: "maps" });
-          //TODO toast success
+          $mdToast.show($mdToast.simple().position("bottom right").content("Updated " + $scope.map.name));
         }, function (reason) {
           alert("Failed: " + reason);
           //TODO toast failed
@@ -55,10 +55,10 @@
 
     $scope.remove = function () {
       // TODO add modal with confirmation
-      MapService.remove($scope.ref)
+      MapService.remove(ref)
         .then(function () {
           $state.go("admin.home", { tab: "maps" });
-          //TODO toast success
+          $mdToast.show($mdToast.simple().position("bottom right").content("Deleted " + $scope.map.name));
         }, function (reason) {
           alert("Failed: " + reason);
           //TODO toast failed
@@ -73,21 +73,20 @@
       if (!$scope.map.image) {
         return "/images/map.png";
       }
-      return "/api/files/" + $scope.map.image;
+      return ImageService.getUrl($scope.map.image, 320);
     };
 
     // Listeners
     $scope.$watch("files", function () {
-      if (!hasFiles()) {
-        return;
+      if (hasFiles()) {
+        ImageService.upload($scope.files[0])
+          .then(function (sha1) {
+            $scope.map.image = sha1;
+          }, function (reason) {
+            alert("Failed: " + reason);
+            //TODO toast failed
+          });
       }
-      var promise = ImageService.upload($scope.files[0]);
-      promise.then(function (sha1) {
-        $scope.map.image = sha1;
-      }, function (reason) {
-        alert("Failed: " + reason);
-        //TODO toast failed
-      });
     });
   });
 }());
