@@ -31,11 +31,22 @@
 			$scope.person = angular.copy(originalPerson);
 		};
 
+    $scope.getFullName = function() {
+      var fullName = "";
+      if ($scope.person.firstName) {
+        fullName = $scope.person.firstName;
+        if ($scope.person.lastName) {
+          fullName = fullName + " " + $scope.person.lastName;
+        }
+      }
+      return fullName;
+    }
+
 		$scope.create = function() {
 			PersonService.create($scope.person)
         .then(function() {
           $state.go("admin.home", { tab: "people" });
-          $mdToast.show($mdToast.simple().position("bottom right").content("Created " + $scope.person.firstName + " " + $scope.person.lastName));
+          $mdToast.show($mdToast.simple().position("bottom right").content("Created " + $scope.getFullName()));
         }, function(reason) {
           alert("Failed: " + reason);
           //TODO toast failed
@@ -47,7 +58,7 @@
 			PersonService.update($scope.ref, changes)
         .then(function() {
           $state.go("admin.home", { tab: "maps" });
-          $mdToast.show($mdToast.simple().position("bottom right").content("Updated " + $scope.person.firstName + " " + $scope.person.lastName));
+          $mdToast.show($mdToast.simple().position("bottom right").content("Updated " + $scope.getFullName()));
         }, function(reason) {
           alert("Failed: " + reason);
           //TODO toast failed
@@ -59,7 +70,7 @@
 			PersonService.remove(ref)
         .then(function() {
           $state.go("admin.home", { tab: "maps" });
-          $mdToast.show($mdToast.simple().position("bottom right").content("Deleted " + $scope.person.firstName + " " + $scope.person.lastName));
+          $mdToast.show($mdToast.simple().position("bottom right").content("Deleted " + $scope.getFullName()));
 				}, function(reason) {
 					alert("Failed: " + reason);
 					//TODO toast failed

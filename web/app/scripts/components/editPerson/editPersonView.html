@@ -1,7 +1,7 @@
 <icon-button icon="close" tooltip="Close" class="fixed-top-right" ui-sref="^.^.home({ tab: 'people'})"></icon-button>
 <div layout-margin>
   <h1 class="center md-headline">
-    <span ng-if="isNew">Create</span><span ng-if="!isNew">Edit</span> person: {{ person.firstName + ' ' + person.lastName }}
+    <span ng-if="isNew">Create</span><span ng-if="!isNew">Edit</span> person: {{ getFullName() }}
   </h1>
   <md-card class="center">
     <md-card-content>
