@@ -40,7 +40,7 @@
         }
       }
       return fullName;
-    }
+    };
 
 		$scope.create = function() {
 			PersonService.create($scope.person)
