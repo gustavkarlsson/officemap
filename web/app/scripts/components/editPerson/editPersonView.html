@@ -36,6 +36,14 @@
           <label for="email">Email</label>
           <input id="email" name="email" ng-model="person.email" type="email" required>
         </md-input-container>
+        <md-input-container>
+          <label for="location">Location</label>
+          <input id="location" name="location" ng-model="getLocationName()" disabled>
+        </md-input-container>
+        <div>
+          <md-button ng-click="showChangeLocationDialog()" type="button">Change location</md-button>
+        </div>
+
         <!-- TODO location -->
         <!--
         <div class="form-group">

@@ -92,11 +92,9 @@
 			return ImageService.getUrl($scope.person.portrait, 160);
 		};
 
-		$scope.updateLocation = function() {
-			if (!$scope.person.location.mapRef) {
-				$scope.person.location = null;
-			}
-		};
+    $scope.showChangeLocationDialog = function() {
+      // TODO popup change location dialog
+    };
 
     // Listeners
     $scope.$watch("files", function () {
