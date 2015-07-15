@@ -105,6 +105,26 @@
           }
         })
         .state("admin.people", {
+          abstract: true,
+          template: "<ui-view />"
+        })
+        .state("admin.people.new", {
+          url: "/people/new",
+          templateUrl: "/scripts/components/editPerson/editPersonView.html",
+          controller: "EditPersonController",
+          resolve: {
+            ref: function () {
+              return null;
+            },
+            person: function () {
+              return null;
+            },
+            maps: function (MapService) {
+              return MapService.getAll();
+            }
+          }
+        })
+        .state("admin.people.edit", {
           url: "/people/{ref:int}",
           templateUrl: "/scripts/components/editPerson/editPersonView.html",
           controller: "EditPersonController",
@@ -114,25 +134,15 @@
             },
             person: function (PersonService, $stateParams) {
               return PersonService.get($stateParams.ref);
+            },
+            maps: function (MapService) {
+              return MapService.getAll();
             }
           }
         })
         .state("admin.maps", {
           abstract: true,
           template: "<ui-view />"
-        })
-        .state("admin.maps.edit", {
-          url: "/maps/{ref:int}",
-          templateUrl: "/scripts/components/editMap/editMapView.html",
-          controller: "EditMapController",
-          resolve: {
-            ref: function ($stateParams) {
-              return $stateParams.ref;
-            },
-            map: function (MapService, $stateParams) {
-              return MapService.get($stateParams.ref);
-            }
-          }
         })
         .state("admin.maps.new", {
           url: "/maps/new",
@@ -144,6 +154,19 @@
             },
             map: function () {
               return null;
+            }
+          }
+        })
+        .state("admin.maps.edit", {
+          url: "/maps/{ref:int}",
+          templateUrl: "/scripts/components/editMap/editMapView.html",
+          controller: "EditMapController",
+          resolve: {
+            ref: function ($stateParams) {
+              return $stateParams.ref;
+            },
+            map: function (MapService, $stateParams) {
+              return MapService.get($stateParams.ref);
             }
           }
         });

@@ -16,14 +16,27 @@
         return tabs.indexOf(initialTab);
       }
       return 0;
-    }
+    };
 
     // Scope
     $scope.persons = persons;
     $scope.maps = maps;
     $scope.tab = getInitialTab();
     $scope.go = $state.go;
-    $scope.getImageUrl = ImageService.getUrl;
+
+    $scope.getPortraitThumbnailUrl = function(person) {
+      if (!person.portrait) {
+        return "/images/profile.png";
+      }
+      return ImageService.getUrl(person.portrait, 40);
+    };
+
+    $scope.getMapImageThumbnailUrl = function(map) {
+      if (!map.image) {
+        return "/images/map.png";
+      }
+      return ImageService.getUrl(map.image, 80);
+    };
 
     // Listeners
     $scope.$watch("tab", function(index){

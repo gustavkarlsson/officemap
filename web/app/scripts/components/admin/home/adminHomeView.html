@@ -6,7 +6,7 @@
       <md-card class="center">
         <md-list>
           <md-list-item class="md-3-line" ng-repeat="(ref, person) in persons" ng-click="go('^.people.edit', { ref: ref })">
-            <img ng-src="{{ getImageUrl(person.portrait, 40) }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
+            <img ng-src="{{ getPortraitThumbnailUrl(person) }}" class="md-avatar" alt="{{ person.firstName + ' ' + person.lastName }}" />
             <div class="md-list-item-text">
               <h3>{{ person.firstName }} {{ person.lastName }}</h3>
               <h4>{{ person.username }}</h4>
@@ -16,7 +16,7 @@
           </md-list-item>
         </md-list>
         <div layout="row" layout-align="end">
-          <md-button class="md-fab" ui-sref="new" aria-label="Add a new person">
+          <md-button class="md-fab" ui-sref="^.people.new" aria-label="Add a new person">
             <md-icon>add</md-icon>
             <md-tooltip>
               Add a new person
@@ -29,7 +29,7 @@
       <md-card class="center">
         <md-list>
           <md-list-item class="md-3-line" ng-repeat="(ref, map) in maps" ng-click="go('^.maps.edit', { ref: ref })">
-            <img ng-src="{{ getImageUrl(map.image, 80) }}" class="md-avatar" alt="{{ map.name }}" style="width: 80px; height: 80px; border-radius: 0;" />
+            <img ng-src="{{ getMapImageThumbnailUrl(map) }}" class="md-avatar" alt="{{ map.name }}" style="width: 80px; height: 80px; border-radius: 0;" />
             <div class="md-list-item-text">
               <h3>{{ map.name }}</h3>
             </div>
