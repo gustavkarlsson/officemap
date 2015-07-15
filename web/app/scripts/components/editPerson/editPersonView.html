@@ -17,7 +17,9 @@
             </div>
           </div>
         </div>
-        <!-- TODO remove portrait button -->
+        <div>
+          <md-button ng-if="hasPortrait()" type="button" ng-click="removePortrait()">Remove portrait</md-button>
+        </div>
         <md-input-container>
           <label for="username">Username</label>
           <input id="username" name="username" ng-model="person.username" required>
