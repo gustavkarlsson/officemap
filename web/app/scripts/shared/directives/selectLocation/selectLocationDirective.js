@@ -9,9 +9,28 @@
 	app.controller("SelectLocationController", function($scope, ImageService, leafletData) {
     // Variables
     var leafletMap,
+      positionMarker,
       getImageBounds,
       offsetBounds,
       setMap;
+
+    // Static
+    leafletData.getMap().then(function(m) {
+      leafletMap = m;
+      leafletMap.on("click", function(event) {
+        if (positionMarker === null) {
+          positionMarker = new L.marker(event.latlng, { clickable: false });
+        } else {
+          positionMarker.setLatLng(event.latlng);
+        }
+        positionMarker.addTo(leafletMap);
+        $scope.$parent.location.latitude = event.latlng.lat;
+        $scope.$parent.location.longitude = event.latlng.lng;
+      });
+    });
+
+    //Variables
+    positionMarker = null;
 
     // Functions
     getImageBounds = function(img) {
@@ -41,7 +60,7 @@
       });
     };
 
-    //Init
+    // Scope
     angular.extend($scope, {
       defaults: {
         zoomControl: false,
@@ -70,11 +89,16 @@
       }
     });
 
+    $scope.hasMap = function() {
+      return $scope.$parent.location != null && $scope.$parent.location.mapRef != null;
+    };
+
     // Listeners
-    $scope.$watch("location.mapRef", function (newMapRef) {
-      if ($scope.location !== null && $scope.location !== undefined) {
-        $scope.location.latitude = null;
-        $scope.location.longitude = null;
+    $scope.$parent.$watch("location.mapRef", function (newMapRef) {
+      newMapRef = newMapRef*1;
+      if ($scope.$parent.location !== null && $scope.$parent.location !== undefined) {
+        $scope.$parent.location.latitude = null;
+        $scope.$parent.location.longitude = null;
         setMap($scope.maps[newMapRef]);
       }
     });
