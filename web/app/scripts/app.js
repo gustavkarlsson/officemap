@@ -110,7 +110,7 @@
         })
         .state("admin.people.new", {
           url: "/people/new",
-          templateUrl: "/scripts/components/editPerson/editPersonView.html",
+          templateUrl: "/scripts/components/admin/editPerson/editPersonView.html",
           controller: "EditPersonController",
           resolve: {
             ref: function () {
@@ -126,7 +126,7 @@
         })
         .state("admin.people.edit", {
           url: "/people/{ref:int}",
-          templateUrl: "/scripts/components/editPerson/editPersonView.html",
+          templateUrl: "/scripts/components/admin/editPerson/editPersonView.html",
           controller: "EditPersonController",
           resolve: {
             ref: function ($stateParams) {
@@ -146,7 +146,7 @@
         })
         .state("admin.maps.new", {
           url: "/maps/new",
-          templateUrl: "/scripts/components/editMap/editMapView.html",
+          templateUrl: "/scripts/components/admin/editMap/editMapView.html",
           controller: "EditMapController",
           resolve: {
             ref: function () {
@@ -159,7 +159,7 @@
         })
         .state("admin.maps.edit", {
           url: "/maps/{ref:int}",
-          templateUrl: "/scripts/components/editMap/editMapView.html",
+          templateUrl: "/scripts/components/admin/editMap/editMapView.html",
           controller: "EditMapController",
           resolve: {
             ref: function ($stateParams) {
