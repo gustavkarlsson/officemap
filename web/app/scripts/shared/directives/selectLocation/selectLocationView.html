@@ -1,0 +1,4 @@
+<md-select name="map" placeholder="Select map" ng-model="location.mapRef" required>
+  <md-option ng-repeat="(ref, map) in maps" value="{{ ref }}">{{ map.name }}</md-option>
+</md-select>
+<leaflet></leaflet>

@@ -5,7 +5,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("EditPersonController", function($scope, $state, $mdToast, ref, person, maps, PersonService, MapService, DiffService, ImageService) {
+	app.controller("EditPersonController", function($scope, $state, $mdToast, $mdDialog, ref, person, maps, PersonService, MapService, DiffService, ImageService) {
     // Variables
     var originalPerson,
       hasFiles;
@@ -55,7 +55,7 @@
 
 		$scope.update = function() {
 			var changes = DiffService.getChanges(originalPerson, $scope.person);
-			PersonService.update($scope.ref, changes)
+			PersonService.update(ref, changes)
         .then(function() {
           $state.go("admin.home", { tab: "maps" });
           $mdToast.show($mdToast.simple().position("bottom right").content("Updated " + $scope.getFullName()));
@@ -92,8 +92,59 @@
 			return ImageService.getUrl($scope.person.portrait, 160);
 		};
 
-    $scope.showChangeLocationDialog = function() {
-      // TODO popup change location dialog
+    $scope.getLocationName = function() {
+      if (!$scope.person.location) {
+        return "No location";
+      }
+      return $scope.person.location.name;
+    };
+
+    $scope.showSelectLocationDialog = function($event) {
+      $mdDialog.show({
+        targetEvent: $event,
+        template:
+        '<md-dialog aria-label="List dialog">'+
+        '   <md-toolbar>'+
+        '   <div class="md-toolbar-tools">'+
+        '     <h2>Select location</h2>'+
+        '     <span flex></span>'+
+        '     <md-button class="md-icon-button" ng-click="cancel()">'+
+        '       <md-icon aria-label="Cancel">close</md-icon>'+
+        '     </md-button>'+
+        '   </div>'+
+        ' </md-toolbar>'+
+        '  <md-dialog-content>'+
+        '    <select-location></select-location>'+
+        '  </md-dialog-content>'+
+        '  <div class="md-actions">'+
+        '    <md-button ng-click="confirm()" class="md-primary">'+
+        '      OK'+
+        '    </md-button>'+
+        '    <md-button ng-click="cancel()">'+
+        '      Cancel'+
+        '    </md-button>'+
+        '  </div>'+
+        '</md-dialog>',
+        locals: {
+          initialLocation: $scope.person.location,
+          maps: $scope.maps
+        },
+        controller: DialogController
+      }).then(
+        function(location) {
+          $scope.person.location = location;
+        }
+      );
+      function DialogController($scope, $mdDialog, initialLocation ,maps) {
+        $scope.location = initialLocation;
+        $scope.maps = maps;
+        $scope.confirm = function() {
+          $mdDialog.hide($scope.location);
+        };
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+      }
     };
 
     // Listeners
