@@ -122,7 +122,7 @@
         '   </div>'+
         ' </md-toolbar>'+
         '  <md-dialog-content>'+
-        '    <select-location maps="maps" location="location"></select-location>'+
+        '    <select-location ng-controller="SelectLocationController"></select-location>'+
         '  </md-dialog-content>'+
         '  <div class="md-actions">'+
         '    <md-button ng-click="confirm()" class="md-primary">'+
