@@ -118,9 +118,6 @@
             },
             person: function () {
               return null;
-            },
-            maps: function (MapService) {
-              return MapService.getAll();
             }
           }
         })
@@ -134,9 +131,6 @@
             },
             person: function (PersonService, $stateParams) {
               return PersonService.get($stateParams.ref);
-            },
-            maps: function (MapService) {
-              return MapService.getAll();
             }
           }
         })

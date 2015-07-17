@@ -5,7 +5,7 @@
 	"use strict";
 	var app = angular.module("main");
 
-	app.controller("EditPersonController", function($scope, $state, $mdToast, $mdDialog, ref, person, maps, PersonService, MapService, DiffService, ImageService) {
+	app.controller("EditPersonController", function($scope, $state, $mdToast, $mdDialog, ref, person, PersonService, DiffService, ImageService) {
     // Variables
     var originalPerson,
       hasFiles;
@@ -21,7 +21,6 @@
     // Scope
 		$scope.person = angular.copy(originalPerson);
     $scope.isNew = angular.equals(originalPerson, {});
-    $scope.maps = maps;
 
 		$scope.isChanged = function() {
 			return !angular.equals($scope.person, originalPerson);
@@ -102,6 +101,15 @@
     $scope.showSelectLocationDialog = function($event) {
       $mdDialog.show({
         targetEvent: $event,
+        locals: {
+          initialLocation: $scope.person.location
+        },
+        resolve: {
+          maps: function (MapService) {
+            return MapService.getAll();
+          }
+        },
+        controller: DialogController,
         template:
         '<md-dialog aria-label="List dialog">'+
         '   <md-toolbar>'+
@@ -114,7 +122,7 @@
         '   </div>'+
         ' </md-toolbar>'+
         '  <md-dialog-content>'+
-        '    <select-location></select-location>'+
+        '    <select-location maps="maps" location="location"></select-location>'+
         '  </md-dialog-content>'+
         '  <div class="md-actions">'+
         '    <md-button ng-click="confirm()" class="md-primary">'+
@@ -124,12 +132,7 @@
         '      Cancel'+
         '    </md-button>'+
         '  </div>'+
-        '</md-dialog>',
-        locals: {
-          initialLocation: $scope.person.location,
-          maps: $scope.maps
-        },
-        controller: DialogController
+        '</md-dialog>'
       }).then(
         function(location) {
           $scope.person.location = location;
