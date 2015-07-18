@@ -61,7 +61,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 
 	private Map<Integer, Person> onlyWithMapRef(Map<Integer, Person> persons,
 			final int ref) {
-		Map<Integer, Person> filteredPersons = new HashMap<Integer, Person>(
+		Map<Integer, Person> filteredPersons = new HashMap<>(
 				persons);
 		for (Iterator<Entry<Integer, Person>> it = filteredPersons.entrySet()
 				.iterator(); it.hasNext();) {

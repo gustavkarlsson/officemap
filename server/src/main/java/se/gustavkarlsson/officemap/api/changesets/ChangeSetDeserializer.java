@@ -1,16 +1,14 @@
 package se.gustavkarlsson.officemap.api.changesets;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import se.gustavkarlsson.officemap.api.items.Location;
 import se.gustavkarlsson.officemap.api.items.Sha1;
 import se.gustavkarlsson.officemap.util.Value;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 public abstract class ChangeSetDeserializer<T> extends StdDeserializer<T> {
@@ -20,14 +18,13 @@ public abstract class ChangeSetDeserializer<T> extends StdDeserializer<T> {
 	}
 	
 	@Override
-	public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException,
-			JsonProcessingException {
+	public T deserialize(final JsonParser jp, final DeserializationContext context) throws IOException {
 		final JsonNode root = jp.getCodec().readTree(jp);
 		return deserialize(root);
 	}
 
 	protected Value<Location> readLocationValue(final JsonNode root, final String path) throws ValueMappingException {
-		final JsonNode node = root.path(path);
+		final JsonNode node = root.path("location");
 		if (node.isMissingNode()) {
 			return Value.absent();
 		}
@@ -35,7 +32,7 @@ public abstract class ChangeSetDeserializer<T> extends StdDeserializer<T> {
 			return Value.ofNull();
 		}
 		if (!node.isObject()) {
-			throw new ValueMappingException(path, node, "Location");
+			throw new ValueMappingException("location", node, "Location");
 		}
 		
 		final JsonNode mapRefNode = node.path("mapRef");
@@ -43,7 +40,7 @@ public abstract class ChangeSetDeserializer<T> extends StdDeserializer<T> {
 		final JsonNode longitudeNode = node.path("longitude");
 		
 		if (!mapRefNode.isIntegralNumber() || !latitudeNode.isNumber() || !longitudeNode.isNumber()) {
-			throw new ValueMappingException(path, node, "Location",
+			throw new ValueMappingException("location", node, "Location",
 					"mapRef, latitude or longitude value missing or invalid.");
 		}
 		final int mapRef = mapRefNode.asInt();

@@ -1,10 +1,10 @@
 package se.gustavkarlsson.officemap.core;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 public class ItemStore<T> {
 
@@ -32,7 +32,7 @@ public class ItemStore<T> {
 	}
 
 	private void checkItemExists(final int ref) {
-		if (!exists(ref)) {
+		if (!contains(ref)) {
 			throw new ItemNotFoundException(ref);
 		}
 	}
@@ -42,7 +42,7 @@ public class ItemStore<T> {
 		return items.get(ref);
 	}
 	
-	public boolean exists(final int ref) {
+	public boolean contains(final int ref) {
 		return items.containsKey(ref);
 	}
 	

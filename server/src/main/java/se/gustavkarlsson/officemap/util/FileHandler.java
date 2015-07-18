@@ -64,13 +64,13 @@ public class FileHandler {
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (tryTodeleteFile(tempFile)) {
+			if (tryToDeleteFile(tempFile)) {
 				logger.debug("Deleted temp file");
 			}
 		}
 	}
 
-	private static boolean tryTodeleteFile(final Path file) {
+	private static boolean tryToDeleteFile(final Path file) {
 		try {
 			if (file != null) {
 				return Files.deleteIfExists(file);

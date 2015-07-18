@@ -5,8 +5,8 @@ import se.gustavkarlsson.officemap.api.items.Person;
 
 public class State {
 
-	private final ItemStore<Person> persons = new ItemStore<Person>();
-	private final ItemStore<Map> maps = new ItemStore<Map>();
+	private final ItemStore<Person> persons = new ItemStore<>();
+	private final ItemStore<Map> maps = new ItemStore<>();
 
 	public final ItemStore<Person> getPersons() {
 		return persons;

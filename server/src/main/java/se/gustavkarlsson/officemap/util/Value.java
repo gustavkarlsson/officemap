@@ -3,15 +3,15 @@ package se.gustavkarlsson.officemap.util;
 public class Value<T> {
 
 	public static <T> Value<T> of(final T value) {
-		return new Value<T>(value, true);
+		return new Value<>(value, true);
 	}
 
 	public static <T> Value<T> ofNull() {
-		return new Value<T>(null, true);
+		return new Value<>(null, true);
 	}
 
 	public static <T> Value<T> absent() {
-		return new Value<T>(null, false);
+		return new Value<>(null, false);
 	}
 
 	private final T value;

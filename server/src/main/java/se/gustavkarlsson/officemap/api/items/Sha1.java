@@ -1,9 +1,7 @@
 package se.gustavkarlsson.officemap.api.items;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -48,13 +46,11 @@ public final class Sha1 implements Buildable<Sha1> {
 	}
 	
 	public final byte[] getBytes() {
-		final byte[] copy = Arrays.copyOf(value, value.length);
-		return copy;
+		return Arrays.copyOf(value, value.length);
 	}
 	
 	public final String getHex() {
-		final String encoded = Hex.encodeHexString(value);
-		return encoded;
+		return Hex.encodeHexString(value);
 	}
 	
 	@Override
@@ -131,9 +127,9 @@ public final class Sha1 implements Buildable<Sha1> {
 		}
 
 		@Override
-		public void serialize(final Sha1 value, final JsonGenerator jgen, final SerializerProvider provider)
-				throws IOException, JsonGenerationException {
-			jgen.writeString(value.getHex());
+		public void serialize(final Sha1 value, final JsonGenerator generator, final SerializerProvider provider)
+				throws IOException {
+			generator.writeString(value.getHex());
 		}
 		
 	}
@@ -146,8 +142,7 @@ public final class Sha1 implements Buildable<Sha1> {
 		}
 
 		@Override
-		public Sha1 deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException,
-				JsonProcessingException {
+		public Sha1 deserialize(final JsonParser jp, final DeserializationContext context) throws IOException {
 			final JsonNode root = jp.getCodec().readTree(jp);
 			return Sha1.builder().withHex(root.asText()).build();
 		}

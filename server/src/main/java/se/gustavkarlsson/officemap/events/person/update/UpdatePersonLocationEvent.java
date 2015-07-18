@@ -34,7 +34,7 @@ public final class UpdatePersonLocationEvent extends UpdatePersonEvent {
 
 	@Override
 	public void process(final State state) {
-		if (location != null && !state.getMaps().exists(location.getMapRef())) {
+		if (location != null && !state.getMaps().contains(location.getMapRef())) {
 			throw new MapRefNotFoundException(location.getMapRef());
 		}
 		super.process(state);

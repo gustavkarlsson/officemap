@@ -35,7 +35,7 @@ public final class CreatePersonEvent extends ItemEvent {
 	@Override
 	public void process(final State state) {
 		final Location location = person.getLocation();
-		if (location != null && !state.getMaps().exists(location.getMapRef())) {
+		if (location != null && !state.getMaps().contains(location.getMapRef())) {
 			throw new MapRefNotFoundException(location.getMapRef());
 		}
 		state.getPersons().create(ref, person);

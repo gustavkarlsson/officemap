@@ -45,7 +45,6 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 
 	private final MultiPartBundle multipart = new MultiPartBundle();
 
-	private SessionFactory sessionFactory;
 	private EventDao dao;
 	private FileHandler fileHandler;
 	private State state;
@@ -68,7 +67,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 
 	@Override
 	public void run(final OfficeMapConfiguration config, final Environment environment) throws Exception {
-		sessionFactory = hibernate.getSessionFactory();
+		final SessionFactory sessionFactory = hibernate.getSessionFactory();
 		dao = new EventDao(sessionFactory);
 		fileHandler = new FileHandler(config.getDataPath(), new ThumbnailHandler(config.getThumbsCachePath()));
 		state = initState(sessionFactory, dao);
