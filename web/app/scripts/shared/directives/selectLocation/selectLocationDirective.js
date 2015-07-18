@@ -95,7 +95,6 @@
 
     // Listeners
     $scope.$parent.$watch("location.mapRef", function (newMapRef) {
-      newMapRef = newMapRef*1;
       if ($scope.$parent.location !== null && $scope.$parent.location !== undefined) {
         $scope.$parent.location.latitude = null;
         $scope.$parent.location.longitude = null;

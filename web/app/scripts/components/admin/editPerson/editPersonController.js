@@ -135,6 +135,7 @@
         '</md-dialog>'
       }).then(
         function(location) {
+          location.mapRef = parseInt(location.mapRef);
           $scope.person.location = location;
         }
       );
