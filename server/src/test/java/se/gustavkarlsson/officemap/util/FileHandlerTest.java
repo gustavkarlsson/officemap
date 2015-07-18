@@ -58,7 +58,7 @@ public class FileHandlerTest {
 	// TODO verify stream content
 	private void assertReadFile(final FileHandler fh) throws FileNotFoundException {
 		final Sha1 fileHash = saveFile(fh);
-		final Optional<? extends StreamingOutput> stream = fh.readFile(fileHash, Optional.of(40));
+		final Optional<? extends StreamingOutput> stream = fh.readFile(fileHash, Optional.<Integer>absent());
 		assertThat(stream.isPresent()).isTrue();
 	}
 
