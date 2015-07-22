@@ -11,22 +11,15 @@
     var leafletMap,
       positionMarker,
       getImageBounds,
-      offsetBounds,
-      setMap;
+      updateMarker;
 
     // Static
     leafletData.getMap().then(function(m) {
       leafletMap = m;
       leafletMap.on("click", function(event) {
-        if (positionMarker === null) {
-          positionMarker = new L.marker(event.latlng, { clickable: false });
-        } else {
-          positionMarker.setLatLng(event.latlng);
-        }
-        positionMarker.addTo(leafletMap);
-        $scope.$parent.location.latitude = event.latlng.lat;
-        $scope.$parent.location.longitude = event.latlng.lng;
+        updateMarker(event.latlng.lat, event.latlng.lng);
       });
+      $scope.setMap($scope.maps[$scope.$parent.location.mapRef]);
     });
 
     //Variables
@@ -40,14 +33,21 @@
       ];
     };
 
-    offsetBounds = function(bounds, offset) {
-      return [
-        [bounds[0][0] - offset, bounds[0][1] - offset],
-        [bounds[1][0] + offset, bounds[1][1] + offset]
-      ];
+    updateMarker = function (latitude, longitude) {
+      if (latitude === undefined || latitude === null || longitude === undefined || longitude === null) {
+        return;
+      }
+      if (positionMarker === null) {
+        positionMarker = L.marker([latitude, longitude], {clickable: false});
+      } else {
+        positionMarker.setLatLng([latitude, longitude]);
+      }
+      positionMarker.addTo(leafletMap);
+      $scope.$parent.location.latitude = latitude;
+      $scope.$parent.location.longitude = longitude;
     };
 
-    setMap = function(map) {
+    $scope.setMap = function (map) {
       ImageService.get(map.image).then(function(image) {
         leafletData.getMap().then(function(leafletMap) {
           var bounds = getImageBounds(image);
@@ -56,6 +56,7 @@
           });
           new L.ImageOverlay( "/api/files/" + map.image, bounds).addTo(leafletMap).bringToFront();
           leafletMap.fitBounds(bounds);
+          updateMarker($scope.$parent.location.latitude, $scope.$parent.location.longitude);
         });
       });
     };
@@ -90,17 +91,9 @@
     });
 
     $scope.hasMap = function() {
-      return $scope.$parent.location != null && $scope.$parent.location.mapRef != null;
+      var location = $scope.$parent.location;
+      return location !== undefined && location !== null && location.mapRef !== undefined && location.mapRef !== null;
     };
-
-    // Listeners
-    $scope.$parent.$watch("location.mapRef", function (newMapRef) {
-      if ($scope.$parent.location !== null && $scope.$parent.location !== undefined) {
-        $scope.$parent.location.latitude = null;
-        $scope.$parent.location.longitude = null;
-        setMap($scope.maps[newMapRef]);
-      }
-    });
 	});
 
 	app.directive("selectLocation", function() {
