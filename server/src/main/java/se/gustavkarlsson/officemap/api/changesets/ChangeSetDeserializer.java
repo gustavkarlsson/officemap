@@ -24,7 +24,7 @@ public abstract class ChangeSetDeserializer<T> extends StdDeserializer<T> {
 	}
 
 	protected Value<Location> readLocationValue(final JsonNode root, final String path) throws ValueMappingException {
-		final JsonNode node = root.path("location");
+		final JsonNode node = root.path(path);
 		if (node.isMissingNode()) {
 			return Value.absent();
 		}

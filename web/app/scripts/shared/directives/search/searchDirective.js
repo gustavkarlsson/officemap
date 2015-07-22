@@ -14,10 +14,21 @@
 			return q.promise;
 		};
 
-		$scope.onSelect = function($item) {
-			if ($item.object.location) {
-				$location.path("/people/" + $item.ref);
-			}
+    $scope.toText = function (result) {
+      var item = result.item;
+      if (result.type === "person") {
+        return item.firstName + " " + item.lastName;
+      } else if (result.type === "map") {
+        return item.name;
+      }
+    };
+
+    $scope.onSelect = function (result) {
+      if (result.type === "person") {
+        $location.path("/people/" + result.ref);
+      } else if (result.type === "map") {
+        $location.path("/maps/" + result.ref);
+      }
 		};
 	});
 

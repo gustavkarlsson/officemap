@@ -36,14 +36,14 @@ import static java.lang.System.currentTimeMillis;
 public final class PersonsResource extends ItemsResource<Person> {
 
 	public PersonsResource(final State state, final EventDao dao) {
-		super(state, dao, state.getPersons());
+		super(state, dao);
 	}
 
 	@GET
 	@Path("/{ref}")
 	public synchronized Person read(@PathParam("ref") final IntParam ref) {
 		try {
-			return items.get(ref.get());
+			return state.getPersons().get(ref.get());
 		} catch (final ItemNotFoundException e) {
 			throw new NotFoundException();
 		}
@@ -52,7 +52,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 	@GET
 	public synchronized Map<Integer, Person> readAll(
 			@QueryParam("mapRef") IntParam mapRef) {
-		Map<Integer, Person> persons = items.getAll();
+		Map<Integer, Person> persons = state.getPersons().getAll();
 		if (mapRef != null) {
 			return onlyWithMapRef(persons, mapRef.get());
 		}
@@ -78,7 +78,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 	@UnitOfWork
 	public synchronized Response create(@Valid final Person person,
 			@Context final UriInfo uriInfo) {
-		final int ref = items.getNextRef();
+		final int ref = state.getUniqueRef();
 		final Event event = new CreatePersonEvent(currentTimeMillis(), ref,
 				person);
 		try {

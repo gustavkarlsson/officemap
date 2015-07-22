@@ -90,7 +90,6 @@ public class FileHandlerTest {
 	}
 
 	private static Sha1 saveFile(final FileHandler fh) throws FileNotFoundException {
-		final Sha1 savedFileHash = fh.saveFile(new FileInputStream(file));
-		return savedFileHash;
+		return fh.saveFile(new FileInputStream(file));
 	}
 }

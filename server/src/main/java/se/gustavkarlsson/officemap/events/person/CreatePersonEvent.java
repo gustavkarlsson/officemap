@@ -1,16 +1,16 @@
 package se.gustavkarlsson.officemap.events.person;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import se.gustavkarlsson.officemap.api.items.Location;
 import se.gustavkarlsson.officemap.api.items.Person;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.events.ItemEvent;
 import se.gustavkarlsson.officemap.events.person.update.MapRefNotFoundException;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = CreatePersonEvent.TYPE)

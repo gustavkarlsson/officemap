@@ -56,7 +56,7 @@
 			var changes = DiffService.getChanges(originalPerson, $scope.person);
 			PersonService.update(ref, changes)
         .then(function() {
-          $state.go("admin.home", { tab: "maps" });
+          $state.go("admin.home", {tab: "people"});
           $mdToast.show($mdToast.simple().position("bottom right").content("Updated " + $scope.getFullName()));
         }, function(reason) {
           alert("Failed: " + reason);
@@ -68,7 +68,7 @@
       // TODO add modal with confirmation
 			PersonService.remove(ref)
         .then(function() {
-          $state.go("admin.home", { tab: "maps" });
+          $state.go("admin.home", {tab: "people"});
           $mdToast.show($mdToast.simple().position("bottom right").content("Deleted " + $scope.getFullName()));
 				}, function(reason) {
 					alert("Failed: " + reason);

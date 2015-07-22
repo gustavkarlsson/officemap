@@ -1,14 +1,13 @@
 package se.gustavkarlsson.officemap.events.map;
 
-import static se.gustavkarlsson.officemap.test.AssertValidation.assertThat;
 import nl.jqno.equalsverifier.EqualsVerifier;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import se.gustavkarlsson.officemap.api.items.Map;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.test.TestMapBuilder;
+
+import static se.gustavkarlsson.officemap.test.AssertValidation.assertThat;
 
 public class CreateMapEventTest {
 
@@ -40,7 +39,7 @@ public class CreateMapEventTest {
 	public void testProcessCreatesMap() throws Exception {
 		// FIXME mock state
 		final State state = new State();
-		final int ref = state.getMaps().getNextRef();
+		final int ref = state.getUniqueRef();
 		new CreateMapEvent(0, ref, map).process(state);
 		final Map savedMap = state.getMaps().get(ref);
 		assertThat(savedMap).isEqualTo(map);

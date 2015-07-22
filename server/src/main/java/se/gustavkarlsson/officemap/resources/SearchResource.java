@@ -1,20 +1,16 @@
 package se.gustavkarlsson.officemap.resources;
 
-import com.google.common.collect.Lists;
+import io.dropwizard.jersey.params.IntParam;
 import se.gustavkarlsson.officemap.api.SearchResult;
+import se.gustavkarlsson.officemap.api.items.Map;
 import se.gustavkarlsson.officemap.api.items.Person;
 import se.gustavkarlsson.officemap.core.State;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -30,43 +26,25 @@ public final class SearchResource {
 	}
 	
 	@POST
-	public List<SearchResult<Person>> search(final String query, @Context final UriInfo uriInfo) {
-		final List<String> terms = Arrays.asList(query.split(" "));
-		final List<SearchResult<Person>> results = Lists.newArrayList();
-		for (final Entry<Integer, Person> entry : state.getPersons().getAll().entrySet()) {
-			final Person person = entry.getValue();
-			final double score = calculateSearchScore(terms, person.getKeywords());
-			if (score > 0) {
-				results.add(new SearchResult<>(person, entry.getKey(), score));
+	public List<SearchResult< ? >> search(@QueryParam("results") @DefaultValue("10")final IntParam maxResults, final String query, @Context final UriInfo uriInfo) {
+		List<SearchResult< ? >> results = new ArrayList<>();
+		List<Entry<String, Integer>> searchResults = state.getIndex().search(query, maxResults.get());
+		for (Entry<String, Integer> searchResult : searchResults) {
+			String type = searchResult.getKey();
+			Integer ref = searchResult.getValue();
+			switch (type) {
+				case Person.TYPE:
+					Person person = state.getPersons().get(ref);
+					results.add(new SearchResult<>(ref, type, person));
+					break;
+				case Map.TYPE:
+					Map map = state.getMaps().get(ref);
+					results.add(new SearchResult<>(ref, type, map));
+					break;
+				default:
+					throw new RuntimeException("Unknown type: " + type);
 			}
 		}
-		Collections.sort(results, Collections.reverseOrder());
 		return results;
-	}
-	
-	private double calculateSearchScore(final Collection<String> terms, final Collection<String> keywords) {
-		double score = 0;
-		for (final String keyword : keywords) {
-			for (final String term : terms) {
-				score += calculateWordScore(term, keyword);
-			}
-		}
-		return score;
-	}
-	
-	// TODO More sophisticated search
-	private double calculateWordScore(final String term, final String keyword) {
-		final String preparedKeyword = keyword.trim().toLowerCase();
-		final String preparedTerm = term.trim().toLowerCase();
-		if (preparedKeyword.equals(preparedTerm)) {
-			return 1.0;
-		}
-		if (preparedKeyword.contains(preparedTerm)) {
-			if (preparedKeyword.length() == 0) {
-				return 0;
-			}
-			return ((double) preparedTerm.length()) / ((double) preparedKeyword.length());
-		}
-		return 0;
 	}
 }

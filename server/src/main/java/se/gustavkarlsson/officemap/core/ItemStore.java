@@ -1,34 +1,40 @@
 package se.gustavkarlsson.officemap.core;
 
+import se.gustavkarlsson.officemap.api.items.Searchable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
-public class ItemStore<T> {
-
-	private int refCount = 0;
+public class ItemStore<T extends Searchable> {
 
 	private final Map<Integer, T> backedUpItems = new HashMap<>();
 	private final Map<Integer, T> items = new HashMap<>();
+
+	private final Index index;
+
+	public ItemStore(Index index) {
+		this.index = index;
+	}
 	
 	public void create(final int ref, final T item) {
 		checkNotNull(item);
-		checkState(ref == getNextRef(), "Ref " + ref + " is not the next free ref. Should be " + getNextRef());
-		refCount = ref;
 		items.put(ref, item);
+		index.add(ref, item);
 	}
 	
 	public void replace(final int ref, final T item) {
 		checkNotNull(item);
 		checkItemExists(ref);
 		items.put(ref, item);
+		index.update(ref, item);
 	}
 	
 	public void delete(final int ref) {
 		checkItemExists(ref);
 		items.remove(ref);
+		index.remove(ref);
 	}
 
 	private void checkItemExists(final int ref) {
@@ -49,17 +55,13 @@ public class ItemStore<T> {
 	public Map<Integer, T> getAll() {
 		return new HashMap<>(items);
 	}
-
-	public final int getNextRef() {
-		return refCount + 1;
-	}
 	
-	public void backup() {
+	void backup() {
 		backedUpItems.clear();
 		backedUpItems.putAll(items);
 	}
 
-	public void restore() {
+	void restore() {
 		items.clear();
 		items.putAll(backedUpItems);
 	}

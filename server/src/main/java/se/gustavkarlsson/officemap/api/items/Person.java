@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Embeddable
 public final class Person implements Buildable<Person>, Searchable {
-	
+
+	public static final String TYPE = "person";
+
 	@NotBlank
 	@Column(name = "username")
 	private final String username;
@@ -123,14 +125,25 @@ public final class Person implements Buildable<Person>, Searchable {
 		return builder().with(username, firstName, lastName, email, portrait, location);
 	}
 	
-	@Override
-	@JsonIgnore
-	public Set<String> getKeywords() {
-		return Sets.newHashSet(username, firstName, lastName, email);
-	}
-	
 	public static PersonBuilder builder() {
 		return new PersonBuilder();
+	}
+
+	@Override
+	@JsonIgnore
+	public Map<String, String> getFields() {
+		Map<String, String> fields = new HashMap<>();
+		fields.put("username", username);
+		fields.put("firstName", firstName);
+		fields.put("lastName", lastName);
+		fields.put("email", email);
+		return fields;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getType() {
+		return TYPE;
 	}
 	
 	public static class PersonBuilder implements Builder<Person> {

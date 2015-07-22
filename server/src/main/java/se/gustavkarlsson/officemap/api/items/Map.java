@@ -1,5 +1,6 @@
 package se.gustavkarlsson.officemap.api.items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -8,10 +9,12 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 
 @Embeddable
-public class Map implements Buildable<Map> {
-	
+public class Map implements Buildable<Map>,Searchable {
+	public static final String TYPE = "map";
+
 	@NotBlank
 	@Column(name = "name")
 	private final String name;
@@ -74,6 +77,20 @@ public class Map implements Buildable<Map> {
 
 	public static MapBuilder builder() {
 		return new MapBuilder();
+	}
+
+	@Override
+	@JsonIgnore
+	public java.util.Map<String, String> getFields() {
+		java.util.Map<String, String> fields = new HashMap<>();
+		fields.put("name", name);
+		return fields;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getType() {
+		return TYPE;
 	}
 
 	public static class MapBuilder implements Builder<Map> {

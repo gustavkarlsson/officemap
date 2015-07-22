@@ -30,14 +30,14 @@ import static java.lang.System.currentTimeMillis;
 public final class MapsResource extends ItemsResource<Map> {
 
 	public MapsResource(final State state, final EventDao dao) {
-		super(state, dao, state.getMaps());
+		super(state, dao);
 	}
 	
 	@GET
 	@Path("/{ref}")
 	public synchronized Map read(@PathParam("ref") final IntParam ref) {
 		try {
-			return items.get(ref.get());
+			return state.getMaps().get(ref.get());
 		} catch (final ItemNotFoundException e) {
 			throw new NotFoundException();
 		}
@@ -45,13 +45,13 @@ public final class MapsResource extends ItemsResource<Map> {
 
 	@GET
 	public synchronized java.util.Map<Integer, Map> readAll() {
-		return items.getAll();
+		return state.getMaps().getAll();
 	}
 
 	@POST
 	@UnitOfWork
 	public synchronized Response create(@Valid final Map map, @Context final UriInfo uriInfo) {
-		final int ref = items.getNextRef();
+		final int ref = state.getUniqueRef();
 		final Event event = new CreateMapEvent(currentTimeMillis(), ref, map);
 		processEvent(event);
 		final URI uri = getCreatedResourceUri(uriInfo, String.valueOf(ref));
