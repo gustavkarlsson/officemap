@@ -31,14 +31,17 @@
         person,
         markers = [];
       for (personRef in persons) {
-        person = persons[personRef];
-        markers.push({
-          lat: person.location.latitude,
-          lng: person.location.longitude,
-          message: '<a ui-sref="people({ref: 1})">' + person.firstName + ' ' + person.lastName + '</a>',
-          focus: personRef == activePersonRef,
-          draggable: false
-        });
+        if (persons.hasOwnProperty(personRef)) {
+          personRef = parseInt(personRef);
+          person = persons[personRef];
+          markers.push({
+            lat: person.location.latitude,
+            lng: person.location.longitude,
+            message: '<a ui-sref="people({ref: ' + personRef + '})">' + person.firstName + ' ' + person.lastName + '</a>',
+            focus: personRef === activePersonRef,
+            draggable: false
+          });
+        }
       }
       return markers;
     };
