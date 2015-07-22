@@ -1,5 +1,8 @@
 package se.gustavkarlsson.officemap;
 
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
@@ -16,7 +19,7 @@ import org.hibernate.context.internal.ManagedSessionContext;
 import se.gustavkarlsson.officemap.core.State;
 import se.gustavkarlsson.officemap.dao.EventDao;
 import se.gustavkarlsson.officemap.events.Event;
-import se.gustavkarlsson.officemap.health.DummyHealthCheck;
+import se.gustavkarlsson.officemap.health.LocationMapsExist;
 import se.gustavkarlsson.officemap.resources.FilesResource;
 import se.gustavkarlsson.officemap.resources.MapsResource;
 import se.gustavkarlsson.officemap.resources.PersonsResource;
@@ -25,6 +28,7 @@ import se.gustavkarlsson.officemap.util.FileHandler;
 import se.gustavkarlsson.officemap.util.ThumbnailHandler;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class OfficeMap extends Application<OfficeMapConfiguration> {
 
@@ -70,14 +74,14 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		final SessionFactory sessionFactory = hibernate.getSessionFactory();
 		dao = new EventDao(sessionFactory);
 		fileHandler = new FileHandler(config.getDataPath(), new ThumbnailHandler(config.getThumbsCachePath()));
-		state = initState(sessionFactory, dao);
+		state = initState(sessionFactory, dao, environment.metrics());
 
 		setupHealthChecks(environment.healthChecks());
 		setupJersey(environment.jersey());
 	}
 
 	private void setupHealthChecks(final HealthCheckRegistry healthChecks) {
-		healthChecks.register("dummy", new DummyHealthCheck());
+		healthChecks.register("location maps exist", new LocationMapsExist(state));
 	}
 
 	private void setupJersey(final JerseyEnvironment jersey) {
@@ -87,7 +91,11 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		jersey.register(new SearchResource(state));
 	}
 
-	private State initState(final SessionFactory sessionFactory, final EventDao dao) {
+	private State initState(final SessionFactory sessionFactory, final EventDao dao, MetricRegistry metrics) {
+		Counter counter = metrics.counter(MetricRegistry.name(this.getClass(), "initState", "events"));
+		Timer timer = metrics.timer(MetricRegistry.name(this.getClass(), "initState"));
+		long startTime = System.nanoTime();
+
 		final State state = new State();
 		final List<Event> events;
 		final Session session = sessionFactory.openSession();
@@ -100,7 +108,9 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		}
 		for (final Event event : events) {
 			event.process(state);
+			counter.inc();
 		}
+		timer.update(System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
 		return state;
 	}
 }

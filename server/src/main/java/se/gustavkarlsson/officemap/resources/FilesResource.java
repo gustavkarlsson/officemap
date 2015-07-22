@@ -1,5 +1,6 @@
 package se.gustavkarlsson.officemap.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.params.IntParam;
@@ -30,6 +31,7 @@ public final class FilesResource extends Resource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.TEXT_PLAIN)
 	@UnitOfWork
+	@Timed
 	public Response receive(@FormDataParam("file") final InputStream fileInputStream,
 			@FormDataParam("file") final FormDataContentDisposition contentDispositionHeader,
 			@Context final UriInfo uriInfo) {
@@ -42,6 +44,7 @@ public final class FilesResource extends Resource {
 	@Path("/{sha1}")
 	@GET
 	@UnitOfWork
+	@Timed
 	public Response send(@PathParam("sha1") final String hex, @QueryParam("size") IntParam sizeParam) {
 		final Sha1 sha1;
 		try {

@@ -1,5 +1,6 @@
 package se.gustavkarlsson.officemap.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.jersey.params.IntParam;
 import se.gustavkarlsson.officemap.api.SearchResult;
 import se.gustavkarlsson.officemap.api.items.Map;
@@ -26,6 +27,7 @@ public final class SearchResource {
 	}
 	
 	@POST
+	@Timed
 	public List<SearchResult< ? >> search(@QueryParam("results") @DefaultValue("10")final IntParam maxResults, final String query, @Context final UriInfo uriInfo) {
 		List<SearchResult< ? >> results = new ArrayList<>();
 		List<Entry<String, Integer>> searchResults = state.getIndex().search(query, maxResults.get());

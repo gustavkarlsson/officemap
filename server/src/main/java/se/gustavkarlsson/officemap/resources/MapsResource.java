@@ -1,5 +1,6 @@
 package se.gustavkarlsson.officemap.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.params.IntParam;
@@ -35,6 +36,7 @@ public final class MapsResource extends ItemsResource<Map> {
 	
 	@GET
 	@Path("/{ref}")
+	@Timed
 	public synchronized Map read(@PathParam("ref") final IntParam ref) {
 		try {
 			return state.getMaps().get(ref.get());
@@ -50,6 +52,7 @@ public final class MapsResource extends ItemsResource<Map> {
 
 	@POST
 	@UnitOfWork
+	@Timed
 	public synchronized Response create(@Valid final Map map, @Context final UriInfo uriInfo) {
 		final int ref = state.getUniqueRef();
 		final Event event = new CreateMapEvent(currentTimeMillis(), ref, map);
@@ -61,6 +64,7 @@ public final class MapsResource extends ItemsResource<Map> {
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
+	@Timed
 	public synchronized Response update(@PathParam("ref") final IntParam ref, @Valid final MapChangeSet changes) {
 		final List<Event> events = changes.generateEvents(currentTimeMillis(), ref.get());
 		try {
@@ -74,6 +78,7 @@ public final class MapsResource extends ItemsResource<Map> {
 	@DELETE
 	@Path("/{ref}")
 	@UnitOfWork
+	@Timed
 	public synchronized Response delete(@PathParam("ref") final IntParam ref) {
 		final Event event = new DeleteMapEvent(currentTimeMillis(), ref.get());
 		try {

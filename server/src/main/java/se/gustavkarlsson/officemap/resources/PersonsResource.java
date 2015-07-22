@@ -1,5 +1,6 @@
 package se.gustavkarlsson.officemap.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.params.IntParam;
@@ -41,6 +42,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 
 	@GET
 	@Path("/{ref}")
+	@Timed
 	public synchronized Person read(@PathParam("ref") final IntParam ref) {
 		try {
 			return state.getPersons().get(ref.get());
@@ -50,6 +52,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 	}
 
 	@GET
+	@Timed
 	public synchronized Map<Integer, Person> readAll(
 			@QueryParam("mapRef") IntParam mapRef) {
 		Map<Integer, Person> persons = state.getPersons().getAll();
@@ -76,6 +79,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 
 	@POST
 	@UnitOfWork
+	@Timed
 	public synchronized Response create(@Valid final Person person,
 			@Context final UriInfo uriInfo) {
 		final int ref = state.getUniqueRef();
@@ -93,6 +97,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 	@PATCH
 	@Path("/{ref}")
 	@UnitOfWork
+	@Timed
 	public synchronized Response update(@PathParam("ref") final IntParam ref,
 			@Valid final PersonChangeSet changes) {
 		final List<Event> events = changes.generateEvents(currentTimeMillis(),
@@ -110,6 +115,7 @@ public final class PersonsResource extends ItemsResource<Person> {
 	@DELETE
 	@Path("/{ref}")
 	@UnitOfWork
+	@Timed
 	public synchronized Response delete(@PathParam("ref") final IntParam ref) {
 		final Event event = new DeletePersonEvent(currentTimeMillis(),
 				ref.get());
