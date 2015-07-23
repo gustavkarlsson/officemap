@@ -1,6 +1,7 @@
 package se.gustavkarlsson.officemap.core;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
@@ -30,14 +31,14 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Index { // TODO Synchronize
+public class Index {
 
 	private static final String REF = "ref";
 	private static final String TYPE = "type";
 	private static final String CONTENT = "content";
 
 	private final Directory directory = new RAMDirectory();
-	private final Analyzer analyzer =new Analyzer() {
+	private final Analyzer analyzer = new Analyzer() {
 		@Override
 		protected TokenStreamComponents createComponents(String fieldName) {
 			Tokenizer source = new NGramTokenizer(2, 10);
@@ -45,12 +46,18 @@ public class Index { // TODO Synchronize
 			return new TokenStreamComponents(source, filter);
 		}
 	};
+	private final IndexWriter writer;
+	private DirectoryReader reader;
+	private IndexSearcher searcher;
 
 	public Index() {
-		try (IndexWriter writer = new IndexWriter(directory, new IndexWriterConfig(analyzer))) {
-			writer.commit();
+		try {
+			writer = new IndexWriter(directory, new IndexWriterConfig(analyzer));
+			writer.commit(); // Initial write to create the directory
+			reader = DirectoryReader.open(directory);
+			searcher = new IndexSearcher(reader);
 		} catch (IOException e) {
-			// TODO handle Index constructor errors
+			// TODO handle Index creation errors
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -61,7 +68,7 @@ public class Index { // TODO Synchronize
 		checkReservedKeys(item);
 
 		Document document = createDocument(ref, item);
-		try (IndexWriter writer = new IndexWriter(directory, new IndexWriterConfig(analyzer))) {
+		try {
 			writer.addDocument(document);
 			writer.commit();
 		} catch (IOException e) {
@@ -77,7 +84,7 @@ public class Index { // TODO Synchronize
 
 		Term term = new Term(REF, String.valueOf(ref));
 		Document document = createDocument(ref, item);
-		try (IndexWriter writer = new IndexWriter(directory, new IndexWriterConfig(analyzer))) {
+		try {
 			writer.updateDocument(term, document);
 			writer.commit();
 		} catch (IOException e) {
@@ -89,7 +96,7 @@ public class Index { // TODO Synchronize
 
 	void remove(int ref) {
 		Term term = new Term(REF, String.valueOf(ref));
-		try (IndexWriter writer = new IndexWriter(directory, new IndexWriterConfig(analyzer))) {
+		try {
 			writer.deleteDocuments(term);
 			writer.commit();
 		} catch (IOException e) {
@@ -107,8 +114,14 @@ public class Index { // TODO Synchronize
 		}
 
 		List<Map.Entry<String, Integer>> results = new ArrayList<>();
-		try (DirectoryReader reader = DirectoryReader.open(directory)) {
-			IndexSearcher searcher = new IndexSearcher(reader);
+		try {
+			Optional<DirectoryReader> newReader = Optional.fromNullable(DirectoryReader.openIfChanged(reader));
+			if (newReader.isPresent()) {
+				// New reader must be created as old one is outdated
+				reader.close();
+				reader = newReader.get();
+				searcher = new IndexSearcher(reader);
+			}
 			Query query = createQuery(text);
 			TopDocs topDocs = searcher.search(query, maxResults);
 			for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
