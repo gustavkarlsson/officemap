@@ -1,0 +1,12 @@
+task copyWeb(type: Copy, dependsOn: ":web:build") {
+    from "web/dist"
+    into 'build/web'
+}
+
+task copyServer(type: Copy, dependsOn: ":server:shadowJar") {
+    from "server/build/libs/server-1.0.0-SNAPSHOT-all.jar"
+    into "build"
+    rename ".*server.*\\.jar", "server.jar"
+}
+
+task assemble(dependsOn: ["copyServer", "copyWeb"])

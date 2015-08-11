@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'se.gustavkarlsson'
 version = '1.0.0-SNAPSHOT'
@@ -11,6 +12,13 @@ targetCompatibility = 1.7
 
 repositories {
     mavenCentral()
+}
+
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
+    }
 }
 
 def dropwizardVersion = '0.8.1'
