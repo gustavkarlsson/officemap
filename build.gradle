@@ -3,10 +3,9 @@ task copyWeb(type: Copy, dependsOn: ":web:build") {
     into 'build/web'
 }
 
-task copyServer(type: Copy, dependsOn: ":server:shadowJar") {
-    from "server/build/libs/server-1.0.0-SNAPSHOT-all.jar"
+task copyServer(type: Copy, dependsOn: ":server:installDist") {
+    from "server/build/install/server"
     into "build"
-    rename ".*server.*\\.jar", "server.jar"
 }
 
-task assemble(dependsOn: ["copyServer", "copyWeb"])
+task install(dependsOn: ["copyServer", "copyWeb"])

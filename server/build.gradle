@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'se.gustavkarlsson'
 version = '1.0.0-SNAPSHOT'
@@ -14,14 +13,7 @@ repositories {
     mavenCentral()
 }
 
-buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
-    }
-}
-
-def dropwizardVersion = '0.8.1'
+def dropwizardVersion = '0.8.2'
 
 dependencies {
     compile 'commons-codec:commons-codec:1.10',
@@ -37,7 +29,8 @@ dependencies {
             'io.dropwizard:dropwizard-migrations:' + dropwizardVersion,
             'io.dropwizard:dropwizard-core:' + dropwizardVersion,
             'io.dropwizard:dropwizard-assets:' + dropwizardVersion,
-            'io.dropwizard:dropwizard-forms:' + dropwizardVersion
+            'io.dropwizard:dropwizard-forms:' + dropwizardVersion,
+            'io.dropwizard-bundles:dropwizard-configurable-assets-bundle:0.8.1-1'
     testCompile 'junit:junit:4.12',
             'nl.jqno.equalsverifier:equalsverifier:1.7.2',
             'com.google.jimfs:jimfs:1.0',
