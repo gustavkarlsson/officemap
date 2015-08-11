@@ -30,7 +30,7 @@ dependencies {
             'io.dropwizard:dropwizard-core:' + dropwizardVersion,
             'io.dropwizard:dropwizard-assets:' + dropwizardVersion,
             'io.dropwizard:dropwizard-forms:' + dropwizardVersion,
-            'io.dropwizard-bundles:dropwizard-configurable-assets-bundle:0.8.1-1'
+            'com.github.dirkraft.dropwizard:dropwizard-file-assets:0.0.1'
     testCompile 'junit:junit:4.12',
             'nl.jqno.equalsverifier:equalsverifier:1.7.2',
             'com.google.jimfs:jimfs:1.0',

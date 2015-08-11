@@ -4,8 +4,8 @@ import com.codahale.metrics.Counter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.codahale.metrics.health.HealthCheckRegistry;
+import com.github.dirkraft.dropwizard.fileassets.FileAssetsBundle;
 import io.dropwizard.Application;
-import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -52,7 +52,7 @@ public class OfficeMap extends Application<OfficeMapConfiguration> {
 		}
 	};
 
-	private final ConfiguredAssetsBundle assets = new ConfiguredAssetsBundle("/web", "/", "index.html");
+	private final FileAssetsBundle assets = new FileAssetsBundle("web", "/", "index.html");
 
 	private final MultiPartBundle multipart = new MultiPartBundle();
 

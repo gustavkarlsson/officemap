@@ -9,7 +9,9 @@
     <!-- support AngularJS HTML5 mode (URLs without hashes) -->
     <rule>
         <!-- Matches all except /api/.* /app/.* /assets/.* /index.html -->
-        <from>^/(?!((api/.*)|(app/.*)|(assets/.*)|(index.html$))).*$</from>
+        <from>
+            ^/(?!((api/.*)|(images/.*)|(scripts/.*)|(styles/.*)|(index.html$)|(404.html$)|(favicon.ico$)|(robots.txt$)|(.htaccess$))).*$
+        </from>
         <to>/index.html</to>
     </rule>
 
