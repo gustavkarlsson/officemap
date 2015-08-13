@@ -28,7 +28,7 @@
 				maps: "=",
 				activeRef: "="
 			},
-			templateUrl: "/scripts/shared/directives/maps/mapsView.html"
+      templateUrl: "scripts/shared/directives/maps/mapsView.html"
 		};
 	});
 

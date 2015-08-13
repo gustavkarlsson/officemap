@@ -35,7 +35,7 @@
 	app.directive("search", function() {
 		return {
 			restrict: "E",
-			templateUrl: "/scripts/shared/directives/search/searchView.html"
+      templateUrl: "scripts/shared/directives/search/searchView.html"
 		};
 	});
 

@@ -13,7 +13,7 @@
         tooltip: "@",
         uiSref: "@"
       },
-			templateUrl: "/scripts/shared/directives/iconButton/iconButtonView.html"
+      templateUrl: "scripts/shared/directives/iconButton/iconButtonView.html"
 		};
 	});
 

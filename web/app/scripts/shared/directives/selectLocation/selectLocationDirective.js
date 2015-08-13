@@ -99,7 +99,7 @@
 	app.directive("selectLocation", function() {
 		return {
 			restrict: "E",
-			templateUrl: "/scripts/shared/directives/selectLocation/selectLocationView.html",
+      templateUrl: "scripts/shared/directives/selectLocation/selectLocationView.html",
       transclude: true
 		};
 	});

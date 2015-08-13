@@ -24,11 +24,11 @@
       $stateProvider
         .state("home", {
           url: "/",
-          templateUrl: "/scripts/components/home/homeView.html"
+          templateUrl: "scripts/components/home/homeView.html"
         })
         .state("maps", {
           url: "/maps/{ref:int}",
-          templateUrl: "/scripts/components/map/mapView.html",
+          templateUrl: "scripts/components/map/mapView.html",
           controller: "MapController",
           resolve: {
             mapRef: function ($stateParams) {
@@ -52,7 +52,7 @@
         })
         .state("people", {
           url: "/people/{ref:int}",
-          templateUrl: "/scripts/components/map/mapView.html",
+          templateUrl: "scripts/components/map/mapView.html",
           controller: "MapController",
           resolve: {
             mapRef: function (PersonService, $stateParams) {
@@ -90,7 +90,7 @@
         .state("admin.home", {
           url: "?tab", // Same as parent
           reloadOnSearch: false,
-          templateUrl: "/scripts/components/admin/home/adminHomeView.html",
+          templateUrl: "scripts/components/admin/home/adminHomeView.html",
           controller: "AdminHomeController",
           resolve: {
             persons: function (PersonService) {
@@ -110,7 +110,7 @@
         })
         .state("admin.people.new", {
           url: "/people/new",
-          templateUrl: "/scripts/components/admin/editPerson/editPersonView.html",
+          templateUrl: "scripts/components/admin/editPerson/editPersonView.html",
           controller: "EditPersonController",
           resolve: {
             ref: function () {
@@ -123,7 +123,7 @@
         })
         .state("admin.people.edit", {
           url: "/people/{ref:int}",
-          templateUrl: "/scripts/components/admin/editPerson/editPersonView.html",
+          templateUrl: "scripts/components/admin/editPerson/editPersonView.html",
           controller: "EditPersonController",
           resolve: {
             ref: function ($stateParams) {
@@ -140,7 +140,7 @@
         })
         .state("admin.maps.new", {
           url: "/maps/new",
-          templateUrl: "/scripts/components/admin/editMap/editMapView.html",
+          templateUrl: "scripts/components/admin/editMap/editMapView.html",
           controller: "EditMapController",
           resolve: {
             ref: function () {
@@ -153,7 +153,7 @@
         })
         .state("admin.maps.edit", {
           url: "/maps/{ref:int}",
-          templateUrl: "/scripts/components/admin/editMap/editMapView.html",
+          templateUrl: "scripts/components/admin/editMap/editMapView.html",
           controller: "EditMapController",
           resolve: {
             ref: function ($stateParams) {
