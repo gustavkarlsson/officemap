@@ -1,4 +1,3 @@
-/* global alert */
 /* global angular */
 /* global L */
 

@@ -96,9 +96,21 @@
         return "No location";
       }
       return $scope.person.location.name;
-    };
+    }; 
 
     $scope.showSelectLocationDialog = function($event) {
+      var DialogController = 
+      function($scope, $mdDialog, initialLocation ,maps) {
+        $scope.location = initialLocation;
+        $scope.maps = maps;
+        $scope.confirm = function() {
+          $mdDialog.hide($scope.location);
+        };
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+      };
+      
       $mdDialog.show({
         targetEvent: $event,
         locals: {
@@ -139,16 +151,6 @@
           $scope.person.location = location;
         }
       );
-      function DialogController($scope, $mdDialog, initialLocation ,maps) {
-        $scope.location = initialLocation;
-        $scope.maps = maps;
-        $scope.confirm = function() {
-          $mdDialog.hide($scope.location);
-        };
-        $scope.cancel = function() {
-          $mdDialog.cancel();
-        };
-      }
     };
 
     // Listeners

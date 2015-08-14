@@ -1,4 +1,3 @@
-/* global alert */
 /* global angular */
 
 (function() {
@@ -12,7 +11,7 @@
         icon: "@",
         tooltip: "@",
         uiSref: "@"
-      },
+      }, 
       templateUrl: "scripts/shared/directives/iconButton/iconButtonView.html"
 		};
 	});

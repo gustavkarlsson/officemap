@@ -9,10 +9,10 @@
 		this.get = function(ref) {
 			var deferred = $q.defer();
 			$http.get("/api/persons/" + ref)
-				.success(function(data, status) {
+				.success(function(data) {
 					deferred.resolve(data);
 				})
-				.error(function(data, status) {
+				.error(function(data) {
 					deferred.reject(data);
 				});
 
@@ -22,10 +22,10 @@
 		this.getAll = function() {
 			var deferred = $q.defer();
 			$http.get("/api/persons")
-				.success(function(data, status) {
+				.success(function(data) {
 					deferred.resolve(data);
 				})
-				.error(function(data, status) {
+				.error(function(data) {
 					deferred.reject(data);
 				});
 
@@ -35,10 +35,10 @@
 		this.getAllByMapRef = function(ref) {
 			var deferred = $q.defer();
 			$http.get("/api/persons?mapRef=" + ref)
-				.success(function(data, status) {
+				.success(function(data) {
 					deferred.resolve(data);
 				})
-				.error(function(data, status) {
+				.error(function(data) {
 					deferred.reject(data);
 				});
 
@@ -51,7 +51,7 @@
 				.success(function(ref) {
 					deferred.resolve(ref);
 				})
-				.error(function(data, status) {
+				.error(function(data) {
 					deferred.reject(data);
 				});
 
@@ -61,10 +61,10 @@
 		this.update = function(ref, changes) {
 			var deferred = $q.defer();
 			$http.patch("/api/persons/" + ref, changes)
-				.success(function(data, status) {
+				.success(function(data) {
 					deferred.resolve(data);
 				})
-				.error(function(data, status) {
+				.error(function(data) {
 					deferred.reject(data);
 				});
 
@@ -74,10 +74,10 @@
 		this.remove = function(ref) {
 			var deferred = $q.defer();
 			$http["delete"]("/api/persons/" + ref)
-				.success(function(data, status) {
+				.success(function(data) {
 					deferred.resolve(data);
 				})
-				.error(function(data, status) {
+				.error(function(data) {
 					deferred.reject(data);
 				});
 
