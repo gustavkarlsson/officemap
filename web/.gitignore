@@ -15,3 +15,6 @@
 
 # Gradle build caches
 /.caches/
+
+# Temporary jruby repository
+/.jruby/

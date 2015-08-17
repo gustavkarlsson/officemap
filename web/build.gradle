@@ -1,56 +1,184 @@
 plugins {
-  id 'com.moowork.node' version '0.10'
-  id "com.moowork.grunt" version "0.10"
+  id "com.moowork.node" version "0.10"
 }
 
-apply plugin: 'base'
-apply plugin: 'com.moowork.node'
-apply plugin: 'com.moowork.grunt'
+apply plugin: "base"
+apply plugin: "com.moowork.node"
+
+configurations {
+  jruby
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  jruby "org.jruby:jruby-complete:1.7.20"
+}
 
 node {
-    version = '0.12.5'
-    npmVersion = '2.11.2'
-    download = true
+  version = "0.12.5"
+  npmVersion = "2.11.2"
+  download = true
 }
 
-task npmCacheConfig(type: NpmTask) {
-    description = 'Configure the NPM cache'
-    def npmCacheDir = "${projectDir}/.caches/npm"
-    outputs.files file(npmCacheDir)
-    args = [ 'config', 'set', 'cache', npmCacheDir ]
+ext {
+  npmCacheDir = "${projectDir}/.caches/npm"
+  nodeModulesDir = "${projectDir}/node_modules"
+  bowerCacheDir = "${projectDir}/.caches/bower"
+  bowerComponentsDir = "${projectDir}/bower_components"
+  jrubyDir = "${projectDir}/.jruby"
+  appDir = "${projectDir}/app"
+  sassDir = "${appDir}/styles"
+  imagesDir = "${appDir}/images"
+  javascriptsDir = "${appDir}/scripts"
+  fontsDir = "${appDir}/styles/fonts"
+  indexFile = "${appDir}/index.html"
+
+  serveDir = "${projectDir}/.tmp"
+  cssDir = "${serveDir}/styles"
+  generatedImagesDir = "${serveDir}/images"
+
+  httpImagesPath = "/images"
+  httpGeneratedImagesPath = "${httpImagesPath}/generated"
 }
 
-task npmInstallPackages(type: NpmTask, dependsOn: npmCacheConfig) {
-    description = "Install Node.js packages"
-    args = [ 'install' ]
-    inputs.files file('package.json')
-    outputs.files file('node_modules')
+task configureNpmCache(type: NpmTask) {
+  description = "Configure the NPM cache"
+  outputs.files file(npmCacheDir)
+
+  args = [ "config", "set", "cache", npmCacheDir ]
 }
 
-task bowerInstall(type: NodeTask, dependsOn: npmInstallPackages) {
-    script = file('node_modules/bower/bin/bower')
-    args = ["--config.storage.cache=${projectDir}/caches/bower/cache",
-            "--config.storage.packages=${projectDir}/.caches/bower/packages",
-            "--config.storage.registry=${projectDir}/.caches/bower/registry",
-            'install']
-    inputs.files file('bower.json')
-    outputs.files file('bower_components')
+task installNodePackages(type: NpmTask, dependsOn: configureNpmCache) {
+  description = "Install Node.js packages"
+  inputs.files file("package.json")
+  outputs.files file("node_modules")
+
+  args = [ "install" ]
 }
 
-task serve(dependsOn: grunt_serve) {
+task installBowerPackages(type: NodeTask, dependsOn: installNodePackages) {
+  description = "Install bower packages"
+  inputs.files file("bower.json")
+  outputs.files file(bowerComponentsDir)
+
+  script = file("${nodeModulesDir}/bower/bin/bower")
+  args = ["--config.storage.cache=${bowerCacheDir}/cache",
+          "--config.storage.packages=${bowerCacheDir}/packages",
+          "--config.storage.registry=${bowerCacheDir}/registry",
+          "install"]
 }
 
-grunt_build.dependsOn installGrunt
-grunt_build.dependsOn bowerInstall
+task installCompass(type: JavaExec) {
+  description = "Install compass using JRuby"
+    outputs.dir file(jrubyDir)
 
-grunt_serve.dependsOn installGrunt
-grunt_serve.dependsOn bowerInstall
+    classpath = configurations.jruby
+    main = "org.jruby.Main"
+    args = ["-S", "gem", "install",
+            "-i", jrubyDir,
+            "--no-rdoc", "--no-ri",
+            "compass"]
+}
 
-build.dependsOn grunt_build
+task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerPackages]) {
+    description = "Compile SASS using compass"
+    inputs.dir file(sassDir)
+    inputs.dir file(imagesDir)
+    inputs.dir file(javascriptsDir)
+    inputs.dir file(fontsDir)
+    inputs.dir file(bowerComponentsDir)
+    outputs.dir file(cssDir)
+    outputs.dir file(generatedImagesDir)
 
-clean.delete << file('dist')
-clean.delete << file('node_modules')
-clean.delete << file('bower_components')
-clean.delete << file('.caches')
-clean.delete << file('.sass-cache')
-clean.delete << file('.tmp')
+    environment "GEM_PATH", jrubyDir
+    environment "PATH", "${jrubyDir}/bin"
+
+    classpath = configurations.jruby
+    main = "org.jruby.Main"
+    args = ["-S", "compass", "compile",
+            "--sass-dir", sassDir,
+            "--css-dir", cssDir,
+            "--images-dir", imagesDir,
+            "--javascripts-dir", javascriptsDir,
+            "--fonts-dir", fontsDir,
+            "--import-path", bowerComponentsDir,
+            "--relative-assets", "--sourcemap"]
+}
+
+task wiredep(type: NodeTask, dependsOn: [installNodePackages, installBowerPackages]) {
+    description = "Wire Bower dependencies to your source code"
+    inputs.dir file(bowerComponentsDir)
+    outputs.file file(indexFile)
+
+    script = file("node_modules/wiredep/wiredep-cli.js")
+    args = ["--src", indexFile,
+            "--ignorePath", ".."]
+}
+
+task autoprefixer(type: NodeTask, dependsOn: [installNodePackages, compileSass]) {
+  description = "Add vendor prefixes to CSS"
+  def cssFiles = fileTree(cssDir).include("**/*.css")
+  inputs.files cssFiles
+  outputs.files cssDir
+
+  script = file("node_modules/postcss-cli/bin/postcss")
+  args = ["--use", "autoprefixer",
+          "--autoprefixer.browsers", "last 1 version",
+          "--autoprefixer.map", "true",
+          "--dir", cssDir]
+  args += fileTree(cssDir).include("**/*.css")
+}
+
+task serve(dependsOn: [wiredep, compileSass, autoprefixer]) {
+  // clean:server?
+  // wiredep
+  // concurrent:server
+  // autoprefixer:server
+  // configureProxies:serve
+  // connect:livereload
+  // watch
+
+  // TODO implement gradle serve
+}
+
+task build() {
+  // clean:dist?
+  // wiredep
+  // useminPrepare
+  // concurrent:dist
+  // autoprefixer
+  // ngtemplates
+  // concat
+  // ngAnnotate
+  // copy:dist
+  // cdnify
+  // cssmin
+  // uglify
+  // filerev
+  // usemin
+  // htmlmin
+
+  // TODO implement gradle build
+}
+
+task test() {
+  // clean:server
+  // wiredep
+  // concurrent:test
+  // autoprefixer
+  // connect:test
+  // karma
+
+  // TODO implement gradle test
+}
+
+// TODO set up clean task
+clean.delete << file("dist")
+clean.delete << file("node_modules")
+clean.delete << file("bower_components")
+clean.delete << file(".caches")
+clean.delete << file(".sass-cache")
+clean.delete << file(".tmp")
