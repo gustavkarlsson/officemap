@@ -136,32 +136,12 @@ task watchSass(dependsOn: [installCompass, installBowerComponents]) {
   }
 }
 
-task copySourceFiles(type: com.sun.org.apache.xalan.internal.xsltc.compiler.Copy, dependsOn: wiredep) {
-  description = "Copy source files to serve directory"
-  exclude "**/*.scss"
-  from file(appDir)
-  from (projectDir) {
-    include "bower_components/**"
-  }
-  into file(serveDir)
-}
-
-task autoprefixer(type: NodeTask, dependsOn: [installNodeModules, copySourceFiles]) {
-  description = "Add vendor prefixes to CSS"
-  def cssFiles = fileTree(cssDir).include("**/*.css")
-  inputs.files cssFiles
-  outputs.files cssDir
-
-  script = file("node_modules/postcss-cli/bin/postcss")
-  args = ["--use", "autoprefixer",
-          "--autoprefixer.browsers", "last 1 version",
-          "--autoprefixer.map", "true",
-          "--dir", cssDir]
-  args += fileTree(cssDir).include("**/*.css")
-}
-
-task serve(type: NodeTask, dependsOn: [watchSass, autoprefixer]) {
+task serve(type: NodeTask, dependsOn: [watchSass]) {
   description = "Runs HTTP server to serve content"
+
+  doFirst {
+    file(serveDir).mkdir()
+  }
 
   script = file("server.js")
   // TODO watch and copy on changes
@@ -172,7 +152,6 @@ task build() {
   // wiredep
   // useminPrepare
   // concurrent:dist
-  // autoprefixer
   // ngtemplates
   // concat
   // ngAnnotate
@@ -191,7 +170,6 @@ task test2() { // TODO Solve name collision with jetty plugin task
   // clean:server
   // wiredep
   // concurrent:test
-  // autoprefixer
   // connect:test
   // karma
 

@@ -1,3 +1,5 @@
+var port = 9090;
+
 var connect = require("connect");
 var http = require("http");
 var proxy = require("proxy-middleware");
@@ -17,10 +19,13 @@ app.use(modrewrite([
 
 // Serve static content
 app.use(serveStatic(__dirname + "/.tmp"));
+app.use(serveStatic(__dirname + "/app"));
+app.use("/bower_components", serveStatic(__dirname + "/bower_components"));
 
 // Create HTTP server
-http.createServer(app).listen(9090);
+http.createServer(app).listen(port);
 
-// Create Livereload server
+// Create livereload server
 var liveReload = livereload.createServer();
-liveReload.watch(__dirname + "/.tmp");
+liveReload.watch([__dirname + "/app", __dirname + "/.tmp"]);
+console.log("Server running on port: " + port);
