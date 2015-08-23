@@ -144,7 +144,6 @@ task serve(type: NodeTask, dependsOn: [watchSass]) {
   }
 
   script = file("server.js")
-  // TODO watch and copy on changes
 }
 
 task build() {
