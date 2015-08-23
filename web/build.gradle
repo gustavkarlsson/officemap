@@ -1,26 +1,18 @@
 plugins {
+  id "base"
   id "com.moowork.node" version "0.10"
-}
-
-apply plugin: "base"
-apply plugin: "com.moowork.node"
-
-configurations {
-  jruby
 }
 
 repositories {
   mavenCentral()
 }
 
-dependencies {
-  jruby "org.jruby:jruby-complete:1.7.20"
+configurations {
+  jruby
 }
 
-node {
-  version = "0.12.5"
-  npmVersion = "2.11.2"
-  download = true
+dependencies {
+  jruby "org.jruby:jruby-complete:1.7.20"
 }
 
 ext {
@@ -40,6 +32,12 @@ ext {
   serveDir = "${projectDir}/.tmp"
   cssDir = "${serveDir}/styles"
   generatedImagesDir = "${serveDir}/images"
+}
+
+node {
+  version = "0.12.5"
+  npmVersion = "2.11.2"
+  download = true
 }
 
 task configureNpmCache(type: NpmTask) {
@@ -138,7 +136,17 @@ task watchSass(dependsOn: [installCompass, installBowerComponents]) {
   }
 }
 
-task autoprefixer(type: NodeTask, dependsOn: installNodeModules) {
+task copySourceFiles(type: com.sun.org.apache.xalan.internal.xsltc.compiler.Copy, dependsOn: wiredep) {
+  description = "Copy source files to serve directory"
+  exclude "**/*.scss"
+  from file(appDir)
+  from (projectDir) {
+    include "bower_components/**"
+  }
+  into file(serveDir)
+}
+
+task autoprefixer(type: NodeTask, dependsOn: [installNodeModules, copySourceFiles]) {
   description = "Add vendor prefixes to CSS"
   def cssFiles = fileTree(cssDir).include("**/*.css")
   inputs.files cssFiles
@@ -152,31 +160,11 @@ task autoprefixer(type: NodeTask, dependsOn: installNodeModules) {
   args += fileTree(cssDir).include("**/*.css")
 }
 
-task copySourceFiles(type: Copy, dependsOn: wiredep) {
-  description = "Copy source files to serve directory"
-  exclude "**/*.scss"
-  from file(appDir)
-  from (projectDir) {
-    include "bower_components/**"
-  }
-  into file(serveDir)
-}
-
-task serve(type: NodeTask, dependsOn: [watchSass, autoprefixer, copySourceFiles]) {
+task serve(type: NodeTask, dependsOn: [watchSass, autoprefixer]) {
   description = "Runs HTTP server to serve content"
 
-  script = file("node_modules/http-server/bin/http-server")
-  args = [serveDir,
-          "-p", "9090", // Port
-          "-c-1", // Disable cache
-          "--proxy", "http://localhost:8080", // Proxies unresolved requests
-          "--silent", // Supress log messages
-          "-o"] // Open browser after starting server
-
-  // connect:livereload
-  // watch
-
-  // TODO implement gradle serve
+  script = file("server.js")
+  // TODO watch and copy on changes
 }
 
 task build() {
