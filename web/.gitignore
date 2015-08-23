@@ -7,7 +7,7 @@
 # Grunt output directory
 /dist
 
-# Temporary build files
+# Development serve directory
 /.tmp
 
 # SASS cache

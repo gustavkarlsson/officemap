@@ -24,9 +24,10 @@ node {
 }
 
 ext {
-  npmCacheDir = "${projectDir}/.caches/npm"
+  cachesDir = "${projectDir}/.caches"
+  npmCacheDir = "${cachesDir}/npm"
   nodeModulesDir = "${projectDir}/node_modules"
-  bowerCacheDir = "${projectDir}/.caches/bower"
+  bowerCacheDir = "${cachesDir}/bower"
   bowerComponentsDir = "${projectDir}/bower_components"
   jrubyDir = "${projectDir}/.jruby"
   appDir = "${projectDir}/app"
@@ -51,16 +52,16 @@ task configureNpmCache(type: NpmTask) {
   args = [ "config", "set", "cache", npmCacheDir ]
 }
 
-task installNodePackages(type: NpmTask, dependsOn: configureNpmCache) {
-  description = "Install Node.js packages"
+task installNodeModules(type: NpmTask, dependsOn: configureNpmCache) {
+  description = "Install Node.js modules"
   inputs.files file("package.json")
   outputs.files file("node_modules")
 
   args = [ "install" ]
 }
 
-task installBowerPackages(type: NodeTask, dependsOn: installNodePackages) {
-  description = "Install bower packages"
+task installBowerComponents(type: NodeTask, dependsOn: installNodeModules) {
+  description = "Install bower components"
   inputs.files file("bower.json")
   outputs.files file(bowerComponentsDir)
 
@@ -69,6 +70,16 @@ task installBowerPackages(type: NodeTask, dependsOn: installNodePackages) {
           "--config.storage.packages=${bowerCacheDir}/packages",
           "--config.storage.registry=${bowerCacheDir}/registry",
           "install"]
+}
+
+task wiredep(type: NodeTask, dependsOn: [installNodeModules, installBowerComponents]) {
+  description = "Wire Bower dependencies to your source code"
+  inputs.dir file(bowerComponentsDir)
+  outputs.file file(indexFile)
+
+  script = file("node_modules/wiredep/wiredep-cli.js")
+  args = ["--src", indexFile,
+          "--ignorePath", ".."]
 }
 
 task installCompass(type: JavaExec) {
@@ -83,7 +94,7 @@ task installCompass(type: JavaExec) {
             "compass"]
 }
 
-task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerPackages]) {
+task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerComponents]) {
     description = "Compile SASS using compass"
     inputs.dir file(sassDir)
     inputs.dir file(imagesDir)
@@ -108,17 +119,7 @@ task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerPackage
             "--relative-assets", "--sourcemap"]
 }
 
-task wiredep(type: NodeTask, dependsOn: [installNodePackages, installBowerPackages]) {
-    description = "Wire Bower dependencies to your source code"
-    inputs.dir file(bowerComponentsDir)
-    outputs.file file(indexFile)
-
-    script = file("node_modules/wiredep/wiredep-cli.js")
-    args = ["--src", indexFile,
-            "--ignorePath", ".."]
-}
-
-task autoprefixer(type: NodeTask, dependsOn: [installNodePackages, compileSass]) {
+task autoprefixer(type: NodeTask, dependsOn: [installNodeModules, compileSass]) {
   description = "Add vendor prefixes to CSS"
   def cssFiles = fileTree(cssDir).include("**/*.css")
   inputs.files cssFiles
@@ -132,12 +133,27 @@ task autoprefixer(type: NodeTask, dependsOn: [installNodePackages, compileSass])
   args += fileTree(cssDir).include("**/*.css")
 }
 
-task serve(dependsOn: [wiredep, compileSass, autoprefixer]) {
-  // clean:server?
-  // wiredep
-  // concurrent:server
-  // autoprefixer:server
-  // configureProxies:serve
+task copySourceFiles(type: Copy, dependsOn: wiredep) {
+  description = "Copy source files to serve directory"
+  exclude "**/*.scss"
+  from file(appDir)
+  from (projectDir) {
+    include "bower_components/**"
+  }
+  into file(serveDir)
+}
+
+task serve(type: NodeTask, dependsOn: [autoprefixer, copySourceFiles]) {
+  description = "Runs HTTP server to serve content"
+
+  script = file("node_modules/http-server/bin/http-server")
+  args = [serveDir,
+          "-p", "9090", // Port
+          "-c-1", // Disable cache
+          "--proxy", "http://localhost:8080", // Proxies unresolved requests
+          "--silent", // Supress log messages
+          "-o"] // Open browser after starting server
+
   // connect:livereload
   // watch
 
@@ -164,7 +180,7 @@ task build() {
   // TODO implement gradle build
 }
 
-task test() {
+task test2() { // TODO Solve name collision with jetty plugin task
   // clean:server
   // wiredep
   // concurrent:test
@@ -177,8 +193,9 @@ task test() {
 
 // TODO set up clean task
 clean.delete << file("dist")
-clean.delete << file("node_modules")
-clean.delete << file("bower_components")
-clean.delete << file(".caches")
+clean.delete << file(nodeModulesDir)
+clean.delete << file(bowerComponentsDir)
+clean.delete << file(cachesDir)
+clean.delete << file(jrubyDir)
 clean.delete << file(".sass-cache")
-clean.delete << file(".tmp")
+clean.delete << file(serveDir)
