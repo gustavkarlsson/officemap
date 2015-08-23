@@ -40,9 +40,6 @@ ext {
   serveDir = "${projectDir}/.tmp"
   cssDir = "${serveDir}/styles"
   generatedImagesDir = "${serveDir}/images"
-
-  httpImagesPath = "/images"
-  httpGeneratedImagesPath = "${httpImagesPath}/generated"
 }
 
 task configureNpmCache(type: NpmTask) {
@@ -119,7 +116,29 @@ task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerCompone
             "--relative-assets", "--sourcemap"]
 }
 
-task autoprefixer(type: NodeTask, dependsOn: [installNodeModules, compileSass]) {
+task watchSass(dependsOn: [installCompass, installBowerComponents]) {
+  doFirst {
+    Thread.start {
+      project.javaexec {
+        environment "GEM_PATH", jrubyDir
+        environment "PATH", "${jrubyDir}/bin"
+
+        classpath = configurations.jruby
+        main = "org.jruby.Main"
+        args = ["-S", "compass", "watch",
+                "--sass-dir", sassDir,
+                "--css-dir", cssDir,
+                "--images-dir", imagesDir,
+                "--javascripts-dir", javascriptsDir,
+                "--fonts-dir", fontsDir,
+                "--import-path", bowerComponentsDir,
+                "--relative-assets", "--sourcemap"]
+      }
+    }
+  }
+}
+
+task autoprefixer(type: NodeTask, dependsOn: installNodeModules) {
   description = "Add vendor prefixes to CSS"
   def cssFiles = fileTree(cssDir).include("**/*.css")
   inputs.files cssFiles
@@ -143,7 +162,7 @@ task copySourceFiles(type: Copy, dependsOn: wiredep) {
   into file(serveDir)
 }
 
-task serve(type: NodeTask, dependsOn: [autoprefixer, copySourceFiles]) {
+task serve(type: NodeTask, dependsOn: [watchSass, autoprefixer, copySourceFiles]) {
   description = "Runs HTTP server to serve content"
 
   script = file("node_modules/http-server/bin/http-server")
