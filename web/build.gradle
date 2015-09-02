@@ -30,7 +30,9 @@ ext {
   indexFile = "${appDir}/index.html"
 
   serveDir = "${projectDir}/.tmp"
-  cssDir = "${serveDir}/styles"
+  serveCssDir = "${serveDir}/styles"
+
+  buildCssDir = "${buildDir}/styles"
 }
 
 node {
@@ -95,7 +97,7 @@ task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerCompone
     inputs.dir file(javascriptsDir)
     inputs.dir file(fontsDir)
     inputs.dir file(bowerComponentsDir)
-    outputs.dir file(cssDir)
+    outputs.dir file(buildCssDir)
 
     environment "GEM_PATH", jrubyDir
     environment "PATH", "${jrubyDir}/bin"
@@ -108,8 +110,8 @@ task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerCompone
             "--javascripts-dir", javascriptsDir,
             "--fonts-dir", fontsDir,
             "--import-path", bowerComponentsDir,
-            "--css-dir", cssDir,
-            "--relative-assets", "--sourcemap"]
+            "--css-dir", buildCssDir,
+            "--relative-assets"]
 }
 
 task watchSass(dependsOn: [installCompass, installBowerComponents]) {
@@ -127,7 +129,7 @@ task watchSass(dependsOn: [installCompass, installBowerComponents]) {
                 "--javascripts-dir", javascriptsDir,
                 "--fonts-dir", fontsDir,
                 "--import-path", bowerComponentsDir,
-                "--css-dir", cssDir,
+                "--css-dir", serveCssDir,
                 "--relative-assets", "--sourcemap"]
       }
     }
@@ -144,17 +146,16 @@ task serve(type: NodeTask, dependsOn: [watchSass]) {
   script = file("server.js")
 }
 
-task build(dependsOn: [wiredep]) {
-  // useminPrepare
-  // concurrent:dist
+task build(dependsOn: [compileSass]) {
+  // imagemin
+  // svgmin
   // ngtemplates
-  // concat
   // ngAnnotate
-  // copy:dist
-  // cssmin
-  // uglify
+  // concat js
+  // uglify js
+  // concat css
+  // uglify css
   // filerev
-  // usemin
   // htmlmin
 
   // TODO implement gradle build
