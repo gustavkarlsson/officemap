@@ -31,7 +31,6 @@ ext {
 
   serveDir = "${projectDir}/.tmp"
   cssDir = "${serveDir}/styles"
-  generatedImagesDir = "${serveDir}/images"
 }
 
 node {
@@ -97,7 +96,6 @@ task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerCompone
     inputs.dir file(fontsDir)
     inputs.dir file(bowerComponentsDir)
     outputs.dir file(cssDir)
-    outputs.dir file(generatedImagesDir)
 
     environment "GEM_PATH", jrubyDir
     environment "PATH", "${jrubyDir}/bin"
@@ -106,11 +104,11 @@ task compileSass(type: JavaExec, dependsOn: [installCompass, installBowerCompone
     main = "org.jruby.Main"
     args = ["-S", "compass", "compile",
             "--sass-dir", sassDir,
-            "--css-dir", cssDir,
             "--images-dir", imagesDir,
             "--javascripts-dir", javascriptsDir,
             "--fonts-dir", fontsDir,
             "--import-path", bowerComponentsDir,
+            "--css-dir", cssDir,
             "--relative-assets", "--sourcemap"]
 }
 
@@ -125,11 +123,11 @@ task watchSass(dependsOn: [installCompass, installBowerComponents]) {
         main = "org.jruby.Main"
         args = ["-S", "compass", "watch",
                 "--sass-dir", sassDir,
-                "--css-dir", cssDir,
                 "--images-dir", imagesDir,
                 "--javascripts-dir", javascriptsDir,
                 "--fonts-dir", fontsDir,
                 "--import-path", bowerComponentsDir,
+                "--css-dir", cssDir,
                 "--relative-assets", "--sourcemap"]
       }
     }
@@ -146,16 +144,13 @@ task serve(type: NodeTask, dependsOn: [watchSass]) {
   script = file("server.js")
 }
 
-task build() {
-  // clean:dist?
-  // wiredep
+task build(dependsOn: [wiredep]) {
   // useminPrepare
   // concurrent:dist
   // ngtemplates
   // concat
   // ngAnnotate
   // copy:dist
-  // cdnify
   // cssmin
   // uglify
   // filerev
