@@ -8,5 +8,5 @@
 *.iml
 
 # Gradle
-install/
+/deploy/
 .gradle/

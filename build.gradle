@@ -1,11 +1,28 @@
+apply plugin: "base"
+
 task copyWeb(type: Copy, dependsOn: ":web:build") {
+    description "Copy web to the deploy directory"
+
     from "web/dist"
-    into "install/web"
+    into "deploy/web"
 }
 
 task copyServer(type: Copy, dependsOn: ":server:installDist") {
+    description "Copy server to the deploy directory"
+
     from "server/build/install/server"
-    into "install"
+    into "deploy"
 }
 
-task install(dependsOn: ["copyServer", "copyWeb"])
+task copyStartScripts(type: Copy) {
+    description "Copy OS dependent start scripts to the deploy directory"
+
+    from "startscripts"
+    into "deploy"
+}
+
+task deploy(dependsOn: ["copyServer", "copyWeb", "copyStartScripts"]) {
+    description "Deploy the application to the deploy directory"
+}
+
+clean.delete << file("deploy")

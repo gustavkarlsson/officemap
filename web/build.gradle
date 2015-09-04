@@ -72,7 +72,9 @@ grunt_serve {
 
 build.dependsOn grunt_build
 
-task serve(dependsOn: grunt_serve)
+task serve(dependsOn: grunt_serve) {
+  description "Run the web application"
+}
 
 clean.delete << file("dist")
 clean.delete << file(nodeModulesDir)
