@@ -64,7 +64,15 @@ grunt_build {
   outputs.files file("dist")
 }
 
+grunt_serve {
+  dependsOn installNodeModules
+  dependsOn installGrunt
+  dependsOn installBowerComponents
+}
+
 build.dependsOn grunt_build
+
+task serve(dependsOn: grunt_serve)
 
 clean.delete << file("dist")
 clean.delete << file(nodeModulesDir)
