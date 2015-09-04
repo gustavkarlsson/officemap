@@ -1,11 +1,11 @@
 task copyWeb(type: Copy, dependsOn: ":web:build") {
     from "web/dist"
-    into 'build/web'
+    into "install/web"
 }
 
 task copyServer(type: Copy, dependsOn: ":server:installDist") {
     from "server/build/install/server"
-    into "build"
+    into "install"
 }
 
 task install(dependsOn: ["copyServer", "copyWeb"])

@@ -13,3 +13,7 @@ hs_err_pid*
 # Server data
 /data/
 /thumbs_cache/
+
+
+# Gradle
+build/
