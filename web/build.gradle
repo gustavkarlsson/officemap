@@ -7,50 +7,57 @@ apply plugin: 'base'
 apply plugin: 'com.moowork.node'
 apply plugin: 'com.moowork.grunt'
 
+ext {
+  nodeModulesDir = "${projectDir}/node_modules"
+  bowerComponentsDir = "${projectDir}/bower_components"
+  cachesDir = "${projectDir}/.caches"
+  npmCacheDir = "${cachesDir}/npm"
+  bowerCacheDir = "${cachesDir}/bower"
+  serveDir = "${projectDir}/.tmp"
+}
+
 node {
-    version = '0.12.5'
-    npmVersion = '2.11.2'
-    download = true
+  version = "0.12.5"
+  npmVersion = "2.11.2"
+  download = true
 }
 
-task npmCacheConfig(type: NpmTask) {
-    description = 'Configure the NPM cache'
-    def npmCacheDir = "${projectDir}/.caches/npm"
-    outputs.files file(npmCacheDir)
-    args = [ 'config', 'set', 'cache', npmCacheDir ]
+task configureNpmCache(type: NpmTask) {
+  description = "Configure the NPM cache"
+  outputs.files file(npmCacheDir)
+
+  args = [ "config", "set", "cache", npmCacheDir ]
 }
 
-task npmInstallPackages(type: NpmTask, dependsOn: npmCacheConfig) {
-    description = "Install Node.js packages"
-    args = [ 'install' ]
-    inputs.files file('package.json')
-    outputs.files file('node_modules')
+task installNodeModules(type: NpmTask, dependsOn: configureNpmCache) {
+  description = "Install Node.js modules"
+  inputs.files file("package.json")
+  outputs.files file("node_modules")
+
+  args = [ "install" ]
 }
 
-task bowerInstall(type: NodeTask, dependsOn: npmInstallPackages) {
-    script = file('node_modules/bower/bin/bower')
-    args = ["--config.storage.cache=${projectDir}/caches/bower/cache",
-            "--config.storage.packages=${projectDir}/.caches/bower/packages",
-            "--config.storage.registry=${projectDir}/.caches/bower/registry",
-            'install']
-    inputs.files file('bower.json')
-    outputs.files file('bower_components')
+task installBowerComponents(type: NodeTask, dependsOn: installNodeModules) {
+  description = "Install bower components"
+  inputs.files file("bower.json")
+  outputs.files file(bowerComponentsDir)
+
+  script = file("${nodeModulesDir}/bower/bin/bower")
+  args = ["--config.storage.cache=${bowerCacheDir}/cache",
+          "--config.storage.packages=${bowerCacheDir}/packages",
+          "--config.storage.registry=${bowerCacheDir}/registry",
+          "install"]
 }
 
-task serve(dependsOn: grunt_serve) {
-}
-
+grunt_build.dependsOn installNodeModules
 grunt_build.dependsOn installGrunt
-grunt_build.dependsOn bowerInstall
-
-grunt_serve.dependsOn installGrunt
-grunt_serve.dependsOn bowerInstall
+grunt_build.dependsOn installBowerComponents
 
 build.dependsOn grunt_build
 
-clean.delete << file('dist')
-clean.delete << file('node_modules')
-clean.delete << file('bower_components')
-clean.delete << file('.caches')
-clean.delete << file('.sass-cache')
-clean.delete << file('.tmp')
+clean.delete << file("dist")
+clean.delete << file(nodeModulesDir)
+clean.delete << file(bowerComponentsDir)
+clean.delete << file(cachesDir)
+clean.delete << file(".sass-cache")
+clean.delete << file(serveDir)
