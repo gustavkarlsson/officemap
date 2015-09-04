@@ -1,11 +1,11 @@
 plugins {
-  id 'com.moowork.node' version '0.10'
+  id "com.moowork.node" version "0.10"
   id "com.moowork.grunt" version "0.10"
 }
 
-apply plugin: 'base'
-apply plugin: 'com.moowork.node'
-apply plugin: 'com.moowork.grunt'
+apply plugin: "base"
+apply plugin: "com.moowork.node"
+apply plugin: "com.moowork.grunt"
 
 ext {
   nodeModulesDir = "${projectDir}/node_modules"
@@ -13,6 +13,7 @@ ext {
   cachesDir = "${projectDir}/.caches"
   npmCacheDir = "${cachesDir}/npm"
   bowerCacheDir = "${cachesDir}/bower"
+  appDir = "${projectDir}/app"
   serveDir = "${projectDir}/.tmp"
 }
 
@@ -49,9 +50,19 @@ task installBowerComponents(type: NodeTask, dependsOn: installNodeModules) {
           "install"]
 }
 
-grunt_build.dependsOn installNodeModules
-grunt_build.dependsOn installGrunt
-grunt_build.dependsOn installBowerComponents
+grunt_build {
+  dependsOn installNodeModules
+  dependsOn installGrunt
+  dependsOn installBowerComponents
+
+  inputs.files file("Gruntfile.json")
+  inputs.files file("package.json")
+  inputs.files file("bower.json")
+  inputs.files file(".jshintrc")
+  inputs.files file(".jshintrc")
+  inputs.files file(appDir)
+  outputs.files file("dist")
+}
 
 build.dependsOn grunt_build
 
