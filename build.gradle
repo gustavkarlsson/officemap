@@ -17,6 +17,8 @@ task copyServer(type: Copy, dependsOn: ":server:installDist") {
 task copyStartScripts(type: Copy) {
     description "Copy OS dependent start scripts to the deploy directory"
 
+    fileMode 0755
+
     from "startscripts"
     into "deploy"
 }
